@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+package airos.perception.camera;
+
+message PerceptionParam {
+    optional float frequency = 1;
+    optional int32 gpu_id = 2;
+    optional string camera_name = 3;
+    optional string alg_name = 4;
+    optional string alg_path = 5;
+    optional string conf_path = 6;
+}

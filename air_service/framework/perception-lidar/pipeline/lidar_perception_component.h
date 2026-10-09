@@ -1,0 +1,74 @@
+/******************************************************************************
+ * Copyright 2022 The Airos Authors. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *****************************************************************************/
+
+#pragma once
+
+#include <atomic>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <string>
+#include <thread>
+#include <vector>
+
+#include "air_service/framework/perception-lidar/proto/perception_lidar.pb.h"
+#include "air_service/framework/proto/airos_perception_obstacle.pb.h"
+
+#include "air_service/framework/perception-lidar/interface/base_lidar_perception.h"
+#include "middleware/device_service/framework/lidar/lidar_service.h"
+#include "middleware/runtime/src/air_middleware_component.h"
+
+namespace airos {
+namespace perception {
+namespace lidar {
+
+#define LIDAR_DETECTION_COMPONENT \
+  AIROS_COMPONENT_CLASS_NAME(LidarPerceptionComponent)
+
+class LIDAR_DETECTION_COMPONENT : public airos::middleware::ComponentAdapter<> {
+ public:
+  LIDAR_DETECTION_COMPONENT() = default;
+  ~LIDAR_DETECTION_COMPONENT();
+
+  LIDAR_DETECTION_COMPONENT(const LIDAR_DETECTION_COMPONENT &) = delete;
+  LIDAR_DETECTION_COMPONENT &operator=(const LIDAR_DETECTION_COMPONENT &) =
+      delete;
+
+  bool Init() override;
+
+ private:
+  void ProcThread();
+
+  bool InitConfig();
+  bool InitLidarDriver();
+  bool InitAlgorithmPipeline();
+
+  void SetMsgHeader(uint64_t timestamp_us, PerceptionObstacles &message);
+
+ private:
+  std::unique_ptr<std::thread> proc_thread_;
+  std::atomic<bool> running_{false};
+
+  std::unique_ptr<BaseLidarPerception> lidar_obstacle_pipeline_;
+  PerceptionLidarParam lidar_param_;
+  uint64_t seq_num_ = 0;
+};
+
+REGISTER_AIROS_COMPONENT_NULLTYPE_CLASS(LidarPerceptionComponent);
+
+}  // namespace lidar
+}  // namespace perception
+}  // namespace airos

@@ -1,0 +1,12 @@
+rsu_id: 123
+max_service_dist: 100.0
+max_ttc: 5.0
+safty_area_length: 5.0
+lat: 39.0
+lon: 129.0
+startPointLat: 39.0
+startPointLon: 129.0
+endPointLat: 39.0
+endPointLon: 129.0
+mainRoadLaneId: 1
+sideRoadLaneId: 2

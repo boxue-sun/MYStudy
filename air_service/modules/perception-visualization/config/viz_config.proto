@@ -1,0 +1,32 @@
+syntax = "proto2";
+package airos.perception.visualization;
+
+message CameraConfig{
+    required string main_camera_id = 1 [default = "camera1"];
+    repeated string camera_ids = 2;
+}
+
+message RenderConfig{
+    required string render_mode = 1;
+    repeated string viewports_name = 2;
+}
+
+message SizeShape{
+    required double length = 1;
+    required double width = 2;
+    required double height = 3;
+}
+
+message VizConfig{
+    required CameraConfig camera_config = 1;
+    required RenderConfig render_config = 2;
+    required int32 max_data_buffer_size = 3 [default = 30];
+    required double max_buffer_interval = 4 [default = 0.4];
+    optional int32 full_window_viewport_idx = 5 [default = -1];
+    required double ref_circle_radius_inc = 6 [default = 40.0]; // radius incremental of reference circle (in meters)
+    repeated double crop_box_normalized = 7; // crop region of screenshots; [left, top, right, bottom], [0.0, 0.0, 0.5, 1.0] means capturing the left half
+    required int32 ref_circle_num = 8 [default = 4]; // number of reference circle
+    required string screen_output_dir = 9 [default = "./"];
+    required SizeShape main_car_size = 10;
+    required string display_opt_init_filepath = 11; // path of display options' init config file
+}

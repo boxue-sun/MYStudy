@@ -1,0 +1,21 @@
+camera1:
+  ip: 10.128.71.101
+  user: admin
+  password: xxx
+  camera_manufactor: simulation_camera
+  lens_type: PinholeLens
+  img_mode: BGR
+camera2:
+  ip: 10.128.71.102
+  user: admin
+  password: xxx
+  camera_manufactor: simulation_camera
+  lens_type: PinholeLens
+  img_mode: BGR
+camera3:
+  ip: 10.128.71.103
+  user: admin
+  password: xxx
+  camera_manufactor: simulation_camera
+  lens_type: PinholeLens
+  img_mode: BGR

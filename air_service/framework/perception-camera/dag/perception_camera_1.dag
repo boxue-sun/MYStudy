@@ -1,0 +1,11 @@
+
+module_config {
+    module_library : "/home/airos/os/lib/libcamera_detection_component.so"
+    components {
+        class_name : "CameraPerceptionComponent"
+        config {
+            name : "CameraPerceptionComponent"
+            config_file_path: "/home/airos/os/conf/camera1/camera1.pt"
+        }
+    }
+}

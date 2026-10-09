@@ -1,0 +1,5 @@
+tracker_name : "AirObjectTracker"
+id : ""
+model_dir : "/home/airos/os/modules/lib/airos_perception_camera/data/tracker"
+width : 1920
+height : 1080

@@ -1,0 +1,21 @@
+syntax = "proto2";
+
+package os.v2x.device;
+
+message MqttData {
+  optional string topic = 1;
+  optional bytes data = 2;
+}
+
+message HttpData {
+  optional string url_path = 1;
+  optional bytes data = 2;
+  optional string content_type = 3 [ default = "application/json" ];
+}
+
+message CloudData {
+  oneof payload {
+    MqttData mqtt_data = 100;
+    HttpData http_data = 101;
+  }
+}

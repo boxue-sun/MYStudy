@@ -1,0 +1,73 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-position.proto";
+import "app/framework/proto/v2xpb-asn-map.proto";
+
+package v2xpb.asn;
+message RsiReferencePath {
+  repeated Position points = 1;
+  optional double radius = 2 [ default = nan ];
+}
+message RsiReferenceLink{
+  required MapNode.ID upstreamNode=1;
+	required MapNode.ID	 downstreamNode=2;
+  repeated ReferenceLane referenceLanes=3;
+}
+
+enum ReferenceLane{
+    ReferenceLane_reserved=0;
+		lane1=1;
+		lane2=2;
+		lane3=3;
+		lane4=4;
+		lane5=5;
+		lane6=6;
+		lane7=7;
+		lane8=8;
+		lane9=9;
+		lane10=10;
+		lane11=11;
+		lane12=12;
+		lane13=13;
+		lane14=14;
+		lane15=15;
+}
+message RsiRte {
+  optional int32 rte_id = 1;
+  optional int32 event_type = 2;
+  enum Source {
+    SRC_UNKNOWN = 0;
+    SRC_POLICE = 1;
+    SRC_GOVERNMENT = 2;
+    SRC_METEOROLOGICAL = 3;
+    SRC_INTERNET = 4;
+    SRC_DETECTION = 5;
+  }
+  optional Source event_source = 3;
+  optional Position position = 4;
+  optional double event_radius = 5 [ default = nan ];
+  optional bytes description = 6;
+  optional int32 priority = 7;
+  repeated RsiReferencePath ref_paths = 8;
+  repeated RsiReferenceLink ref_links = 9;
+  optional double event_confidence = 10;
+}
+
+message RsiRts {
+  optional int32 rts_id = 1;
+  optional int32 sign_type = 2;
+  optional Position position = 3;
+  optional bytes description = 6;
+  optional int32 priority = 7;
+  repeated RsiReferencePath ref_paths = 8;
+  repeated RsiReferenceLink ref_links = 9;
+}
+
+message Rsi {
+  optional int32 message_count = 1 [ default = -1 ];
+  optional string rsi_id = 2 [ default = "" ];
+  optional Position position = 3;
+
+  repeated RsiRte rtes = 10;
+  repeated RsiRts rtss = 11;
+}

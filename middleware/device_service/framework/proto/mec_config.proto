@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package os.v2x.device.mec;
+
+message Config {
+  optional string device = 1;
+  optional string config_file = 2;
+}

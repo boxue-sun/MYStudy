@@ -1,0 +1,51 @@
+syntax = "proto2";
+
+package v2xpb.asn;
+
+message Spat {
+  optional int32 message_count = 1 [ default = -1 ];
+  optional string name = 2 [ default = "" ];
+  optional int32 moy = 3 [ default = -1 ];
+  optional int32 dsecond = 4 [ default = -1 ];
+  //
+  repeated SpatIntersection intersections = 10;
+}
+
+message SpatIntersection {
+  optional int32 node_region = 1 [ default = -1 ];
+  optional int32 node_id = 2 [ default = -1 ];
+  optional int32 moy = 3 [ default = -1 ];
+  optional int32 dsecond = 4 [ default = -1 ];
+  optional int32 time_confidence = 5 [default = -1];
+  optional string controller_status = 6 [default = ""];
+  //
+  repeated SpatPhase phases = 10;
+}
+
+message SpatPhase {
+  optional int32 id = 1 [ default = -1 ];
+  repeated SpatPhaseState phase_state = 2;
+}
+
+message SpatPhaseState{
+  optional SpatPhaseColor color = 1;
+  optional double timing_start = 2[default = nan];
+  optional double timing_end = 3[default = nan];
+  optional double timing_duration = 4[default = nan];
+  optional int32 time_confidence = 5 [default = -1];
+}
+
+enum SpatPhaseColor{
+  COLOR_UNKNOWN = 0;
+  COLOR_BLACK = 1;
+
+  COLOR_FLASHING_RED = 2;
+  COLOR_RED = 3;
+
+  COLOR_FLASHING_GREEN = 4;
+  COLOR_PERMISSIVE_GREEN = 5;
+  COLOR_PROTECTED_GREEN = 6;
+
+  COLOR_YELLOW = 7;
+  COLOR_FLASHING_YELLOW = 8;
+}

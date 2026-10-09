@@ -1,0 +1,37 @@
+
+camera_config {
+    main_camera_id: "camera1"
+    camera_ids: "camera1"
+    camera_ids: "camera2"
+    camera_ids: "camera3"
+    camera_ids: "camera4"
+}
+
+render_config {
+    render_mode: "render_camera"
+    viewports_name: "MultiCamera3DViewport"
+    viewports_name: "Camera2DViewport"
+    viewports_name: "CameraProj2DViewport"
+}
+
+max_data_buffer_size: 30
+max_buffer_interval: 0.4
+full_window_viewport_idx: -1
+ref_circle_radius_inc: 40.0
+
+crop_box_normalized: 0.0
+crop_box_normalized: 0.0
+crop_box_normalized: 1.0
+crop_box_normalized: 1.0
+
+ref_circle_num: 4
+screen_output_dir: "./"
+
+main_car_size {
+    length: 4.925
+    width: 1.864
+    height: 1.477
+}
+
+display_opt_init_filepath: "/home/airos/os/conf/viz/display_options.ini"
+

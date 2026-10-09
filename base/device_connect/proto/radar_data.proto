@@ -1,0 +1,84 @@
+syntax = "proto2";
+
+package os.v2x.device;
+
+message RadarHeader {
+  // The device timetamp(seconds)
+  optional double device_timestamp = 1;
+  // The device id
+  optional string device_id = 2;
+  // The device vendor
+  optional string device_vendor = 3;
+  // The device firmware
+  optional string device_firmware = 4;
+  // The cross id
+  optional string cross_id = 5;
+  // The device ip
+  optional string device_ip = 6;
+  // The device port
+  optional string device_port = 7;
+  // The mesage build timetamp(seconds)
+  optional double message_timestamp = 8;
+  // Sequence number for each message. Each module maintains its own counter for
+  // sequence_num
+  optional uint32 sequence_num = 9;
+}
+
+enum ObstacleType {
+  UNKNOWN = 0;
+  UNKNOWN_MOVABLE = 1;
+  UNKNOWN_UNMOVABLE = 2;
+  CAR = 3;
+  VAN = 4;
+  TRUCK = 5;
+  BUS = 6;
+  CYCLIST = 7;
+  MOTORCYCLIST = 8;
+  TRICYCLIST = 9;
+  PEDESTRIAN = 10;
+}
+
+message Point {
+  optional double x = 1; // in meters.
+  optional double y = 2; // in meters.
+  optional double z = 3; // height in meters.
+}
+
+message PerceptionObstacle {
+  optional int32 id = 1; // obstacle ID.
+  optional Point position =
+      2; // obstacle position in the world coordinate system.
+  optional double theta = 3;       // heading in the world coordinate system.
+  optional Point velocity = 4;     // obstacle velocity.
+  optional Point raw_velocity = 5; // obstacle raw velocity.
+
+  // Size of obstacle bounding box.
+  optional double length = 6; // obstacle length.
+  optional double width = 7;  // obstacle width.
+  optional double height = 8; // obstacle height.
+
+  repeated Point polygon_point = 9; // obstacle corner points.
+  optional double tracking_time =
+      10; // duration of an obstacle since detection in s.
+
+  optional ObstacleType type = 11; // obstacle type
+  optional double timestamp = 12;  // GPS time in seconds.
+
+  // a stable obstacle point in the world coordinate system
+  // position defined above is the obstacle boundingbox ground center
+  optional Point anchor_point = 13;
+
+  // position covariance which is a row-majored 3x3 matrix
+  repeated double position_covariance = 14 [ packed = true ];
+  // velocity covariance which is a row-majored 3x3 matrix
+  repeated double velocity_covariance = 15 [ packed = true ];
+
+  optional Point acceleration = 16; // obstacle acceleration.
+  // acceleration covariance which is a row-majored 3x3 matrix
+  repeated double acceleration_covariance = 17 [ packed = true ];
+}
+
+message RadarObstacles {
+  optional RadarHeader header = 1;          // header
+  repeated PerceptionObstacle obstacle = 2; // An array of obstacles
+}

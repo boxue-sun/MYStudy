@@ -1,0 +1,94 @@
+syntax = "proto2";
+package airos.monitor_mec;
+enum MonitorMecTag
+{
+  MONITOR_TAG_DATA_SPAT_SRC = 3024;  //信号机原始数据, [异常]超过5秒没有数据上报
+  MONITOR_TAG_DATA_SENSOR_OBJ = 3025; //感知数据异常, [异常]超过10秒没有数据上报
+  MONITOR_TAG_DATA_SENSOR_EVENTS = 3026; //感知事件异常, [异常]超过10秒没有数据上报
+  MONITOR_TAG_DATA_CCINDEX_TC = 3027; //v2x信控指标, 最小周期5s, [异常]超过15秒没有数据上报
+
+  MONITOR_TAG_DATA_CCINDEX_TM_TRAJECTORIES = 3028; //雷达信控指标-动态: 实时轨迹数据 最小周期1s, [异常]超过3s没有上报
+  MONITOR_TAG_DATA_CCINDEX_TM_VEHICLEPASS = 3029; //雷达信控指标-动态:实时过车数据  最小周期1s, [异常]超过3s没有上报
+  MONITOR_TAG_DATA_CCINDEX_TM_QUEUEUP = 3030; //雷达信控指标-动态: 实时排队数据 最小周期1s, [异常]超过3s没有上报
+  MONITOR_TAG_DATA_CCINDEX_TM_AREASTATE = 3031; //雷达信控指标-动态:实时区域状态数据  最小周期1s, [异常]超过3s没有上报
+  MONITOR_TAG_DATA_CCINDEX_TM_OVERFLOW = 3032; //雷达信控指标-动态: 实时溢出数据 最小周期1s, [异常]超过3s没有上报
+  MONITOR_TAG_DATA_CCINDEX_TM_OUTLANE = 3033; //雷达信控指标-动态:实时出口通道数据 最小周期1s, [异常]超过3s没有上报
+  MONITOR_TAG_DATA_CCINDEX_TM_STATISTICS = 3034; //雷达信控指标-动态: 定时统计数据 最小周期1s, [异常]超过3s没有上报
+  MONITOR_TAG_DATA_CCINDEX_TM_EVALUATIONS = 3035; //雷达信控指标-动态: 定时评价数据 最小周期1s, [异常]超过3s没有上报
+  MONITOR_TAG_DATA_CCINDEX_TM_NONMOTOR = 3036; //雷达信控指标-动态: 定时行人及非机动车数据 最小周期1s, [异常]超过3s没有上报
+  MONITOR_TAG_DATA_CCINDEX_TM_DEVICESTATUS = 3037; //雷达信控指标-动态: 实时设备状态 最小周期1s, [异常]超过3s没有上报
+
+  MONITOR_TAG_DATA_CCINDEX_ST_QUERY_ACK = 3038; //雷达信控指标-静态: 周期5分钟，[异常]超过15分钟没有上报
+  MONITOR_TAG_DATA_CCINDEX_ST_UPDATE = 3039; //雷达信控指标-静态: 周期5分钟，[异常]超过15分钟没有上报
+
+  MONITOR_TAG_DATA_RADAR_DATA = 3040; //毫米波雷达原始数据: 周期目前接口没有要求，如果定义推送周期最大不超过30分钟，则1小时未推送为故障 [恢复]1个小时内恢复推送
+  MONITOR_TAG_DATA_LIDAR_DATA = 3041; //激光雷达原始数据
+  MONITOR_TAG_LINK_RSAP = 3042; //云控链路状态:TCP	TCP连接状态异常
+  MONITOR_TAG_LINK_CCINDEX_ST = 3043; // 信控链路状态-静态	HTTP	http连接异常
+  MONITOR_TAG_LINK_CCINDEX_TM = 3044; //  信控链路状态-动态	MQTT	mqtt链路异常
+  MONITOR_TAG_LINK_DAR = 3045;  //点云：FTP	ftp链路异常
+};
+
+///////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+message MonitorData { //数据监控
+  required MonitorMecTag tag = 1;  //消息类型
+  required uint64 timestamp = 2;  //utc时间戳: 发送监控数据包时的时间戳
+  optional string device_id = 3;  // [新增] 用于区分不同的雷达设备
+}
+message MonitorDataCcindexTm { //数据监控
+  required MonitorMecTag tag = 1;  //消息类型
+  required uint64 timestamp = 2;  //utc时间戳: 发送监控数据包时的时间戳
+  optional string device_id = 3;  // [新增] 用于区分不同的雷达设备
+  optional string topic = 4;  // [新增] 增加 topic 字段，用于区分不同的雷达设备 (device_id)
+}
+
+message MonitorDataCcindexSt { //数据监控
+  required MonitorMecTag tag = 1;  //消息类型
+  required uint64 timestamp = 2;  //utc时间戳: 发送监控数据包时的时间戳
+  optional string device_id = 3;  // [新增] 用于区分不同的雷达设备
+  optional string topic = 4;  // [新增] 增加 topic 字段，用于区分不同的雷达设备 (device_id)
+}
+
+message MonitorLink { // 链路状态-静态
+    required MonitorMecTag tag = 1;  //消息类型
+    required uint64 timestamp = 2;  //utc时间戳: mec收到时的时间戳
+    required bool con_flag = 3[default = false];    //链路状态-动态, false: 异常 true:正常
+}
+//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+message MonitorMec {
+    optional  MonitorData  md_spat_src_data = 5;  //信号机原始数据, [异常]超过5秒没有数据上报
+    optional  MonitorData  md_sensor_objs = 6;  //感知数据异常, [异常]超过10秒没有数据上报
+    optional  MonitorData  md_sensor_events = 7;  //感知事件异常
+    optional  MonitorData  md_ccindex_tc = 8;  //v2x信控指标, 最小周期5s, [异常]超过15秒没有数据上报
+    optional  MonitorDataCcindexTm  md_ccindex_tm = 9;  //雷达信控指标-动态: 最小周期1s, [异常]超过3s没有上报
+    optional  MonitorDataCcindexSt  md_ccindex_st = 10;  //雷达信控指标-静态: 周期5分钟，[异常]超过15分钟没有上报
+    optional  MonitorData  md_radar_cp = 11;  //毫米波雷达原始数据: 周期目前接口没有要求，如果定义推送周期最大不超过30分钟，则1小时未推送为故障 [恢复]1个小时内恢复推送
+    optional  MonitorData  md_lidar_cp = 12; //激光雷达原始数据
+
+    optional  MonitorLink  ml_rsap = 13; //云控链路状态:TCP	TCP连接状态异常
+    optional  MonitorLink  ml_ccindex_st = 14; //信控链路状态-静态	HTTP	http连接异常
+    optional  MonitorLink  ml_ccindex_tm = 15; //信控链路状态-动态	MQTT	mqtt链路异常
+    optional  MonitorLink  ml_radar_cp = 16; //点云链路状态   FTP	ftp链路异常
+}
+//////////////////////////////////////////////////////////
+enum MonitorSpatTag
+{
+  MONITOR_TAG_MONITOR_OUT_SPAT_DATA_STATUS = 2001;  //信号机数据状态:原始数据转SPAT成功
+};
+
+enum MonitorSpatDataStatus
+{
+  MONITOR_STATUS_SPAT_DATA_NORMAL = 0;  //正常
+  MONITOR_STATUS_SPAT_DATA_UNNORMAL = 1;  //异常
+};
+message MonitorSpatData { //数据监控
+  required MonitorSpatTag tag = 1;  //消息类型
+  required uint64 timestamp = 2;  //utc时间戳: 发送监控数据包时的时间戳
+  required MonitorSpatDataStatus status = 3;    //数据状态, false: 异常 true:正常
+
+}
+message MonitorSpat {
+  optional  MonitorSpatData  md_spat_data_status = 1;  //信号机数据状态
+}

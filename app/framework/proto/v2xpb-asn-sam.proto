@@ -1,0 +1,31 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-common.proto";
+import "app/framework/proto/v2xpb-asn-common-ext.proto";
+
+package v2xpb.asn;
+
+
+message Sam{
+  required int64	 msgCnt=1;
+  required string	 id=2;
+	required int64	 secMark=3;
+  optional ManeuverCooperation maneuverCooperation=4;
+
+}
+
+message ManeuverCooperation{
+  required EquipmentType equipmentType=1;
+  optional DetectedRegion detectedRegion=2;
+  repeated IntentCooperation intCooperation=3;
+}
+
+enum IntentCooperation{
+  vehCoopLaneChange=0;
+  vehCoopLaneMerge=1;
+  vehCoopNonSignalIntersection=2;
+  rsuCoopLaneChange=3;
+  rsuCoopLaneMerge=4;
+  rsuCoopNonSignalIntersection=5;
+  rsuCoopSignalIntersection=6;
+}

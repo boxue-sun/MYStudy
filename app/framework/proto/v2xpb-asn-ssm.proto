@@ -1,0 +1,160 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-position.proto";
+import "app/framework/proto/v2xpb-asn-common-ext.proto";
+import "app/framework/proto/v2xpb-asn-common.proto";
+import "app/framework/proto/v2xpb-asn-rsi.proto";
+import "app/framework/proto/v2xpb-asn-bsm.proto";
+import "app/framework/proto/v2xpb-asn-vir.proto";
+import "app/framework/proto/v2xpb-asn-rsm.proto";
+package v2xpb.asn;
+
+message Ssm {
+  required int64	 msg_cnt=1;
+  required string	 id=2;
+  required EquipmentType	 equipmentType=3;
+  required int64	 secMark=4;
+  required Position	 sensorPos=5;
+  optional DetectedRegion	detectedRegion=6;
+  optional DetectedPTCList participants=7;
+  optional DetectedObstacleList	obstacles=8;
+  repeated RsiRte	rtes=9	;
+} 
+
+
+message DetectedObstacleList {
+	repeated  DetectedObstacleData list = 1 ;
+}
+
+message DetectedObstacleData {
+  required 	ObstacleType	 obsType=1;
+  optional int64	objTypeConfidence=2;
+  required int64	 obsId=3;
+  required SourceType	 source=4;
+  required int64	 secMark=5;
+  required Position	 pos=6;
+  required PosConfidenceSet	 posConfidence=7;
+  required int64 speed=8;
+  optional SpeedConfidence	speedCfd=9;
+  required int64	 heading=10;
+  optional HeadingConfidence	headingCfd=11;
+  optional int64	verSpeed=12	;
+  optional SpeedConfidence	verSpeedConfidence=13;
+  optional AccelerationSet4Way	accelSet=14	;
+  required ObjectSize	 size=15;
+  optional ObjectSizeConfidence	objSizeConfidence=16;
+  optional int64	tracking=17;
+  optional  Polygon	polygon=18;
+}
+
+message ObjectSize {
+  required int64	width=1;
+  required int64	length=2;
+  optional int64	height=3;
+} 
+
+enum ObstacleType {
+  ObstacleType_unknown	= 0;
+  ObstacleType_rockfall	= 1;
+  ObstacleType_landslide	= 2;
+  ObstacleType_animal_intrusion	= 3;
+  ObstacleType_liquid_spill	= 4;
+  ObstacleType_goods_scattered	= 5;
+  ObstacleType_trafficcone	= 6;
+  ObstacleType_safety_triangle	= 7;
+  ObstacleType_traffic_roadblock	= 8;
+  ObstacleType_inspection_shaft_without_cover	= 9;
+  ObstacleType_unknown_fragments	= 10;
+  ObstacleType_unknown_hard_object	= 11;
+  ObstacleType_unknown_soft_object	= 12;
+  /*
+   * Enumeration is extensible
+   */
+};
+
+message DetectedPTCList
+{
+  repeated DetectedPTCData list = 1;
+}
+
+message DetectedPTCData {
+  required ParticipantData	 ptc=1;
+  optional ObjectSizeConfidence  objSizeConfidence=2;
+  optional DetectedPTCType	detectedPTCType=3;
+  optional int64	typeConfidence=4;
+  optional AccSet4WayConfidence	acc4WayConfidence=5;
+  optional int64	statusDuration=6;
+  optional PathHistory	pathHistory=7;
+  optional PlanningList	planningList=8;
+  optional int64	tracking=9;
+  optional Polygon	polygon=10	; 
+  optional DetectedPTCData__type_relatedExt  present=11 ;
+}
+
+message PlanningList
+{
+  repeated Planning list = 1;
+}
+message Planning
+{
+  optional int64 duration = 1;
+  optional int64 planConfidence = 2;
+  repeated DriveBehavior	drivingBehavior = 3;
+  optional PathPlanning pathPlanning = 4;
+}
+
+message DetectedPTCData__type_relatedExt {
+  //todo
+  // enum DetectedPTCData__type_relatedExt_PR {
+  //     DetectedPTCData__type_relatedExt_PR_NOTHING=0;	
+  //     DetectedPTCData__type_relatedExt_PR_motorExt=1;
+  //     DetectedPTCData__type_relatedExt_PR_non_motorExt=2; 
+  // };
+  // required DetectedPTCData__type_relatedExt_PR   present=1 [default=DetectedPTCData__type_relatedExt_PR_NOTHING];
+
+  // oneof  DetectedPTCData__type_relatedExt_u_PB{
+
+  //       MotorDataExtension_PB	 motorExt=2;
+  //       Non_motorDataExtension_PB	 non_motorExt=3;
+  //   }
+}
+
+enum DetectedPTCType {
+  DetectedPTCType_unknown	= 0;
+  DetectedPTCType_unknown_movable	= 1;
+  DetectedPTCType_unknown_unmovable	= 2;
+  DetectedPTCType_car	= 3;
+  DetectedPTCType_van	= 4;
+  DetectedPTCType_truck	= 5;
+  DetectedPTCType_bus	= 6;
+  DetectedPTCType_cyclist	= 7;
+  DetectedPTCType_motorcyclist	= 8;
+  DetectedPTCType_tricyclist	= 9;
+  DetectedPTCType_pedestrian	= 10;
+  /*
+   * Enumeration is extensible
+   */
+};
+
+message ObjectSizeConfidence {
+  required SizeValueConfidence	 widthConf=1;
+  required SizeValueConfidence	 lengthConf=2;
+  optional SizeValueConfidence	heightConf=3;
+} 
+
+enum SizeValueConfidence {
+  SizeValueConfidence_unavailable	= 0;
+  SizeValueConfidence_size_100_00	= 1;
+  SizeValueConfidence_size_050_00	= 2;
+  SizeValueConfidence_size_020_00	= 3;
+  SizeValueConfidence_size_010_00	= 4;
+  SizeValueConfidence_size_005_00	= 5;
+  SizeValueConfidence_size_002_00	= 6;
+  SizeValueConfidence_size_001_00	= 7;
+  SizeValueConfidence_size_000_50	= 8;
+  SizeValueConfidence_size_000_20	= 9;
+  SizeValueConfidence_size_000_10	= 10;
+  SizeValueConfidence_size_000_05	= 11;
+  SizeValueConfidence_size_000_02	= 12;
+  SizeValueConfidence_size_000_01	= 13;
+};	

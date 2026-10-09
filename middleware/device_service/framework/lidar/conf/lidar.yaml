@@ -1,0 +1,8 @@
+lidar1:
+  ip: 192.168.10.150
+  lidar_manufactor: dummy_lidar
+  model: rev_e
+lidar2:
+  ip: 192.168.10.151
+  lidar_manufactor: dummy_lidar
+  model: rev_e

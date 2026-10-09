@@ -1,0 +1,5 @@
+{
+   "name" : "traffic_light_access",
+   "type" : "traffic_light",
+   "version" : "1.0.0.1"
+}

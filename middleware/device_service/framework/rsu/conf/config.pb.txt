@@ -1,0 +1,2 @@
+device: "standard_rsu"
+config_file: "/home/airos/param/device/rsu/standard_rsu.yaml"

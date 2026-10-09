@@ -1,0 +1,26 @@
+serial_number: DS-2CD7A27FWD-BD20200908AACHE79671124
+crossIP: 76_101
+cameraID: camera1
+reprojection_error: 0.377835
+calibration_result_flag: Success!
+header: 
+  seq: 0
+  stamp: 
+    secs: 0
+    nsecs: 0
+  frame_id: ''
+height: 1080
+width: 1920
+distortion_model: plumb_bob
+D: [-0.346999, 0.162854, 0.001156, 0.000358, 0.000000]
+K: [2822.892876, 0.000000, 972.395172, 0.000000, 2821.364777, 520.619683, 0.000000, 0.000000, 1.000000]
+R: [1.000000, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000, 0.000000, 1.000000]
+P: [2706.870850, 0.000000, 973.891664, 0.000000, 0.000000, 2785.186035, 520.490441, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]
+binning_x: 0
+binning_y: 0
+roi: 
+  x_offset: 0
+  y_offset: 0
+  height: 0
+  width: 0
+  do_rectify: False

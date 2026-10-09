@@ -1,0 +1,18 @@
+transform:
+  translation:
+    x: 759993.1944122395
+    y: 2581321.712803652
+    z: 36.23932035293426
+  rotation:
+    w: 0.6083552282563266
+    x: -0.7500475557560472
+    y: 0.2131118825641075
+    z: -0.148040217061291
+child_frame_id: lidar
+header:
+  frame_id: world
+  seq: 0
+  stamp:
+    nsecs: 0
+    secs: 0
+aver_distance_error: 1.272500321222182

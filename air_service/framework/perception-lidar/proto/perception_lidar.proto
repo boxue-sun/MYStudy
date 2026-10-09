@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+package airos.perception.lidar;
+
+message PerceptionLidarParam {
+    optional float frequency = 1;
+    optional string lidar_name = 2;
+    optional string alg_name = 3;
+    optional string alg_path = 4;
+    optional string conf_path = 5;
+}

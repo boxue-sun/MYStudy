@@ -1,0 +1,121 @@
+syntax = "proto2";
+
+package airos.trafficlight;
+
+enum ControlMode {
+  CTRL_UNKNOWN = 0;           // 未知
+  CENTER = 0x10;              // 中心控制模式
+  CENTER_TIME_TABLE = 0x11;   // 中心日计划控制
+  CENTER_OPTIMIZATION = 0x12; // 中心优化控制
+  CENTER_COORDINATION = 0x13; // 中心协调控制
+  CENTER_ADAPTIVE = 0x14;     // 中心自适应控制
+  CENTER_MANUAL = 0x15;       // 中心手动控制
+  LOCAL = 0x20;               // 本地控制模式
+  LOCAL_FIX_CYCLE = 0x21;     // 本地定周期控制
+  LOCAL_VA = 0x22;            // 本地感应控制
+  LOCAL_COORDINATION = 0x23;  // 本地协调控制
+  LOCAL_ADAPTIVE = 0x24;      // 本地自适应控制
+  LOCAL_MANUAL = 0x25;        // 本地手动控制
+  SPECIAL = 0x30;             // 特殊控制
+  FLASH = 0x31;               // 黄闪控制
+  ALL_RED = 0x32;             // 全红控制
+  ALL_OFF = 0x33;             // 关灯控制
+}
+
+// 灯组类型
+enum LightType {
+  LIGHT_TYPE_UNKNOWN = 0;
+  // 机动车灯组
+  STRAIGHT_DIRECTION = 1; //直行方向指示信号灯（如：箭头灯）
+  LEFT_DIRECTION = 2;     //左转方向指示信号灯（如：箭头灯）
+  RIGHT_DIRECTION = 3;    //右转方向指示信号灯（如：箭头灯）
+  TURN_DIRECTION = 4;     //掉头指示信号灯
+  MOTOR_VEHICLE = 5;      //机动车信号灯（如：圆盘灯）
+  // 非机动车灯组
+  NON_MOTOR_VEHICLE_LEFT = 6;  //左转非机动车信号灯
+  NON_MOTOR_VEHICLE_RIGHT = 7; //右转非机动车信号灯
+  NON_MOTOR_VEHICLE = 8;       //非机动车信号灯
+  // 行人灯组
+  CROSSWALK = 9; //人行横道信号灯
+  // 车道灯组
+  LANE = 10;             //车道信号灯
+  CROSSING = 11;         //道口信号灯
+  FLASHING_WARNING = 12; //闪光警告信号灯
+  // 有轨电车灯组
+  TRAMCAR_STRAIGHT = 13; //有轨电车专用信号灯（直行）
+  TRAMCAR_LEFT = 14;     //有轨电车专用信号灯（左转）
+  TRAMCAR_RIGHT = 15;    //有轨电车专用信号灯（右转）
+}
+
+// 灯组状态
+enum LightState {
+  UNAVAILABLE = 0;
+  DARK = 1;            // 灭灯
+  RED = 2;             // 红灯
+  FLASHING_RED = 3;    // 红闪
+  GREEN = 5;           // 绿灯
+  FLASHING_GREEN = 4;  // 绿闪
+  YELLOW = 6;          // 黄灯
+  FLASHING_YELLOW = 7; // 黄闪
+}
+
+// 信号灯数据源
+enum DataSource {
+  DATA_SRC_UNKNOWN = 0; //未知
+  CCU = 1;              //采集卡
+  SIGNAL = 2;           //信号机
+  VISUAL = 3;           //视觉
+}
+
+enum DeviceWorkState {
+  DEV_NORMAL = 0;  // 正常
+  DEV_OFFLINE = 1; // 离线
+  DEV_FAULT = 2;   // 故障
+}
+
+message OneStepInfo {
+  required LightState light_status = 1; // 灯组状态
+  optional int32 duration = 2;          // 当前步色完整时长
+  optional double time_confidence = 3; // 时间置信度，取值为0和1之间的小数，
+                                       // 0代表时间完全不准确，1代表时间完全准确
+};
+
+message TrafficLightDeviceInfo {
+  optional string vendor = 1;               // 信号机厂商
+  optional string model = 2;                // 信号机型号
+  optional string software_version = 3;     // 信号机软件/固件版本
+  required DeviceWorkState work_status = 4; // 信号机运行状态
+  required ControlMode control_mode = 5;    // 信号机控制模式
+};
+
+message TrafficLightPhase {
+  required int32 light_id = 1;          // 灯组编号
+  required LightType light_type = 2;    // 灯组类型
+  required LightState light_status = 3; // 灯组当前状态
+  optional int32 count_down = 4;        // 灯组当前状态结束倒计时
+  required bool light_unchanged = 5;    // 灯组当前常亮
+  repeated OneStepInfo step_info_list =
+      6; // 灯组的步色信息（最少3个元素，第1个为当前步色、第2个为下一个步色、第3个为下下个步色）
+  optional int32 right_way_time = 7; // 获得路权时长（周期内可通行时长，周期时长
+                                     // = 路权获得时长 + 路权丢失时长）
+  optional int32 entry_direction = 8; // 进口方向，取值范围[0, 359]
+                                      // 正北方向为起点的顺时针旋转角度，单位为度
+};
+
+message TrafficLightIntersection {
+  repeated TrafficLightPhase phase = 1; // 信号灯上所有灯组的步色信息列表
+  required uint64 time_stamp = 2;      // UNIX时间戳，精确到ms
+  optional int32 period = 3;           // 红绿灯方案总周期（秒数）
+  required DataSource data_source = 4; // 信号灯数据源
+  optional double confidence =
+      5; // 置信度，取值为0和1之间的小数，0代表红绿灯信息完全不准确，1代表红绿灯信息完全准确
+  required TrafficLightDeviceInfo device_info = 6; // 信号灯设备信息
+  repeated bytes original_data_list = 7; // 信号机原始报文帧数据
+}
+
+message TrafficLightServiceData {
+  optional bytes city_code = 1;                        // 城市id
+  optional int32 region_id = 2;                        // 区域id，可选
+  optional int32 cross_id = 3;                         // 路口id
+  optional TrafficLightIntersection traffic_light = 5; // 路口对应的红绿灯信息
+};

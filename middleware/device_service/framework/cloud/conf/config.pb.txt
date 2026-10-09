@@ -1,0 +1,4 @@
+mqtt_config {
+  device: "standard_mqtt"
+  config_file: "/home/airos/param/device/cloud/standard_mqtt.yaml"
+}

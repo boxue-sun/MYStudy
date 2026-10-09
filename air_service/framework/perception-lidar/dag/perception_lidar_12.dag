@@ -1,0 +1,19 @@
+
+module_config {
+    module_library : "/home/airos/os/lib/liblidar_detection_component.so"
+    components {
+        class_name : "LidarPerceptionComponent"
+        config {
+            name : "LidarPerceptionComponent1"
+            config_file_path: "/home/airos/os/conf/lidar1/lidar1.pt"
+        }
+    }
+
+    components {
+        class_name : "LidarPerceptionComponent"
+        config {
+            name : "LidarPerceptionComponent2"
+            config_file_path: "/home/airos/os/conf/lidar2/lidar2.pt"
+        }
+    }
+}

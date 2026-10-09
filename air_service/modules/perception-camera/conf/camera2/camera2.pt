@@ -1,0 +1,27 @@
+plugin_param : [
+  {
+    name : "DetectorPluginAdapter"
+    root_dir : "conf/camera2/detector"
+    config_file : "detector_param.pt"
+  },
+  {
+    name : "RoiPluginAdapter"
+    root_dir : "conf/camera2/roi"
+    config_file : "roi_filter_param.pt"
+  },
+  {
+    name : "TrackerPluginAdapter"
+    root_dir : "conf/camera2/tracker"
+    config_file : "tracker_param.pt"
+  },
+  {
+    name : "TransformerPluginAdapter"
+    root_dir : "conf/camera2/transformer"
+    config_file : "transformer_param.pt"
+  }
+]
+
+
+
+
+

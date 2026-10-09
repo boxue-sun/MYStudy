@@ -1,0 +1,4 @@
+transformer_name : "TransformerMultiCueObstacle"
+width : 1920
+height : 1080
+camera_name : "camera1"

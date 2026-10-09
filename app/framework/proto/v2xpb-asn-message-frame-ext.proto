@@ -1,0 +1,44 @@
+syntax = "proto2";
+import "app/framework/proto/v2xpb-asn-vir.proto";
+import "app/framework/proto/v2xpb-asn-rsc.proto";
+import "app/framework/proto/v2xpb-asn-ism.proto";
+import "app/framework/proto/v2xpb-asn-sam.proto";
+import "app/framework/proto/v2xpb-asn-pam.proto";
+import "app/framework/proto/v2xpb-asn-ssm.proto";
+
+package v2xpb.asn;
+
+message MessageFrameExt {
+
+    required int64 messageId =1;
+    required MessageFrameExt__value messageValue= 2;
+}
+
+message MessageFrameExt__value{
+    enum MessageFrameExt__value_PR {
+        MessageFrameExt__value_PR_NOTHING=0;	/* No components present */
+        MessageFrameExt__value_PR_TestMsg=1;
+        MessageFrameExt__value_PR_RTCMcorrections=2;
+        MessageFrameExt__value_PR_PAMData=3;
+        MessageFrameExt__value_PR_CLPMM=4;
+        MessageFrameExt__value_PR_PersonalSafetyMessage=5;
+        MessageFrameExt__value_PR_RoadsideCoordination=6;
+        MessageFrameExt__value_PR_SensorSharingMsg=7;
+        MessageFrameExt__value_PR_VehIntentionAndRequest=8;
+        MessageFrameExt__value_PR_VehiclePaymentMessage=9;
+        MessageFrameExt__value_PR_IntentionSharingMessage=10;
+        MessageFrameExt__value_PR_ServiceAnnouncementMessage=11;
+
+    };
+    required MessageFrameExt__value_PR   typresent=1 [default=MessageFrameExt__value_PR_NOTHING];
+
+    oneof  MessageFrameExt__value_u{
+                    Rsc	 RoadsideCoordination = 11;
+                    Ssm  SensorSharingMsg = 12;
+                    Vir	 VehIntentionAndRequest = 13;
+                    Pam  PAMData = 14;
+                    Ism	 IntentionSharingMessage = 27;
+                    Sam	 ServiceAnnouncementMessage = 28;
+        }
+
+}

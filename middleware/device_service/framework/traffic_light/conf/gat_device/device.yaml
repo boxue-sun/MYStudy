@@ -1,0 +1,12 @@
+ip: 127.0.0.1
+port: 10023
+local_port: 10050
+protocol: udp
+color_state_query_cycle: 1.0
+peerAddresslist:
+    - 
+      peer_ip: 127.0.0.1
+      peer_port: 50807
+    - 
+      peer_ip: 172.30.1.200
+      peer_port: 50002

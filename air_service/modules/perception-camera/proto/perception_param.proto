@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package airos.perception.camera;
+
+message AlgorithmPluginParam {
+    optional string name = 1;
+    optional string root_dir = 2;
+    optional string config_file = 3;
+}
+
+message AirPerceptionParam {
+    repeated AlgorithmPluginParam plugin_param = 1;
+}

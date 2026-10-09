@@ -1,0 +1,15 @@
+# proto-file: dag_conf.proto
+# proto-message: DagConfig
+module_config {
+    module_library: "/home/airos/os/lib/libipcamera_component.so"
+    components{
+        class_name: "IpCameraComponent"
+        config{
+            name: "IpCameraComponent"
+            readers{
+                channel: "/v2x/device/ipcamera/receive_data"
+            }
+            config_file_path: "/home/airos/os/conf/ipcamera/config.pb.txt"
+        }
+    }
+}

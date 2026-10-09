@@ -1,0 +1,178 @@
+syntax = "proto2";
+
+package airos.perception;
+option cc_enable_arenas = true;
+
+import "air_service/framework/proto/airos_header.proto";
+import "air_service/framework/proto/airos_perception_obstacle.proto";
+
+// 标注
+enum TLTowards {
+    East = 1;   // 该红绿灯位于路口东侧
+    West = 2;
+    North = 3;
+    South = 4;
+    EastNorth = 5;
+    WestNorth = 6;
+    EastSouth = 7;
+    WestSouth = 8;
+}
+message TrafficLight {
+
+    // 标注
+    enum Color {
+        UNKNOWN = 0;
+        RED = 1;
+        YELLOW = 2;
+        GREEN = 3;
+        BLACK = 4;
+    };
+    
+    // 标注
+    enum Direction {
+        NO_TURN = 1;
+        LEFT_TURN = 2;
+        RIGHT_TURN = 3;
+        U_TURN = 4;
+    };
+    
+    // 标注
+    enum Type {
+        LIGHT = 1;
+        DIGITAL = 2;
+        ARROW = 3;
+    };
+
+    enum UseType {
+        UNKN = 0;
+        NORMAL_USE = 1;
+        NO_DRIVE_WAY_USE = 2;
+        PEDESTRIAN_USE = 3;
+    };
+
+    enum OcclusionDegree {
+        NO_OCCLUSION = 0;
+        SLIGHT_OCCLUSION = 1;
+        MEDIUM_OCCLUSION = 2;
+        HIGH_OCCLUSION = 3;
+    };
+
+    enum LightStatusInMap {
+        NORMAL = 0;
+        BROKEN = 1;
+    };
+
+    enum LightSource {
+        FROMLABEL = 0;
+        FROMHDMAP = 1;
+        FROMDET   = 2; 
+    };
+    
+    enum CameraError {
+        NOERR = 0;
+        MOVE = 1;
+        EXTERR = 2;
+    };
+
+    enum TrafficLightType {
+        UNKNOWN_LIGHT = 0;
+        VEHICLE_LIGHT = 1;
+        PED_LIGHT = 2;
+        NONVEHICLE_LIGHT = 3;
+    }
+
+    enum ArrowType {
+        NO_ARROW = 0;
+        LEFT_ARROW = 1;
+        RIGHT_ARROW = 2;
+        UP_ARROW = 3;
+    }
+
+    // Traffic light ID.
+    // 交付
+    optional string trafficlight_id = 1;
+    // 标注
+    optional Type type = 2;
+    // 标注
+    optional Color color = 3;
+    // 标注
+    repeated Direction control_direction = 4;
+    // How confidence about the detected results, between 0 and 1.
+    // 模型
+    optional double confidence = 5 [default = 1.0];
+    // Duration of the traffic light since detected.
+    // 后处理
+    optional double tracking_time = 6;
+    // Is traffic blinking
+    // 后处理
+    optional bool blink = 7;
+    // 待开发
+    optional int32 count_down = 8;
+
+    // 红绿灯框位置
+    optional int32 x = 9;
+    optional int32 y = 10;
+    optional int32 width = 11;
+    optional int32 height = 12;
+
+    // 红绿灯跟踪后灯色
+    optional Color color_tracked = 13;
+
+    // 红绿灯的平均亮度
+    optional int32 mean_bright = 14;
+
+    // 红绿灯遮挡属性及置信度
+    optional OcclusionDegree occlusion_degree = 15;
+    optional double occlusion_confidence = 16 [default = 0.0];
+
+    // 灯框来源
+    optional LightSource source = 17;
+
+    // 相机稳像报警
+    optional CameraError cam_error = 18;
+
+    // 故障属性
+    optional LightStatusInMap is_broken = 19;
+
+    // SN & 相机id
+    optional string sn_cameraid = 20;
+
+    // 灯框在utm坐标系中的3d位置坐标
+    optional Point utm_tlp = 21; //左上角坐标
+    optional Point utm_brp = 22; //右下角坐标     
+
+    // 灯框在camera坐标系中的3d位置坐标
+    optional Point cam_tlp = 23; //左上角坐标
+    optional Point cam_brp = 24; //右下角坐标
+    
+    // 红绿灯在高精地图中的id
+    optional string trafficlightid_inmap = 25;
+
+    // 红绿灯的使用类型
+    optional UseType tl_usetype = 26;
+
+    // 预测的红绿灯类型
+    optional TrafficLightType trafficlight_type = 27;
+
+    // 预测的方向灯的方向
+    optional ArrowType arrow = 28;
+
+    // 预测的红绿灯类型的置信度
+    optional float trafficlight_type_confidence = 29 [default = 0.0];
+
+    // 预测的方向置信度
+    optional float arrow_confidence = 30 [default = 0.0];
+
+}
+
+message TrafficLightByDirection {
+    optional airos.header.Header header = 1;
+    optional TLTowards towards = 2;
+    repeated TrafficLight traffic_light= 3;
+}
+
+message TrafficLightDetection {
+    repeated TrafficLightByDirection traffic_light_by_direction = 1;
+    repeated TrafficLightByDirection traffic_light_by_projection = 2;
+    repeated TrafficLightByDirection traffic_light_by_detection = 3;
+}

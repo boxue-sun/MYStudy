@@ -1,0 +1,27 @@
+# proto-file: dag_conf.proto
+# proto-message: DagConfig
+module_config {
+    module_library: "/home/airos/os/lib/libtraffic_light_component.so"
+    components{
+        class_name: "TrafficLightComponent"
+        config{
+            name: "TrafficLightComponent"
+            readers{
+                channel: "/airos/device/traffic_light/receive_data"
+            }
+            # out_channel: "/airos/device/traffic_light/data"
+            config_file_path: "/home/airos/os/conf/traffic_light/config.pb.txt"
+        }
+    }
+    components{
+        class_name: "TrafficLightServiceComponent"
+        config{
+            name: "TrafficLightServiceComponent"
+            readers{
+                channel: "/airos/device/traffic_light/data"
+            }
+            # out_channel: "/airos/service/traffic_light/data"
+            flag_file_path: "/home/airos/param/device/traffic_light/traffic_light.flag"
+        }
+    }
+}

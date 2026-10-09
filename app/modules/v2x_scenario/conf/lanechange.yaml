@@ -1,0 +1,6 @@
+rsu_id: 123
+max_service_dist: 100.0
+max_ttc: 5.0
+safty_area_length: 5.0
+lat: 39.0
+lon: 129.0

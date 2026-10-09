@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while true
+
+do
+
+  sleep 0.01
+  file_name=$(date  +"%Y-%m-%d" ).log
+  echo $[$(date +%s%N)] >> /xlog/log/rscu_$file_name
+
+done

@@ -1,0 +1,62 @@
+syntax = "proto2";
+
+package v2xpb.rsi.config;
+
+message Position {
+  optional double latitude = 1 [ default = nan ];
+  optional double longitude = 2 [ default = nan ];
+  optional double elevation = 3 [ default = nan ];
+}
+
+message NodeId {
+  optional int32 region = 1 [ default = -1 ];
+  optional int32 id = 2 [ default = -1 ];
+}
+
+message PositionList {
+  repeated Position position = 1;
+  required double radius = 2;
+}
+
+message RefLane{
+  repeated int32 lane_id = 1;
+}
+
+message AlertLink {
+  required NodeId node_id = 1; // 当前节点的id
+  required NodeId upstream_node_id = 2; // 上游节点node_id
+  required RefLane reference_lanes = 3; // 影响车车道列表
+}
+
+message AlertLinks {
+  repeated AlertLink alert_link = 1;
+}
+
+message AlertPaths {
+  repeated PositionList position_list = 1;
+}
+
+message RsiContent {
+  optional string alert_desc = 1 [default = " "]; 
+  optional AlertLinks alert_links = 2; // 影响的道路
+  optional AlertPaths alert_paths = 3; // 影响的区域
+  optional int32 alert_type = 4; // 事件的类型
+  optional Position position = 5; // 交通标志或者事件发生的位置
+  optional double enent_radius = 6 [default = 100]; // 事件的半径
+  optional bool pack_as_rte = 7 [default = true]; // 是否打包成rte事件下发
+  optional int32 priority = 8 [default = 1]; // 事件的优先级
+  optional int32 rsi_msg_id = 9 [default = -1];  // rsi msg id, -1 无效
+  optional string start_time = 10 [default = "10:00:00"]; // 每天开始的时间段
+  optional string end_time = 11 [default = "12:00:00"]; // 每天结束的时间段
+  optional bool is_time_set_valid = 12 [default = false]; // 时间段设置是否有效，无效时默认一直发送
+}
+
+message RsiContents {
+  repeated RsiContent rsi_content = 1;
+}
+
+message RSIConfig {
+  required RsiContents rsi_contents = 1;
+  required bool send_enable = 2; // 是否发送配置的RSI
+  required double send_period = 3; // 发送的周期
+}

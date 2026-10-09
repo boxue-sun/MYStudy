@@ -1,0 +1,24 @@
+input {
+  input_type: CAMERA
+  channel_name: "/airos/perception/obstacles_camera1"
+}
+
+input {
+  input_type: CAMERA
+  channel_name: "/airos/perception/obstacles_camera2"
+}
+
+input {
+  input_type: CAMERA
+  channel_name: "/airos/perception/obstacles_camera3"
+}
+
+perception_channel: "/airos/perception/obstacles"
+
+output_frequency: 13
+
+alg_name: "AirosPerceptionFusion"
+
+alg_path: "modules/lib/airos_perception_fusion"
+
+conf_path: "modules/conf/airos_perception_fusion"

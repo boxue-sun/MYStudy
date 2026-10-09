@@ -1,0 +1,36 @@
+#!/bin/bash
+
+declare -x last_timestamp
+declare -x last_print_timestamp
+declare -x reverse_time_count
+
+reverse_time_count=0
+last_timestamp=`date +%s%N`
+last_print_timestamp=$last_timestamp
+
+while true
+
+do
+
+  sleep 0.01
+  cur_timestamp=`date +%s%N`
+  #echo $cur_timestamp
+  timestamp_diff=`expr $cur_timestamp - $last_timestamp`
+  #echo $timestamp_diff
+  if [ ${timestamp_diff} -lt 0  ]; then
+    reverse_time_count+=1
+    file_name=$(date  +"%Y-%m-%d" ).log
+    echo $[$(date +%s%N)] >> /xlog/log/docker_$file_name
+  fi
+  
+  print_timestamp_diff=`expr $cur_timestamp - $last_print_timestamp`
+  #echo $print_timestamp_diff
+  if [ ${print_timestamp_diff} -ge 1800000000000 ]; then
+    file_name=$(date  +"%Y-%m-%d" ).log
+    echo $[$(date +%s%N)] ",$reverse_time_count" >> /xlog/log/docker_$file_name
+    last_print_timestamp=$cur_timestamp
+    reverse_time_count=0
+  fi
+  last_timestamp=$cur_timestamp
+
+done

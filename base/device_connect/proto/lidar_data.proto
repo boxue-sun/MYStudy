@@ -1,0 +1,84 @@
+syntax = "proto2";
+
+package os.v2x.device;
+
+message LidarHeader {
+  // Message publishing time in seconds.
+  optional double timestamp_sec = 1;
+
+  // Module name.
+  optional string module_name = 2;
+
+  // Sequence number for each message. Each module maintains its own counter for
+  // sequence_num, always starting from 0 on boot.
+  optional uint32 sequence_num = 3;
+
+  // Lidar Sensor timestamp for nano-second.
+  optional uint64 lidar_timestamp = 4;
+
+  // Camera Sensor timestamp for nano-second.
+  optional uint64 camera_timestamp = 5;
+
+  // Radar Sensor timestamp for nano-second.
+  optional uint64 radar_timestamp = 6;
+
+  // Module Start timestamp, shall be consistant with finish timestamp
+  optional double start_time = 7;
+
+  // Module Finish timestamp
+  optional double finish_time = 8;
+
+  // Depended Module ID
+  repeated Module depended_modules = 9;
+
+  // The frame id of message
+  optional string frame_id = 10;
+
+  // The stamp when message is publishing
+  optional uint64 stamp = 11;
+}
+
+message Module {
+  optional string module_name = 1;
+  optional uint32 sequence_num = 2;
+  optional double timestamp = 3;
+  repeated SubModule sub_modules = 4;
+}
+
+message SubModule {
+  optional string module_name = 1;
+  optional double timestamp = 2;
+}
+
+message PointXYZIT {
+  required float x = 1 [ default = nan ];
+  required float y = 2 [ default = nan ];
+  required float z = 3 [ default = nan ];
+  required uint32 intensity = 4 [ default = 0 ];
+  required uint64 stamp = 5 [ default = 0 ];
+  optional uint32 row_number = 6 [ default = 0 ];
+  optional uint32 column_number = 7 [ default = 0 ];
+}
+
+message FusionInfo {
+  optional string frame_id = 1;
+  optional int32 start_index = 2;
+  optional int32 end_index = 3;
+  message LaserInfo {
+    optional int32 laser_id = 1;
+    optional int32 start = 2;
+    optional int32 end = 3;
+  }
+  repeated LaserInfo laser_info = 4;
+}
+
+message PointCloud {
+  optional LidarHeader header = 1;
+  optional string frame_id = 2;
+  optional bool is_dense = 3;
+  repeated PointXYZIT point = 4;
+  optional double measurement_time = 5;
+  optional uint32 width = 6;
+  optional uint32 height = 7;
+  repeated FusionInfo fusion_info = 8;
+}

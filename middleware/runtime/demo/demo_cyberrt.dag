@@ -1,0 +1,15 @@
+# Define all coms in DAG streaming.
+module_config {
+    module_library : "/home/caros/work/air_runtime/baidu/adu-lab/air-runtime/output/so/libcomponent_demo.so"
+    components {
+        class_name : "DemoComponent"
+        config {
+            name : "perception"
+            readers {
+                channel: "test_node/chatter"
+            }
+            flag_file_path: "/home/caros/work/air_runtime/baidu/adu-lab/air-runtime/demo/test.flags"
+            config_file_path: "/home/caros/work/air_runtime/baidu/adu-lab/air-runtime/demo/test.pt"
+        }
+    }
+}

@@ -1,0 +1,9 @@
+# PTP监控配置文件
+# UDP端口
+UDP_PORT = 10058
+# 数据存储目录
+DATA_DIR = /home/airos/log/ptp
+# 保留的最大文件数
+MAX_FILES = 5
+# 时间差阈值(纳秒), 10us = 10000ns
+TIME_DIFF_THRESHOLD = 10000

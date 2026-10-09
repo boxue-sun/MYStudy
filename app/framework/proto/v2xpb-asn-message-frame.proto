@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-bsm.proto";
+import "app/framework/proto/v2xpb-asn-map.proto";
+import "app/framework/proto/v2xpb-asn-rsm.proto";
+import "app/framework/proto/v2xpb-asn-spat.proto";
+import "app/framework/proto/v2xpb-asn-rsi.proto";
+import "app/framework/proto/v2xpb-asn-message-frame-ext.proto";
+
+package v2xpb.asn;
+message MessageFrame {
+  oneof payload {
+    Bsm bsmFrame = 100;
+    Map mapFrame = 101;
+    Rsm rsmFrame = 102;
+    Spat spatFrame = 103;
+    Rsi rsiFrame = 104;
+    MessageFrameExt  extFrame = 105;
+  }
+}

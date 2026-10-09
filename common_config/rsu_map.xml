@@ -1,0 +1,1513 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<nodes>
+
+    <node_ext idx="4400076">
+
+        <node_base>
+            <name>GuangZhou-ZhiShiCheng</name>
+            <region_node_id>4400076</region_node_id>
+            <geo>
+                <NS>78</NS>
+                <EW>69</EW>
+                <longitude>113.5421748</longitude>
+                <latitude>23.3204641</latitude>
+                <height>0</height>
+            </geo>
+
+        </node_base>
+
+        <links>
+
+            <link_ext idx="4400089">
+
+                <link_base>
+                    <name>89-76</name>
+                    <upstr_region_node_id>4400089</upstr_region_node_id>
+                    <lane_width>340</lane_width>
+                    <lane_count>5</lane_count>
+                    <default_max_speed_limit>60</default_max_speed_limit>
+                    <link_width>1700</link_width>
+
+                </link_base>
+
+                <lanes>
+
+                    <lane_ext idx="1">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>2</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5439209</longitude>
+                                <latitude>23.3224982</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5435929</longitude>
+                                <latitude>23.3222092</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5434103</longitude>
+                                <latitude>23.3220291</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5431443</longitude>
+                                <latitude>23.3217305</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>5</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5429820</longitude>
+                                <latitude>23.3215252</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>6</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5426634</longitude>
+                                <latitude>23.3210998</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>7</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5425633</longitude>
+                                <latitude>23.3209123</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>8</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5423573</longitude>
+                                <latitude>23.3206548</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400405">
+                                <remote_region_node_id>4400405</remote_region_node_id>
+                                <phase_id>37</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>4000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                    <lane_ext idx="2">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>1</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5439209</longitude>
+                                <latitude>23.3224982</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5435929</longitude>
+                                <latitude>23.3222092</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5434103</longitude>
+                                <latitude>23.3220291</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5431443</longitude>
+                                <latitude>23.3217305</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>5</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5429820</longitude>
+                                <latitude>23.3215252</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>6</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5426634</longitude>
+                                <latitude>23.3210998</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>7</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5425202</longitude>
+                                <latitude>23.3209085</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>8</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5423403</longitude>
+                                <latitude>23.3206851</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400077">
+                                <remote_region_node_id>4400077</remote_region_node_id>
+                                <phase_id>36</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>8000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                    <lane_ext idx="3">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>1</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5438988</longitude>
+                                <latitude>23.3225240</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5435678</longitude>
+                                <latitude>23.3222323</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5433831</longitude>
+                                <latitude>23.3220506</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5431164</longitude>
+                                <latitude>23.3217513</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>5</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5429534</longitude>
+                                <latitude>23.3215437</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>6</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5423249</longitude>
+                                <latitude>23.3207146</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400077">
+                                <remote_region_node_id>4400077</remote_region_node_id>
+                                <phase_id>36</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>8000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                    <lane_ext idx="4">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>1</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5438735</longitude>
+                                <latitude>23.3225495</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5435420</longitude>
+                                <latitude>23.3222575</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5433523</longitude>
+                                <latitude>23.3220724</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5430863</longitude>
+                                <latitude>23.3217724</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>5</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5429266</longitude>
+                                <latitude>23.3215607</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>6</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5423077</longitude>
+                                <latitude>23.3207438</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400077">
+                                <remote_region_node_id>4400077</remote_region_node_id>
+                                <phase_id>36</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>8000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                    <lane_ext idx="5">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>4</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5438485</longitude>
+                                <latitude>23.3225722</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5435185</longitude>
+                                <latitude>23.3222808</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5433523</longitude>
+                                <latitude>23.3220724</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5430863</longitude>
+                                <latitude>23.3217724</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>5</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5429501</longitude>
+                                <latitude>23.3216367</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>6</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5429003</longitude>
+                                <latitude>23.3215772</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>7</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5427535</longitude>
+                                <latitude>23.3213877</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>8</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5424585</longitude>
+                                <latitude>23.3209905</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>9</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5423823</longitude>
+                                <latitude>23.3209409</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>10</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5422612</longitude>
+                                <latitude>23.3209133</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400085">
+                                <remote_region_node_id>4400085</remote_region_node_id>
+                                <phase_id>38</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>2000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                </lanes>
+
+            </link_ext>
+
+            <link_ext idx="4400077">
+
+                <link_base>
+                    <name>77-76</name>
+                    <upstr_region_node_id>4400077</upstr_region_node_id>
+                    <lane_width>360</lane_width>
+                    <lane_count>4</lane_count>
+                    <default_max_speed_limit>60</default_max_speed_limit>
+                    <link_width>1440</link_width>
+
+                </link_base>
+
+                <lanes>
+
+                    <lane_ext idx="1">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>2</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5397307</longitude>
+                                <latitude>23.3183612</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5412040</longitude>
+                                <latitude>23.3194150</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5416756</longitude>
+                                <latitude>23.3198251</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5417914</longitude>
+                                <latitude>23.3199757</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>5</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5418315</longitude>
+                                <latitude>23.3200244</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>6</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5420289</longitude>
+                                <latitude>23.3202300</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400085">
+                                <remote_region_node_id>4400085</remote_region_node_id>
+                                <phase_id>17</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>4000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                    <lane_ext idx="2">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>1</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5397307</longitude>
+                                <latitude>23.3183612</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5412040</longitude>
+                                <latitude>23.3194150</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5416756</longitude>
+                                <latitude>23.3198251</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5420459</longitude>
+                                <latitude>23.3202005</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400089">
+                                <remote_region_node_id>4400089</remote_region_node_id>
+                                <phase_id>16</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>8000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                    <lane_ext idx="3">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>1</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5397544</longitude>
+                                <latitude>23.3183364</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5406846</longitude>
+                                <latitude>23.3189680</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5416992</longitude>
+                                <latitude>23.3198031</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5420637</longitude>
+                                <latitude>23.3201729</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400089">
+                                <remote_region_node_id>4400089</remote_region_node_id>
+                                <phase_id>16</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>8000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                    <lane_ext idx="4">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>1</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5397788</longitude>
+                                <latitude>23.3183108</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5405824</longitude>
+                                <latitude>23.3188507</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5412558</longitude>
+                                <latitude>23.3193616</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5414004</longitude>
+                                <latitude>23.3194936</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>5</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5417225</longitude>
+                                <latitude>23.3197823</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>6</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5420824</longitude>
+                                <latitude>23.3201480</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400089">
+                                <remote_region_node_id>4400089</remote_region_node_id>
+                                <phase_id>16</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>8000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                </lanes>
+
+            </link_ext>
+
+            <link_ext idx="4400085">
+
+                <link_base>
+                    <name>85-76</name>
+                    <upstr_region_node_id>4400085</upstr_region_node_id>
+                    <lane_width>370</lane_width>
+                    <lane_count>5</lane_count>
+                    <default_max_speed_limit>60</default_max_speed_limit>
+                    <link_width>1850</link_width>
+
+                </link_base>
+
+                <lanes>
+
+                    <lane_ext idx="1">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>2</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5397095</longitude>
+                                <latitude>23.3246170</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5408316</longitude>
+                                <latitude>23.3228523</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5417537</longitude>
+                                <latitude>23.3210524</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5418638</longitude>
+                                <latitude>23.3209232</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>5</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5420015</longitude>
+                                <latitude>23.3206948</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400089">
+                                <remote_region_node_id>4400089</remote_region_node_id>
+                                <phase_id>27</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>4000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                    <lane_ext idx="2">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>1</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5397095</longitude>
+                                <latitude>23.3246170</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5408316</longitude>
+                                <latitude>23.3228523</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5417537</longitude>
+                                <latitude>23.3210524</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5419790</longitude>
+                                <latitude>23.3206684</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400405">
+                                <remote_region_node_id>4400405</remote_region_node_id>
+                                <phase_id>26</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>8000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                    <lane_ext idx="3">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>1</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5396793</longitude>
+                                <latitude>23.3245996</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5404299</longitude>
+                                <latitude>23.3234611</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5405721</longitude>
+                                <latitude>23.3232271</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5407997</longitude>
+                                <latitude>23.3228386</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>5</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5414681</longitude>
+                                <latitude>23.3215610</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>6</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5417223</longitude>
+                                <latitude>23.3210384</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>7</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5419558</longitude>
+                                <latitude>23.3206425</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400405">
+                                <remote_region_node_id>4400405</remote_region_node_id>
+                                <phase_id>26</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>8000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                    <lane_ext idx="4">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>1</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5396468</longitude>
+                                <latitude>23.3245809</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5406392</longitude>
+                                <latitude>23.3230441</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5410774</longitude>
+                                <latitude>23.3222589</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5414853</longitude>
+                                <latitude>23.3214451</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>5</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5416916</longitude>
+                                <latitude>23.3210246</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>6</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5419334</longitude>
+                                <latitude>23.3206159</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400405">
+                                <remote_region_node_id>4400405</remote_region_node_id>
+                                <phase_id>26</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>8000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                    <lane_ext idx="5">
+
+                        <lane_base>
+                            <lane_id>1</lane_id>
+                            <allowed_maneuvers_0>4</allowed_maneuvers_0>
+                            <allowed_maneuvers_1>0</allowed_maneuvers_1>
+                            <lane_sharing_0>0</lane_sharing_0>
+                            <lane_sharing_1>0</lane_sharing_1>
+                            <lane_attributes_type>0</lane_attributes_type>
+                            <lane_attributes_0>0</lane_attributes_0>
+                            <lane_attributes_1>0</lane_attributes_1>
+
+                        </lane_base>
+
+                        <points>
+
+                            <point>
+                                <dis2end>1</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5396468</longitude>
+                                <latitude>23.3245809</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>2</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5406392</longitude>
+                                <latitude>23.3230441</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>3</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5407358</longitude>
+                                <latitude>23.3228118</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>4</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5410775</longitude>
+                                <latitude>23.3222589</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>5</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5414853</longitude>
+                                <latitude>23.3214451</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>6</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5416392</longitude>
+                                <latitude>23.3210639</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                            <point>
+                                <dis2end>7</dis2end>
+                                <geo>
+                                <NS>78</NS>
+                                <EW>69</EW>
+                                <longitude>113.5419113</longitude>
+                                <latitude>23.3205931</latitude>
+                                <height>0.000000</height>
+                                </geo>
+                            </point>
+
+                        </points>
+
+                        <movements>
+
+                            <movement idx="4400077">
+                                <remote_region_node_id>4400077</remote_region_node_id>
+                                <phase_id>28</phase_id>
+                                <connectingLane>
+                                    <lane>1</lane>
+                                    <maneuver>2000</maneuver>
+                                </connectingLane>
+
+                            </movement>
+
+                        </movements>
+
+                    </lane_ext>
+
+                </lanes>
+
+                <speed_lims/>
+            </link_ext>
+
+        </links>
+
+    </node_ext>
+
+</nodes>

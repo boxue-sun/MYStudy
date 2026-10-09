@@ -1,0 +1,52 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-position.proto";
+import "app/framework/proto/v2xpb-asn-common.proto";
+package v2xpb.asn;
+
+message Rsm {
+  optional int32 msg_cnt = 1 [ default = -1 ];
+  optional string id = 2;
+  optional Position refpos = 3;
+  repeated ParticipantData participants = 4;
+
+  optional bool end_flag = 5 [default = false];
+  optional uint64 total_obj_num = 6;
+  optional double message_timestamp = 7;
+}
+
+message ParticipantData {
+  optional ParticipantType ptc_type = 1;
+  optional int32 ptc_id = 2;
+  optional SourceType source = 3;
+  optional string id = 4;
+  optional string plate_no = 5;
+  optional int32 sec_mark = 6;
+  optional Position pos = 7;
+  optional PosConfidenceSet pos_confidence = 8;
+  optional int32 transmission = 9;
+  optional int32 speed = 10;
+  optional int32 heading = 11;
+  optional int32 angle = 12;
+  optional MotionConfidenceSet motion_cfd = 13;
+  optional AccelerationSet4Way accel_set = 14;
+  optional VehicleSize size = 15;
+  optional VehicleClassification vehicle_class = 16;
+}
+enum ParticipantType {
+  PT_UNKNOWN = 0;
+  PT_MOTOR = 1;
+  PT_NON_MOTOR = 2;
+  PT_PEDESTRIAN = 3;
+  PT_RSU = 4;
+}
+enum SourceType {
+  ST_UNKNOWN = 0;
+  ST_SELFINFO = 1;
+  ST_V2X = 2;
+  ST_VIDEO = 3;
+  ST_MICROWAVE_RADAR = 4;
+  ST_LOOP = 5;
+  ST_LIDAR = 6;
+  ST_INTEGRATED = 7;
+}

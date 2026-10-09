@@ -1,0 +1,16 @@
+# proto-file: dag_conf.proto
+# proto-message: DagConfig
+module_config {
+    module_library: "/home/airos/os/lib/libmec_component.so"
+    components{
+        class_name: "MECComponent"
+        config{
+            name: "MECComponent"
+            readers{
+                channel: "/v2x/device/mec/receive_data"
+            }
+            # out_channel: "/v2x/usecase"
+            config_file_path: "/home/airos/os/conf/mec/config.pb.txt"
+        }
+    }
+}

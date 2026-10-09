@@ -1,0 +1,82 @@
+syntax = "proto2";
+
+package v2xpb.rscu.config;
+
+message RteEventDetail{
+  required int32 event_type_id = 1;
+  required string description = 2;
+  optional int32 priority = 4[default = 7];
+  optional double impact_dist = 5[default = 100];
+}
+message RtsEventDetail{
+  required int32 event_type_id = 1;
+  required string description = 2;
+  optional int32 priority = 4[default = 7];
+  optional double impact_dist = 5[default = 100];
+  // TODO
+}
+message EventDetail{
+  optional int32 event_type_mec = 1;
+  oneof payload {
+    RteEventDetail rte_detail = 11;
+    RtsEventDetail rts_detail = 12;
+  }
+}
+message EventDetails {
+  repeated EventDetail event_detail = 1;
+}
+
+message EventTypeMecList {
+  repeated uint32 event_type_mec = 1;
+}
+
+message Position {
+  optional double latitude = 1 [ default = nan ];
+  optional double longitude = 2 [ default = nan ];
+  optional double elevation = 3 [ default = nan ];
+}
+
+message NodeId {
+  optional int32 region = 1 [ default = -1 ];
+  optional int32 id = 2 [ default = -1 ];
+}
+
+message RegionOfInterest {
+  repeated Position position = 1;
+}
+
+message PositionList {
+  repeated Position position = 1;
+  required double radius = 2;
+}
+
+message AffectedArea {
+  repeated PositionList position_list = 1;
+}
+
+message LinkPath {
+  required NodeId node_id = 1;
+  required NodeId upstream_node_id = 2;
+  optional int32 maneuver = 3 [default = 4]; // 0: 直行 1:左转 2:右转 3:掉头 4:所有车道;
+  optional double length = 4 [default = 100]; 
+}
+
+message AffectedPath {
+  repeated LinkPath link_path = 1;
+}
+
+message SpecialEventDetail{
+  required EventTypeMecList event_type_mec_list = 1;
+  required RegionOfInterest region_of_interest = 2;
+  optional AffectedArea affected_area = 3;
+  optional AffectedPath affected_path = 4;
+}
+
+message SpecialEventDetails {
+  repeated SpecialEventDetail special_event_detail = 1;
+}
+
+message EventConfig {
+  required EventDetails basic_event_config = 1;
+  optional SpecialEventDetails special_event_config = 2;
+}

@@ -1,0 +1,47 @@
+syntax = "proto2";
+package airos.header;
+
+message Header {
+  // Message publishing time in seconds. It is recommended to obtain timestamp_sec from
+  // ros::Time::now(), right before calling SerializeToString() and publish().
+  optional double timestamp_sec = 1;
+
+  // Module name.
+  optional string module_name = 2;
+
+  // Sequence number for each message. Each module maintains its own counter for sequence_num,
+  // always starting from 0 on boot.
+  optional uint32 sequence_num = 3;
+
+  // Lidar Sensor timestamp for nano-second.
+  optional uint64 lidar_timestamp = 4;
+
+  // Camera Sensor timestamp for nano-second.
+  optional uint64 camera_timestamp = 5;
+
+  // Radar Sensor timestamp for nano-second.
+  optional uint64 radar_timestamp = 6;
+
+  // The frame id of message
+  optional string frame_id = 7;
+
+  // The stamp when message is publishing
+  optional uint64 stamp = 8;
+
+  // 感知目标 包的总数和目标的总数，用于计算性能、统计丢包率
+  // 包的总数  
+  optional uint64 total_package_num = 9;
+  // 目标的总数
+  optional uint64 total_obj_num = 10;
+
+  //对应相机编号
+  optional string dev_no = 11;
+  //对应毫米波雷达编号
+  optional string radar_no = 12;
+  //激光雷达编号
+  optional string lidar_no = 13;
+  //mec编号
+  optional string mec_no = 14;
+  //mec传递消息的UTC毫秒
+  optional uint64 timestamp_millisecond= 15;
+}

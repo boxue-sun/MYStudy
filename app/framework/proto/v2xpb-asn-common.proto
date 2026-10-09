@@ -1,0 +1,33 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-position.proto";
+package v2xpb.asn;
+
+message PosConfidenceSet {
+  optional int32 pos = 1;
+  optional int32 elevation = 2;
+}
+
+message MotionConfidenceSet {
+  optional int32 speed_cfd = 1;
+  optional int32 heading_cfd = 2;
+  optional int32 steer_cfd = 3;
+}
+
+message AccelerationSet4Way {
+  optional int32 lon = 1;
+  optional int32 lat = 2;
+  optional int32 vert = 3;
+  optional int32 yaw = 4;
+}
+
+message VehicleSize {
+  optional int32 width = 1;
+  optional int32 length = 2;
+  optional int32 height = 3;
+}
+
+message VehicleClassification {
+  optional int32 classification = 1;
+  optional int32 fuel_type = 2;
+}

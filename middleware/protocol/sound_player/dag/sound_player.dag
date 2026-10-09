@@ -1,0 +1,13 @@
+module_config {
+    module_library: "/home/airos/os/lib/libsound_player.so"
+    components{
+        class_name: "SoundPlayerComponent"
+        config{
+            name: "SoundPlayerComponent"
+            readers{
+                channel: "/v2x/usecase"
+                pending_queue_size: 10
+            }
+        }
+    }
+}

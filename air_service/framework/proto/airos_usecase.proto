@@ -1,0 +1,281 @@
+syntax = "proto2";
+package airos.usecase;
+
+// import "air_service/modules/proto/header.proto";
+// import "air_service/modules/proto/perception_obstacle.proto";
+import "air_service/framework/proto/airos_header.proto";
+import "air_service/framework/proto/airos_perception_obstacle.proto";
+
+message Point {
+    optional double x = 1;  // in meters.
+    optional double y = 2;  // in meters.
+    optional double z = 3;  // height in meters.
+    optional int32 zone = 4; // UTM zone
+}
+
+message Box2D {
+    optional int32 x = 1;  //左上角坐标
+    optional int32 y = 2;
+    optional int32 width = 3;
+    optional int32 height = 4;
+}
+
+
+// 拥堵信息
+message CongestionInfo {
+    // 拥堵类型
+    enum CongestionLevelType { 
+        NONE = 0; 
+        CONGESTION_HEAVY = 1;
+        CONGESTION_MID = 2;
+        CONGESTION_LIGHT = 3;
+        CONGESTION_NONE = 4;
+    }    
+    optional string lane_id = 1;                       // 车道ID
+    optional double congestion_coeff = 2;              // 拥堵系数
+    optional CongestionLevelType congestion_level = 3; // 拥堵等级
+}
+//地理坐标系
+message MecEventGCSPoint {
+    optional double lon = 1; // in meters.
+    optional double lat = 2; // in meters.
+    optional double ele = 3; // height in meters.
+}
+message EventInformation {
+    // 事件类型枚举
+    enum EventType {
+        NONE = 0;                             // 非use_case，防止不使用has判断
+        LANE_CONGESTION = 1;                  // 车道级拥堵
+        ANTIDROMIC = 2;                       // 机动车逆行
+        OVERSPEED = 3;                        // 机动车超速
+        LOWSPEED = 4;                         // 低速
+        REGIONAL_CONSTRUCTION = 5;            // 施工区域
+        TRAFFIC_ACCIDENT = 6;                 // 交通事故
+        ZOMBIES_CAR = 7;                      // 停车占道
+        EMERGENCY_LANE_OCCUPY = 8;            // 应急车道占用
+        CONTINUOUS_CHANGE_LANE = 9;           // 连续车辆变道
+        PEOPLE_ENTER = 10;                    // 行人闯入
+        NONVEHICLE_ENTER = 11;                // 非机动车闯入
+        VEHICLE_RUN_RED_LIGHT = 12;           // 车辆闯红灯
+        VEHICLE_CATCH_RED_LIGHT = 13;         // 车辆抢红灯
+        ILLEGAL_TURN = 14;                    // 不按导向车道行驶
+        PEOPLE_RUN_RED_LIGHT = 15;            // 行人闯红灯
+        NONVEHICLE_RUN_RED_LIGHT = 16;        // 非机动车闯红灯
+        RAMP_ENTER_AFFLUX_MASTER = 17;        // 车在主道汇入
+        RAMP_ENTER_AFFLUX_BRANCH = 18;        // 车在匝道汇入
+        CROSS_SOLID_LINE = 19;                // 实线变道
+        DISRESPECT_PEOPLE = 20;               // 不礼让行人
+        NONVEHICLE_LANE_OCCUPY = 21;          // 占用非机动车道
+        BUS_LANE_OCCUPY = 22;                 // 占用公交车道
+        NONVEHICLE_ANTIDROMIC = 23;           // 非机动车逆行
+        VEHICLE_CATCH_YELLOW_RIGHT = 24;      // 机动车抢黄灯
+        RIGHT_NO_STOP = 25;                   // 右转未停车
+        NONVEHICLE_CARRY_PEOPLE = 26;         // 非机动车载人
+        TAKEOUT_WITHOUT_HEMLT = 27;           // 外卖不带头盔
+        NONVEHICLE_OCCUPY_VEHICLE_LANE = 28;  // 非机动车占用机动车道
+        NO_PLATE = 29;                        // 无车牌
+        PLATE_OCCLUSION = 30;                 // 车牌遮挡
+        VEHICLE_RUN_GREEN_LIGHT = 31;         // 机动车闯绿灯
+        SMALL_TURN = 32;                      // 大弯小转
+        FRAGMENT = 33;                        // 抛洒物
+
+        // 测试平台2.0事件扩展 add by lht
+        VEHICLE_MALFUNCTION = 60;             // 车辆故障
+        CONGESTION = 61;                      // 拥堵
+        TRAFFICLIGHT_MALFUNCTION = 62;        // 交通信号灯故障
+        EMERGENCY_VEHICLE = 63;               // 紧急车辆提醒
+
+        //车端提醒事件
+        PEOPLE_RUN_RED_C = 101;               // 行人闯红灯(车端提醒)
+        NONVEHICLE_RUN_RED_C = 102;           // 非机动车闯红灯(车端提醒)
+        VEHICLE_RUN_RED_C = 103;              // 机动车闯红灯(车端提醒)
+    };
+    optional EventType event_type = 1;              // 事件类型
+    optional int32 id = 2;                          // 事件ID
+    optional bool stop_flag = 3 [default = false];  // 事件停止标志
+    optional double timestamp = 4;                  // 事件时间戳
+    optional Point location_point = 5;              // 事件发生位置点
+    repeated string sensor_id = 6;                  // 传感器ID
+    optional double start_time = 7;                 // 事件开始时间
+    repeated int32 obstacle_id = 8;                 // 事件对应的感知障碍物集合
+    optional airos.perception.SubType obstacle_type = 9;                   // 事件对应的感知障碍物子类别
+    repeated string lane_id = 10;                   // 事件发生的车道ID
+    optional CongestionInfo congestion_info = 11;   // 拥堵信息
+    repeated Point polygon_point = 12;              // 事件发生区域
+    optional string proof_time = 13;                // 取证时间戳
+    optional int32 event_type_mec = 14 [default = 0]; // MEC的事件类型
+
+    ///////////////////
+    //add zhangenwei
+    optional MecEventGCSPoint position_gcs = 15; // obstacle position in the Geographic Coordinate System.
+    optional double vehicle_length = 16;  // obstacle length.
+    optional double vehicle_width = 17;  // obstacle width.
+    optional double vehicle_height = 18;  // obstacle height.
+    optional string  event_video = 19;  // 事件视频名称，ts格式
+    optional string  event_picture = 20;  // 事件图片名称，jpg格式
+    optional string  plate_num = 21;  // 车牌
+    optional int32  region_no = 22;  // 区域编号，当区域编号为非0时，经纬度位置上报的是区域中心点位置
+    optional string  id_str = 23;  // 事件编号*，ASCII字符串，长度41
+    optional string  obj_id_str = 24;  // 事件触发的交通参与者ID
+
+    //add hezhiyong
+    optional int32 evt_ptc_type = 25;//事件触发的交通参与者类型
+    optional int32 veh_type = 26;//机动车类型
+    optional int32 noveh_type = 27;//非机动车类型
+}
+//////////////////////////////////////////////////////////////////
+//add zhangenwei 2024-3-15
+enum MecHeartBeatDeviceType
+{
+    HEART_BEAT_TYPE_MEC = 0;
+    HEART_BEAT_TYPE_CAMRA = 1;
+    HEART_BEAT_TYPE_MW_RADAR = 2;
+    HEART_BEAT_TYPE_RADAR = 3;
+};
+enum MecHeartBeatDeviceStatus
+{
+    HEART_BEAT_STATUS_UNKOWN = 0;
+    HEART_BEAT_STATUS_ON = 1;
+    HEART_BEAT_STATUS_OFF = 2;
+};
+message MecDeviceStatusInfo{
+    optional MecHeartBeatDeviceType device_type = 1;
+    optional string device_id = 2;
+    optional MecHeartBeatDeviceStatus status = 3;
+}
+message MecHeartBeat{
+    optional int32 msg_type = 1;
+    optional uint64 time_stamp = 2;
+    repeated MecDeviceStatusInfo device_status_info = 3;
+}
+
+message MecAlarmInfo{
+    optional int32 alarm_level = 1;
+    optional int32 alarm_status = 2;
+    optional uint64 alarm_raised_time = 3;
+    optional uint64 alarm_changed_time = 4;
+    optional string device_id = 5;
+    optional int32 horizontal_offset = 6;
+    optional int32 vertical_offsetset = 7;
+}
+
+message MecAngleOffset{
+    optional int32 msg_type = 1;
+    optional uint64 time_stamp = 2;
+    repeated MecAlarmInfo alarm_info = 3;
+}
+
+message MecSingleTrafficlightInfo{
+    optional int32 link_index = 1;
+    optional int32 trafficlight_type = 2;
+    optional int32 color = 3;
+    optional int32 count = 4;
+}
+
+message MecTrafficlightList{
+    optional int32 msg_type = 1;
+    optional uint64 time_stamp = 2;
+    repeated MecSingleTrafficlightInfo trafficlight_list = 3;
+}
+
+enum MonitorMsgTag
+{
+    MONITOR_TAG_SENSOR_DATA_IN = 0;  //感知数据接入
+    MONITOR_TAG_SENSOR_DATA_UP = 1;  //感知数据上云
+};
+message EventOutputMonitorResult {                               // 事件集合
+    optional MonitorMsgTag tag = 1;  //消息类型
+    optional uint64 timestamp = 2;  //utc时间戳
+
+    optional string sensor_data_in_port = 3;  //感知数据接收端口
+    optional bool sensor_data_in_flag = 4 [default = false];  //是否接收到感知数据，true:接收到 false:未接收到
+    optional uint64 sensor_data_in_obj_package = 5;  //感知目标2011大包个数
+    optional uint64 sensor_data_in_obj_num = 6;  //感知目标2011 总目标个数
+
+    optional string sensor_cloud_ip = 7;  //感知运控的ip
+    optional string sensor_cloud_port = 8;  //感知运控的端口
+    optional bool sensor_cloud_con_flag = 9 [default = false];  //感知上云模块连接云控是否正常，true：连接正常，false：连接不正常
+    optional bool sensor_dat_up_flag = 10 [default = false];  //感知数据上云是否成功，true:成功，false：失败
+    optional uint64 sensor_data_up_obj_package = 11;  //感知目标2011大包个数
+    optional uint64 sensor_data_up_obj_num = 12;  //感知目标2011 总目标个数
+}
+
+message MecSingleTrafficFlow{
+    optional string region_id = 1;
+    optional string node_id = 2;
+    optional string upstream_id = 3;
+    optional int32 meas_no = 4;
+    optional string lane_id = 5;
+    optional string lane_no = 6;
+    optional int32 coil_no = 7;
+    optional int32 volume = 8;
+    optional int32 volume1 = 9;
+    optional int32 volume2 = 10;
+    optional int32 volume3 = 11;
+    optional int32 volume4 = 12;
+    optional int32 volume5 = 13;
+    optional double pcu = 14;
+    optional double av_speed = 15;
+    optional double occupancy = 16;
+    optional double occupancy1 = 17;
+    optional double headway = 18;
+    optional double distance = 19;
+    optional double gap = 20;
+    optional double speed_85 = 21;
+    optional double delay = 22;
+    optional double stop = 23;
+    optional double desaturation = 24;
+    optional double go_through = 25;
+    optional double queue_length = 26;
+    optional double number = 27;
+    optional double pedestriancount = 28;
+    optional double nonmotorcount = 29; 
+    optional double classqueuenaturalnumber = 30;
+    optional double classqueueequivalentnumber = 31;
+
+}
+
+message MecTrafficFlow{
+    optional int32 msg_type = 1;
+    optional uint64 time_stamp = 2;
+    optional string dev_no = 3;
+    optional string mec_no = 4;
+    optional int32 cycle = 5;
+    optional int32 coil_num = 6;
+    repeated MecSingleTrafficFlow trafficflow_list = 7;
+}
+
+
+/////////////////////////////////////////////////////////////////
+enum TrafficLightStatus
+{
+    TLS_NORMAL = 0;  //正常
+    TLS_BLACK_FAILURE = 1;  //黑灯故障
+    TLS_LIGHT_COLOR_CONFLICT = 2;  //灯色冲突
+    TLS_COUNTDOWN_MISMATCH_WITH_ON_SITE_CONDITIONS = 3;  //倒计时与现场不一致
+    TLS_SECOND_FREEZING = 4;  //卡秒
+    TLS_SKIPPING_SECONDS = 5;  //跳秒
+    TLS_COUNTDOWN_REVERTING = 6;  //回跳
+    TLS_COUNTDOWN_NOT_EQUAL_TO_1_WHEN_CHANGING_LIGHTS = 7;  //切灯时倒计时不为1
+    TLS_LIGHT_COLOR_ALL_RED = 8;    //全红
+    TLS_LIGHT_COLOR_ALL_GREEN = 9;  //全绿
+    TLS_LIGHT_COLOR_ALL_YELLOW = 10;    //黄闪    
+};
+
+message TrafficlightDetectData{
+    optional uint64 time_stamp = 1;
+    optional TrafficLightStatus  trafficlight_status = 2;
+}
+//////////////////////////////////////////////////////////////////
+message EventOutputResult {
+    repeated EventInformation events = 1;                                  // 事件集合
+    repeated airos.perception.PerceptionObstacle perception_obstacle = 2;  // 全量障碍物集合
+    optional airos.header.Header header = 3;                               // 信息头，包括时间戳、帧ID等信息，上游透传
+    optional airos.perception.PerceptionErrorCode perception_error_code = 4 [default = ERROR_NONE]; // 感知错误代码，上游透传
+    optional MecHeartBeat mec_heart_beat = 5;  //add zhangenwei 2024-3-15
+    optional MecAngleOffset mec_angle_offset = 6;  //add zhangenwei 2024-5-15
+    optional MecTrafficlightList mec_trafficlight_list = 7;  //add hezhiyong 2024-8-19
+    optional EventOutputMonitorResult mec_sensor_data_monitor = 8;  //add hezhiyong 2024-11-15
+    optional MecTrafficFlow mec_trafficflow = 9;  //add hezhiyong 2024-11-13
+    optional TrafficlightDetectData trafficlight_detect_data = 10;  //信号机故障检测
+}

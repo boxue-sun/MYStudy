@@ -1,0 +1,15 @@
+# proto-file: dag_conf.proto
+# proto-message: DagConfig
+module_config {
+    module_library: "/home/airos/os/lib/libcloud_component.so"
+    components{
+        class_name: "CloudComponent"
+        config{
+            name: "CloudComponent"
+            config_file_path: "/home/airos/os/conf/cloud/config.pb.txt"
+            readers{
+                channel: "/airos/cloud/report/mqtt"
+            }
+        }
+    }
+}

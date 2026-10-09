@@ -1,0 +1,154 @@
+syntax = "proto2";
+package adu.stb_map;
+enum DirectionType {
+    DIRECTION_UNKNOWN = -1;
+    EAST = 1;
+    NORTH = 2;
+    WEST = 3;
+    SOUTH = 4;
+    EAST_NORTH = 5;
+    WEST_NORTH = 6;
+    WEST_SOUTH = 7;
+    EAST_SOUTH = 8;
+}
+
+enum FlowType {
+    IN = 1;
+    OUT = 2;
+}
+
+// 参考TrafficInfo 流向
+enum DistinctTurnType {
+    FLOW_NONE = 0;
+    FLOW_FORWARD = 1;
+    FLOW_LEFT = 2;
+    FLOW_RIGHT = 3;
+    FLOW_TURN_AROUND = 4;
+}
+
+enum LaneTurnType {
+    TTP_NO_TURN = 1; // 直行
+    TTP_LEFT_TURN = 2; // 左转
+    TTP_RIGHT_TURN = 3; // 右转
+    TTP_U_TURN = 4; // 调头
+    TTP_LEFT_AND_NO_TURN = 5; // 左转和直行
+    TTP_LEFT_AND_U_TURN = 6; // 左转和调头
+    TTP_U_AND_NO_TURN = 7; // 调头和直行
+    TTP_RIGHT_AND_NO_TURN = 8; // 右转和直行
+    TTP_LEFT_AND_U_AND_NO_TURN = 9; // 左转和调头和直行
+    TTP_UNKNOWN = 10; // 未知
+    TTP_LEFT_AND_RIGHT_TURN = 11; // 左转和右转
+    TTP_LEFT_AND_RIGHT_AND_NO_TURN = 12; // 左转和右转和直行
+    TTP_U_AND_RIGHT_TURN = 13; // 调头和右转
+    TTP_LEFT_AND_U_AND_RIGHT_TURN = 14; // 左转和调头和右转
+    TTP_U_AND_RIGHT_AND_NO_TURN = 15; // 调头和右转和直行
+    TTP_LEFT_AND_U_AND_RIGHT_AND_NO_TURN = 16; // 左转和调头和右转和直行
+}
+// 用途类型，属于人工标注
+enum CrossUseType {
+  USE_TYPE_YANPAN = 1; // 用于标注研判道路的路口，可能在信控区域面内
+  USE_TYPE_POLICY = 2; // 1，目标信控区域内的信控路口，2，为两信控之间进行打断新创建的普通类路口也属于这种类型
+}
+
+// 人工标注属性，仅目标信控路口为CROSS_POLICY,所有其他都是CROSS_NORMAL
+enum CrossType {
+  CROSS_NORMAL = 1;
+  CROSS_POLICY = 2;
+}
+
+// 1, CrossUseType为USE_TYPE_POLICY，CrossType为CROSS_POLICY表示信控目标集路口，且有红绿灯会做信控
+// 2, CrossUseType为USE_TYPE_POLICY,CrossType为CROSS_NORMAL表示信控目标集的打断路口，仅用于两信控路口较远用于打断使用，单干线路口列表不存在该类型打断路口
+// 3, CrossUseType为USE_TYPE_YANPAN，CrossType为CROSS_NORMAL表示用于绘制研判道路/子道路或研判区域加的路口，该路口不做信控。该路口后续如需求变更需要做信控时
+// 则该路口属性会变味 CrossUseType为USE_TYPE_POLICY，CrossType为CROSS_POLICY
+// 4, CrossUseType为USE_TYPE_YANPAN，CrossType为CROSS_POLICY 该类型不存在
+message Cross {
+  optional string id = 1; // 恒定为已线上状态ID，保持不变； 1，自始至终对应台账ID未变化则等于台账ID 2，如对应台账ID有变化，则为最开始上线ID
+  optional string name = 2;
+  repeated Branch branch_info = 3;
+  repeated CrossWalk crosswalk = 4; // 人工标注，路口的人行横道
+  optional string cross_label_id = 5; // 人工路口Id,result[].crossCustomId
+  optional string auto_name = 6; // 人工路口名称 result[].crossCustomName
+  // CrossType为CROSS_POLICY，CrossUseType为USE_TYPE_POLICY 表示信控目标区域内的信控路口
+  optional CrossType cross_type = 7;
+  optional CrossUseType cross_use_type = 8;
+  optional string cross_center_geometry = 9; // 路口中心点坐标，由原来的bd_lon和bd_lat经纬度合二为一
+  repeated Node cross_node = 10; // 路口由多个边框点围成
+  optional string id_bmap = 11; // 台账ID，保持实时更新
+}
+
+message Branch {
+  optional string id = 1; // 恒定为已线上状态ID，保持不变； 1，自始至终对应台账ID未变化则等于台账ID 2，如对应台账ID有变化，则为最开始上线ID
+  optional string name = 2;
+  optional DirectionType direction_type = 4;
+  optional FlowType branch_flow_type = 5;
+  repeated Lane lane = 6;
+  repeated Link in_links = 8; // Branch的进入link，目前只选挨着路口最仅的一个link，V6废弃，暂保留
+  repeated Link out_links = 9; // Branch所有出而且是机动车道的link，V6废弃，暂保留
+  optional string se_bearing = 11; // 采用进入link，由靠近路口，到远离路口计算的方向角，0-360，分别是北->东->南->西->北 8个方向
+  repeated FlowPack flow_pack = 12; // 每个in branch才有流向表list,遍历了所有该in branch转向，以及转向关系; outbranch无该字段值
+  optional string road_name = 13; // 该branch上归属的道路
+  optional DirectionType policy_direction_type = 14; //与信号机匹配的信控专用方向
+  optional Node start_node = 15;
+  optional Node end_node = 16;
+  optional string geometry = 17; // 路口分支坐标 lineString
+  optional string id_bmap = 18; // 台账ID，保持实时更新
+}
+
+message FlowPack {
+    optional string id = 1; //branchid-flow-LaneTurnTypeid 合成的
+    optional string cross_id_before = 2; // 流入该in branch的上一个路口
+    optional string cross_id_current = 3; // 该in branch流入的路口
+    optional string cross_id_later = 4; // 该in branch流出的路口
+    optional string branch_id_before = 5; // 流入该in branch的out branch
+    optional string branch_id_current = 6; // 当前branch
+    optional string branch_id_later = 7; // 从当前in branch流出的out branch
+    optional LaneTurnType phase_turn = 8; // 左、右、直等转向
+}
+
+//信控类型的 信控路口和普通打断路口 才有cross->branch->lane所有且是经过勘察精确的
+message Lane {
+  optional string lane_id = 1; // 恒定为已线上状态ID，保持不变； 1，自始至终对应台账ID未变化则等于台账ID 2，如对应台账ID有变化，则为最开始上线ID
+  optional FlowType lane_flow_type = 2;
+  optional LaneTurnType lane_turn_type = 4;
+  optional uint32 seq_num = 6;
+  optional bool is_variable = 11 [default = false]; // true 可变车道
+  optional Node s_node = 12; // 二期共享in link的node id和 node geom，目前仅用于写库使用给前台用,V6.0用Branch的 geometry,V6.0废弃使用，但暂不删除
+  optional Node e_node = 13; // 二期共享in link的node id和 node geom，目前仅用于写库使用给前台用,V6.0用Branch的 geometry,V6.0废弃使用，但暂不删除
+  optional bool is_broaden = 15 [default = false]; // 该车道是否是展宽车道
+  optional string custom_id = 16; // 用户自定义专网车道i -1
+  //将该车道复合型转向转为去重的单向流向转向，可用于branch所有车道流向去重，或车道所有流向去重 ,枚举值与TrafficInfo的FlowToType一一对应
+  repeated DistinctTurnType distinct_turn_type = 17;
+  optional string id_bmap = 18; // 台账ID，保持实时更新
+}
+
+message CrossWalk {
+    optional string id = 1;
+    optional DirectionType direction_type = 2;
+    optional double length = 3;
+}
+
+// V6.0废弃使用，但暂不删除
+message Link {
+    optional string id = 1;
+    optional uint32 len = 2;
+    optional string geom = 3;
+    optional uint32 dir = 4; // 地图路网顺，逆，双向 暂无用
+    optional bool is_highway = 5; // 是否是高速，暂无使用
+    optional uint32 m_form = 6; // 保留字段，暂无使用
+    optional uint32 actual_kind = 7; //  道路等级
+    optional uint32 status = 8; // 保留字段，暂无使用
+    optional string update_date = 9; // 保留字段，暂无使用
+    // 百度地图内的转向转成lane的转向枚举，仅属于Branch的out_links时这个才生效，仅out link需要
+    optional LaneTurnType link_turn_type = 10;
+    optional Node s_node = 11; // 二期仅node id,其坐标可用link geom，暂无人用
+    optional Node e_node = 12; // 二期仅node id,其坐标可用link geom，暂无人用
+    optional string form = 13; // Link的类型
+    optional string f_speed = 14; // Link限速 ,限速值,限速类型,赋值标识  例 800,1,0
+    optional string road_name = 15; // 该link归属的道路名字，保留字段临时废弃
+}
+
+message Node {
+    optional string id = 1;
+    optional string geom = 3; // wkt格式点的坐标
+}
+

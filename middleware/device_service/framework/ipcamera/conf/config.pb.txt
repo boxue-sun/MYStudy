@@ -1,0 +1,2 @@
+device: "standard_ipcamera"
+config_file: "/home/airos/param/device/ipcamera/ipcamera_config.yaml" 

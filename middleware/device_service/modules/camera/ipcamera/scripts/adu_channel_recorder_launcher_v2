@@ -1,0 +1,43 @@
+#!/bin/bash
+#参数格式channel_recorder_launcher directory
+#
+
+#path_=/xlog/log/$(cat /etc/v2x/SN)
+path_=/xlog/log/record
+
+cd /home/caros
+source  env.bash
+
+cd /home/caros/perception
+cyber_setenv
+source module_env.bash
+
+
+if [ $# -ge 1 ]; then
+    path_=$1
+fi
+if [ ! -d $path_ ]; then
+    mkdir -p $path_
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi 
+fi
+
+
+echo "saving directory is" $path_
+cd $path_
+
+recorder="channel_recorder"
+h264_bin="adu_h264_publisher"
+
+
+# $h264_bin &
+
+
+
+while true; do
+    $recorder record -a 
+done
+
+
+

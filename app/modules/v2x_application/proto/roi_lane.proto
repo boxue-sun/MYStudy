@@ -1,0 +1,19 @@
+syntax = "proto2";
+package airos.usecase.roi;
+
+import "app/modules/v2x_application/proto/roi_points.proto";
+message LaneRoiParam {
+    optional string lane_id = 1; //车道名
+    repeated Point polygon = 2; //边缘点
+    repeated Point center = 3; //中心点
+}
+message FeaturePosition {
+    optional double x = 1;
+    optional double y = 2;
+    optional double z = 3;
+}
+message LaneParam {
+    optional string rscu_id = 1;
+    optional FeaturePosition feature_position = 2;
+    repeated LaneRoiParam lane_roi_param = 3;
+}

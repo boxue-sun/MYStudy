@@ -1,0 +1,29 @@
+syntax = "proto2";
+package airos.perception.fusion;
+
+enum InputType {
+    CAMERA = 0;
+    LIDAR = 1;
+    RADAR = 2;
+    OTHERS = 3;
+    OLD = 4;
+    VEHICLE = 5;
+    FISHEYE = 6;
+    CARSTATUS = 7;
+}
+
+message SingleInput {
+    required InputType input_type= 1;
+    required string channel_name = 2;
+}
+
+message PerceptionFusionParam {
+    repeated SingleInput input = 1;
+    required string perception_channel = 2 [default = "/airos/perception_obstacles"];
+    optional double output_frequency = 3 [default = 15.0];
+    optional int32 viz_mode = 4 [default = 0];
+    optional string node_name = 5 [default = "v2x_msf_roadside"];
+    optional string alg_name = 6;
+    optional string alg_path = 7;
+    optional string conf_path = 8;
+}

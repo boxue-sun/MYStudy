@@ -1,0 +1,35 @@
+syntax = "proto2";
+package os.v2x.cloud;
+
+enum DataType {
+  MSG_TYPE_RSM = 1;
+  MSG_TYPE_RSI = 2;
+  MSG_TYPE_SPAT = 3;
+  MSG_TYPE_BSM = 4;
+  MSG_TYPE_MAP = 5;
+}
+
+enum DataFormat {
+  DATA_FORMAT_ASN = 1;   // asn格式
+  DATA_FORMAT_PB = 2;    // pb格式
+  DATA_FORMAT_JSON = 3;  // json格式
+}
+
+enum MessageVersion {
+  CSAE_53_2017 = 0;   // 三跨
+  CSAE_53_2020 = 1;   // 四跨
+  YDT_3709_2020 = 2;  // 新四跨
+}
+
+message MsgData {
+  optional MessageVersion version = 1;
+  repeated bytes payload = 2;
+}
+
+message CloudV2xMessage {
+  optional string rscu_sn = 1;          // rscu序列号
+  optional double timestamp = 2;        // 时间戳，单位秒
+  optional DataType type = 3;           // 数据类型
+  optional DataFormat data_format = 4;  // 数据格式
+  required MsgData msg_data = 5;        // 数据内容
+}

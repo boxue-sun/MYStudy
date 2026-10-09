@@ -1,0 +1,8 @@
+mqtt:
+  username: v2x_client
+  password: password
+  cloud_url: tcp://127.0.0.1:1883
+  client_id: $sn
+  subscribe_topic:
+    - v2x/event/$sn
+    - v2x/$sn/map

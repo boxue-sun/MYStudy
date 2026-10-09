@@ -1,0 +1,28 @@
+input {
+  main_sensor: true
+  collision_line_fusion: false
+}
+
+input {
+  main_sensor: false
+  collision_line_fusion: false
+}
+
+input {
+  main_sensor: false
+  collision_line_fusion: false
+}
+
+timestamp_param {
+  time_diff: 0.2
+  missing_time_threshold: 0.5
+  reverse_time_threshold: 0.3
+  reference_seq: 0
+  reference_seq: 2
+  reference_seq: 5
+  reference_seq: 7
+  reference_seq: 13
+  reference_seq: 15
+}
+
+viz_mode: 0

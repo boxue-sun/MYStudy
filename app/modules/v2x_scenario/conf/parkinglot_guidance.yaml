@@ -1,0 +1,4 @@
+PAMTrasmitPeriod: 1.0
+GuidancePeriod: 1.0
+RealTimeGuidance: false
+PAMParkingMapFiles: [pam.xml]

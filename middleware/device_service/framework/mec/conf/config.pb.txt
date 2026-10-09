@@ -1,0 +1,2 @@
+device: "cictci_mec"
+config_file: "/home/airos/param/device/mec/device.yaml"

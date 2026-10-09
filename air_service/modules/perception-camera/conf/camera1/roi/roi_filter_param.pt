@@ -1,0 +1,3 @@
+roi_filter_name : "ROIJudgement"
+mask_file_path : "/home/airos/os/modules/lib/airos_perception_camera/conf/camera1/roi/camera1_mask.jpg"
+overlap_rate : 0.5

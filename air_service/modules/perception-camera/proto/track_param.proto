@@ -1,0 +1,11 @@
+syntax = "proto2";
+package airos.perception.camera;
+
+message TrackParam {
+    optional string tracker_name = 1;
+    optional string id = 2;        // 透传字段，id标识接口
+    optional string model_dir = 3; // 模型路径
+    optional int32 width = 4;
+    optional int32 height = 5;
+    //optional string mask_img_filename; // 检测感兴趣区域;黑白图, 白色感兴趣区域, 黑色非感兴趣区域; 不设置则分析整张
+}

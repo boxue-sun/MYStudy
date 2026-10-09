@@ -1,0 +1,9 @@
+frequency : 10.0
+
+lidar_name: "lidar1"
+
+alg_path : "modules/lib/airos_perception_lidar"
+
+alg_name : "AirosLidarPerception"
+
+conf_path : "modules/conf/airos_perception_lidar"

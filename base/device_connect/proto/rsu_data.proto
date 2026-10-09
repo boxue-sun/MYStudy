@@ -1,0 +1,33 @@
+syntax = "proto2";
+
+package os.v2x.device;
+
+enum RSUDataType {
+  RSU_STATUS = 0;
+  RSU_BSM = 1;
+  RSU_RSM = 2;
+  RSU_SPAT = 3;
+  RSU_MAP = 4;
+  RSU_RSI = 5;
+  RSU_PERCEPTION = 6;
+  RSU_UNKNOWN = 0xFF;
+}
+
+enum MessageVersion {
+  CSAE_53_2017 = 0;   // 三跨
+  CSAE_53_2020 = 1;   // 四跨
+  YDT_3709_2020 = 2;  // 新四跨
+}
+
+message RSUData {
+  required RSUDataType type = 1;    // 数据类型
+  required bytes data = 2;          // ASN编码数据
+  required uint64 time_stamp = 3;   // UNIX时间戳，精确到ms
+  optional uint32 sequence_num = 4; // 消息序列码
+  optional MessageVersion version = 5; // 版本
+
+  optional bool end_flag = 6 [default = false]; // 是否是最后一个包
+  optional uint64 total_obj_num = 7;  // 感知目标的统计数量
+  optional double message_timestamp = 8;  // 时间戳，用于统计时延
+  optional uint32 obj_num = 9; // 当前包中,感知目标的数量
+}

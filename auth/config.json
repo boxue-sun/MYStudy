@@ -1,0 +1,9 @@
+{
+    "project": "cictci_test",
+    "expired": "2025-12-31",
+    "limit_period": true,
+    "limit_hardware": true,
+    "license_key": "",
+    "verify_code": "",
+    "license": ""
+}

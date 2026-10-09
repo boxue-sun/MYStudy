@@ -1,0 +1,20 @@
+syntax = "proto2";
+package airos.perception.msf;
+
+message SingleInputInfo {
+    optional bool main_sensor = 1 [default = true];
+    optional bool collision_line_fusion = 2 [default = false];
+}
+message TimestampParam {
+    required double time_diff = 1;
+    required double missing_time_threshold = 2;
+    required double reverse_time_threshold = 3;
+    repeated int32 reference_seq = 4;
+}
+
+message MsfConfig {
+    repeated SingleInputInfo input = 1;
+    required TimestampParam timestamp_param = 2;
+    optional int32 viz_mode = 3 [default = 0];
+    optional bool collision_line_check = 4 [default = false];
+}

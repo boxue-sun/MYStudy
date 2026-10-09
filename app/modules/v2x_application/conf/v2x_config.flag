@@ -1,0 +1,9 @@
+--city_string=beij#
+--asn_message_version=new_4layer_ext
+--xml_map_send_rate=1000
+--enable_send_ssm=false
+--enable_send_map=true
+--enable_send_spat=true
+--enable_send_rsi=true
+--enable_send_rsm=true
+--enable_print=false

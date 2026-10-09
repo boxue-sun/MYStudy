@@ -1,0 +1,31 @@
+usecase:
+  active: true
+  detail: false
+  same_lane_heading_thresh: 0.26
+  lane_param_path:  /home/airos/os/app/conf/airos_v2x_application/lane_param.pt
+  traffic_light_channel: /v2x/service/traffic_light/data
+  usecase_output_channel: /v2x/usecase
+  send_with_cur_timestamp: false 
+  
+dataframe:
+  stop_speed_thre: 0.7
+  stop_speed_cnt_thre: 24
+  stop_shift_cnt_thre: 28
+  tracked_life: 38
+    
+lane_congestion:
+  active: true
+  mock: false
+  peroid_window_size: 3
+  output_peroid: 60
+  observe_sec: 300
+  polygon_id: 2
+  congestion_coeff_a: 0.8
+  congestion_coeff_b: 1.1
+  congestion_coeff_c: 1.8
+  congestion_car_num_limit: 2
+  debug: false
+
+
+
+

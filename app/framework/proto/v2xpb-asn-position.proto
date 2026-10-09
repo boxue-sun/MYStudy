@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+package v2xpb.asn;
+
+message Position {
+  message LLH {
+    optional double latitude = 1 [ default = nan ];
+    optional double longitude = 2 [ default = nan ];
+    optional double elevation = 3 [ default = nan ];
+  }
+  optional LLH llh = 1;
+
+  message XYZ {
+    optional int32 zone = 1 [ default = -1 ];
+    optional double x = 2 [ default = nan ];
+    optional double y = 3 [ default = nan ];
+    optional double z = 4 [ default = nan ];
+  }
+  optional XYZ xyz = 2;
+}

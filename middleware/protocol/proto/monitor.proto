@@ -1,0 +1,150 @@
+syntax = "proto2";
+package airos.monitor;
+enum MonitorMsgTag
+{
+  MONITOR_TAG_SENSOR_DATA_IN = 0;  //感知数据接入
+  MONITOR_TAG_SENSOR_DATA_UP = 1;  //感知数据上云
+  MONITOR_TAG_MONITOR_DOCKER = 3011;  //docker状态
+  MONITOR_TAG_MONITOR_AIROS_MODULES = 3012;  //airos模块
+  MONITOR_TAG_MONITOR_DISK = 3013;  //磁盘空间
+  MONITOR_TAG_MONITOR_PERFORMANCE = 3014;  //性能监控
+  MONITOR_TAG_MONITOR_RSAP = 3021;  //感知上云
+  MONITOR_TAG_MONITOR_OM = 3022;  //om运维
+  MONITOR_TAG_MONITOR_CCINDEX = 3023;  //ccindex运维
+};
+
+// 定义模块状态
+message ModuleStatus {
+  required string name = 1;                // 模块名
+  required string pid = 2;                 // 模块的pid
+  required double cpu = 3;                 // 模块cpu的占用率
+  required double mem = 4;                 // 模块的mem占用率
+  required string start_time = 5;          // 模块启动时间
+}
+
+// 定义消息结构
+message PerformanceData {
+  required double cpu = 1;                 // Docker的cpu占用率%
+  required double mem_percent = 2;         // Docker的mem占用率%
+  required double mem = 3;                 // Docker占用的mem大小，单位GiB
+  required bool run_flag = 4;              // Docker是否运行，true运行正常 false:运行异常
+  required string container_name = 5;      // Docker容器名
+  required string container_start_time = 6; // Docker容器启动时间
+  repeated ModuleStatus modules_status = 7; // 各模块启动状态
+  required double root_size = 8;           // 根目录空间大小,单位GB
+  required double root_avail = 9;          // 根目录可使用空间，单位GB
+  required double root_avail_percent = 10; // 根目录可使用空间百分比
+  required double work_size = 11;           // work目录空间大小，单位GB
+  required double work_avail = 12;         // work目录可使用空间，单位GB
+  required double work_avail_percent = 13; // work目录可使用空间百分比
+}
+
+// 定义主消息
+message PerformanceResponse {
+  required int32 tag = 1;                  // 接口号：3014
+  required string seqnum = 2;              // 32位不重复的随机数
+  required uint64 timestamp = 3;            // utc时间戳，毫秒
+  required string device_esn = 4;          // 设备esn号
+  required PerformanceData data = 5;             // 消息结构
+}
+
+// 定义雷达设备状态
+message OmRadarStatus {
+  required string device_esn = 1;          // 路测雷达esn
+  required string device_sn = 2;           // 路侧雷达sn
+  required bool register_flag = 3;         // 雷达是否注册
+  required bool heartbeat_flag = 4;        // 雷达是否推送心跳
+}
+
+// 定义摄像机设备状态
+message OmCameraStatus {
+  required string device_esn = 1;          // 路测摄像机esn
+  required string device_sn = 2;           // 路侧摄像机sn
+  required bool register_flag = 3;         // 摄像机是否注册
+  required bool heartbeat_flag = 4;        // 摄像机是否推送心跳
+}
+
+// 定义MEC与运维云的连接状态
+message OmMecStatus {
+  optional bool register_flag = 1;         // MEC是否注册
+  optional bool heartbeat_flag = 2;        // MEC是否推送心跳
+}
+
+// 定义消息结构
+message OmResponseData {
+  required bool con_flag = 1;              // MEC与运维云的连接状态是否正常
+  required OmMecStatus om_mec_status = 2;  // 路侧计算设备状态
+  repeated OmRadarStatus om_radars_status = 3; // 路侧雷达设备状态
+  repeated OmCameraStatus om_camera_status = 4; // 路侧摄像机状态
+}
+
+// 定义主消息
+message OmResponse {
+  required int32 tag = 1;                  // 接口号：3023
+  required string seqnum = 2;              // 32位不重复的随机数
+  required uint64 timestamp = 3;            // utc时间戳，毫秒
+  required string device_esn = 4;          // 设备esn号
+  required OmResponseData data = 5;             // 消息结构
+}
+//////////////////////////////////////////////////////////
+// 定义动态数据传输状态
+message CcindexTmStatus {
+  required string device_esn = 1;          // 设备esn号
+  required string device_sn = 2;          // 设备esn号
+  required bool tm_pub_flag = 3;  // 动态数据推送是否成功
+  required bool tm_sub_flag = 4;  // 动态数据订阅是否成功
+}
+
+// 定义指标数据传输状态
+message  CcindexTcStatus {
+  required bool tc_pub_flag = 1;  // 指标数据推送是否成功
+  required bool tc_sub_flag = 2;  // 指标数据订阅是否成功
+}
+
+// 定义静态数据传输状态
+message  CcindexStaticStatus {
+  optional bool st_post_flag = 1; // 静态数据Post到云控是否成功
+  required bool st_get_flag = 2;   // 静态数据从云控GET数据是否成功
+}
+
+// 定义消息结构
+message CcindexMonitorData {
+  required bool con_flag = 1;                     // MEC与信控云的连接状态是否正常
+  required CcindexTcStatus ccindex_tc_status = 2; // 指标数据传输状态
+  repeated CcindexTmStatus ccindex_tm_status = 3; // 动态数据传输状态
+  required CcindexStaticStatus ccindex_static_status = 4; // 静态数据传输状态
+}
+
+// 定义主消息
+message CcindexResponse {
+  required int32 tag = 1;                // 接口号：3023
+  required string seqnum = 2;            // 32位不重复的随机数
+  required uint64 timestamp = 3;          // utc时间戳，毫秒
+  required string device_esn = 4;        // 设备esn号
+  required CcindexMonitorData data = 5;        // 消息结构
+}
+//////////////////////////////////////////////////////////
+
+message RsapResponse {                               // 事件集合
+  optional MonitorMsgTag tag = 1;  //消息类型
+  optional uint64 timestamp = 2;  //utc时间戳
+  optional string sensor_data_in_port = 3;  //感知数据接收端口
+  optional bool sensor_data_in_flag = 4 [default = false];  //是否接收到感知数据，true:接收到 false:未接收到
+  optional uint64 sensor_data_in_obj_package = 5;  //感知目标2011大包个数
+  optional uint64 sensor_data_in_obj_num = 6;  //感知目标2011 总目标个数
+
+  optional string sensor_cloud_ip = 7;  //感知运控的ip
+  optional string sensor_cloud_port = 8;  //感知运控的端口
+  optional bool sensor_cloud_con_flag = 9 [default = false];  //感知上云模块连接云控是否正常，true：连接正常，false：连接不正常
+  optional bool sensor_dat_up_flag = 10 [default = false];  //感知数据上云是否成功，true:成功，false：失败
+  optional uint64 sensor_data_up_obj_package = 11;  //感知目标2011大包个数
+  optional uint64 sensor_data_up_obj_num = 12;  //感知目标2011 总目标个数
+}
+//////////////////////////////////////////////////////////
+
+message MonitorResponse {
+  optional  PerformanceResponse performance_response = 1;
+  optional  OmResponse om_response = 2;
+  optional  CcindexResponse   ccindex_response = 3;
+  optional  RsapResponse  rsap_response = 4;
+}

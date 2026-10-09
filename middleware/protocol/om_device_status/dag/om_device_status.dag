@@ -1,0 +1,14 @@
+module_config {
+    module_library: "/home/airos/os/lib/libom_device_status.so"
+    components{
+        class_name: "OmDeviceStatusComponent"
+        config{
+            name: "OmDeviceStatusComponent"
+            readers{
+                channel: "/v2x/cloud/message"
+            }
+            # out_channel: "/v2x/usecase"
+            # flag_file_path: "/home/airos/protocol/conf/om_camera.flag"
+        }
+    }
+}

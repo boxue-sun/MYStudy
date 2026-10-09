@@ -1,0 +1,406 @@
+syntax = "proto2";
+package adu.st;
+
+import "middleware/protocol/proto/st_header.proto";
+import "middleware/protocol/proto/cross.proto";
+import "middleware/protocol/proto/line.proto";
+
+message PassVehicleInfo{
+  optional string plate_id = 1;  //车牌id
+  optional string pass_time = 2;  //过车时间
+  optional string vehicle_color = 3; //车牌颜色
+  optional string vehicle_type = 4; //车牌类型
+}
+
+// 指标数据，可以是一个车道的指标，也可以是一个流向的指标
+message TrafficInfo {
+  // 一般只用到1和2，分别代表车道级指标和流向级指标
+  enum SpaceType {
+    SPACE_NONE = 0;
+    SPACE_LANE = 1; // 车道级,lane_id必须有值
+    SPACE_FLOW = 2;   // 流向级,lane_id、flow_to_type(仅给一个即可)必须有值
+    SPACE_BRANCH = 3; // branch级branch_id必须有值
+    SPACE_LINK = 4;
+    SPACE_SEGMENT = 5; // 路段级指标
+    SPACE_ARTERIAL = 6; // 干线级指标
+    SPACE_ZONE = 7; // 信控区域
+    SPACE_CROSS = 8; // 路口级
+  }
+
+    // 指标的时间粒度
+    enum TimeType {
+      // 周期级指标，特指信号灯周期
+        TIME_CYCLE = 0;
+      // 时钟级指标，具体时间周期长度看time_span，因不便表达具体周期长度，后续会逐渐废弃
+      TIME_CLOCK = 1;
+      TIME_SECOND = 2;
+      TIME_MINUTE = 3;
+      TIME_HOUR = 4;
+      TIME_DAY = 5;
+      TIME_WEEK = 6;
+      TIME_MONTH = 7;
+      TIME_QUARTER = 8;
+      TIME_YEAR = 9;
+      TIME_30_SECOND = 10; // 30秒周期
+      TIME_5_MINUTE = 11; // 5分钟周期
+      TIME_15_MINUTE = 12; // 15分钟周期
+      TIME_0_SECOND = 13; // 起始和结束为0，目前用在脉冲式，后面会加一个time_rate类型也是TimeType表达发送频次(实时感应、5s周期频次等)
+      TIME_5_SECOND = 14; //5秒周期
+      TIME_1_SECOND = 15; //1秒周期
+      TIME_3_SECOND = 16; //3秒周期
+    }
+
+    // 流向
+    enum FlowToType {
+        FLOW_NONE = 0;
+        FLOW_FORWARD = 1;
+        FLOW_LEFT = 2;
+        FLOW_RIGHT = 3;
+        FLOW_TURN_AROUND = 4;
+    }
+
+    enum SourceType {
+      VIDEO = 0; // 默认值，视频感知类指标
+      DICI = 1; // 地磁类型指标
+      V2X = 2; // v2x类型指标
+      RADAR = 3; //雷视设备指标
+      MAP_CONDITION = 4; // 来自地图路况类指标
+      MAP_TRAJECTORY = 5; // 来自地图轨迹类指标
+    }
+
+    // base info
+    // 头信息，里边主要是时间戳和crossId两个信息，这两个信息是必要的
+    optional StHeader header = 1;
+    optional string description = 2;
+    // 指标是否正常
+    optional bool normal = 3;
+    optional SourceType source_type = 4 [default = VIDEO];
+    // 周期ID，信控用
+    optional int32 cycle_id = 5;
+
+    // space info
+    optional SpaceType space_type = 100;
+    repeated FlowToType flow_to_type = 101;
+    // 车道id
+    optional string lane_id = 102;
+    // 干线id
+  optional string branch_id = 103;
+  // 路口id
+  optional string cross_id = 104;
+  // 后边四个似乎没用到
+  optional string link_id = 105;
+  optional string segment_id = 106;
+  optional string arterial_id = 107;
+  optional adu.stb_map.CustomDirection direction = 108;
+  // 车道流向
+  optional adu.stb_map.LaneTurnType lane_turn_type = 109;
+
+  // 轨迹区域id，用于信控区域拥堵指标
+  optional string zone_id = 111;
+
+  // time info
+  // 时间维度
+  optional TimeType time_type = 200;
+  // 开始时间
+  optional double start_time = 201;
+  // 结束时间
+  optional double end_time = 202;
+    // 时间长度
+    optional double time_span = 203;
+    // 绿灯启亮时间
+    optional double green_start_time = 204;
+    //  0表示单向的子干线，1表示父干线是双向的
+    optional int32 arterial_type = 205;
+
+    // traffic status info
+    // 这是一个tag，用来表示此traffic_info中有哪些指标
+    enum TrafficStatausType {
+        ALL = 0;
+        DETECTOR = 1;
+        PASS_TIME = 2;
+        PASS_VELOCITY = 3;
+        DELAY = 4;
+        FREE_VELOCITY = 5;
+        STOP_DELAY = 6;
+        STOP_TIMES = 7;
+        QUEUE_LENGTH = 8;
+        HEAD_TIME_DIFF = 9;
+        FULL_HEAD_TIME_DIFF = 10;
+        FULL_FLOW_RATE = 11;
+        FULL_FLOW_LEVEL = 12;
+        EMPTY_TIME = 13;
+        TRAFFIC_FLOW = 14; // 溢流预警
+        TRAFFIC_NUMBER = 15;
+        WASTE_TIME = 16;
+        GREEN_TIME = 17;
+        QUEUE_DISAPPEAR_TIME = 18;
+        OCCUPANCY_RATE = 19;
+        TRAFFIC_BIG_NUMBER = 20;
+        QUEUE_COUNT = 21;
+        CAR_COUNT_WHEN_RED = 22;
+        QUEUE_TRANS_COUNT = 23;
+        CAR_TRANS_COUNT_WHEN_RED = 24;
+        WAITING_ZONE_TRAFFIC_FLOW = 25;
+        WAITING_ZONE_TRAFFIC_NUMBER = 26;
+        QUEUE_LENGTH_AVG = 27;
+        QUEUE_LENGTH_QUANTILE = 28;
+        DELAY_200_300 = 29;
+        DELAY_300_500 = 30;
+        DELAY_500_800 = 31;
+        STOP_COUNT = 32;
+        CAR_COUNT_WHEN_GREEN = 33;
+        CAR_TRANS_COUNT_WHEN_GREEN = 34;
+        OVER_FLOW_FORECAST = 35;
+        OCCUPANCY_RATE_OF_UP_STREAM_LANE = 36;
+        AVG_VELOCITY_OF_UP_STREAM_LANE = 37;
+      DICI_QUEUE_INDEX = 38;
+      DICI_QUEUE_LENGTH = 39;
+      ZONE_TRAFFIC_JAM = 40; // 区域拥堵系数指标
+      SHOOT_TRAJECTORY_NUM = 41;
+      SHOOT_TRAJECTORY_STOP_NUM = 42;
+      OVER_FLOW_OCCUR = 43; // 确实发生溢流
+      OVER_FLOW_TIME = 44; // 溢流时间
+      CAR_COUNT_THIRTY_SECOND = 45;
+      CAR_TRANS_COUNT_THIRTY_SECOND = 46;
+      OVER_FLOW_LEVEL = 47;
+      FULL_CLASS_FLOW_LEVEL = 48 ; //类饱和度
+      CYCLE_LENGTH = 49; // 周期时长
+
+      CAR_COUNT = 50;  // 5秒类排队 自然数
+      CAR_TRANS_COUNT = 51;  // 5秒类排队 当量数
+
+      OVER_FLOW_GRID_LOCK = 52; //溢流死锁
+      HEAD_TIME_DIFF_TIME = 53; //车辆经过停止线时间
+
+      //  STOP_COUNT 停车次数原来就有以下无
+      CONGEST_INDEX = 2001; //  拥堵指数
+      CONGEST_LENGTH = 2002; //  拥堵,拥堵里程
+      CONGEST_LENGTH4 = 2003; // 严重拥堵,拥堵里程
+      CONGEST_LENGTH3 = 2004; // 拥堵,拥堵里程
+      CONGEST_LENGTH2 = 2005; // 缓行,拥堵里程
+      CONGEST_LENGTH234 = 2006; // 进口道连续拥堵长度,全部拥堵长度
+      CONGEST_LENGTH34 = 2007; // 进口道连续拥堵长度,严重拥堵长度
+      UNCONGEST_LENGTH = 2008; // 起始线未拥堵长度
+        AVG_TIME = 2009; // 车均行程时间
+        AVG_SPEED = 2010; // 平均速度
+        CHANGTONG_SPEED = 2011; // 畅通速度
+        DT200 = 2012; // 车均延误200
+        DT300 = 2013; // 车均延误300
+        DT500 = 2014; // 车均延误500
+      DT800 = 2015; // 车均延误800
+      DTALL = 2016; // 总车均延误
+      STOP_DISTANCE = 2018; // 停车距离
+      MAX_STOP_DISTANCE = 2019; // 停车距离
+      MIN_STOP_DISTANCE = 2020; // 停车距离
+      QUANTILE_STOP_DISTANCE = 2021; // 停车距离
+      AVG_DT_ALL = 2022; // avg_dt_all车均延误
+      AVG_STOP_COUNT = 2023; // 干线平均停车率
+      TRAJ_COUNT = 2024; // 计算指标用到的轨迹数目
+      PED_CROSS_STREET = 2025; //行人過街
+      BICYCLE_CROSS_STREET = 2026; //非机动车過街
+      LANE_OCCUPATION_RATIO = 2027; //车道占有率
+      WIDEN_LANE_OCCUPATION_RATIO = 2028; //变宽车道占有率
+
+      DIAGNOSE_INDEX = 3000; //诊断
+    }
+
+    // 这是一个tag，用来表示此traffic_info中有哪些指标，可以用这个来知道一共包含了几个指标，分别处理。
+    repeated TrafficStatausType traffic_status_type = 300;
+    optional double detector = 301;
+    // 通行时间
+    optional double pass_time = 302;
+    // 通行速度
+    optional double pass_velocity = 303;
+    // 延迟
+    optional double delay = 304;
+    // 自由流速度
+    optional double free_velocity = 305;
+    // 停车导致的延迟
+    optional double stop_delay = 306;
+    // 停车次数
+    optional double stop_times = 307;
+    // 排队长度
+    optional double queue_length = 308;
+    // 车头时距
+    optional double head_time_diff = 309;
+    // 饱和车头时距
+    optional double full_head_time_diff = 310;
+    // 饱和流率
+    optional double full_flow_rate = 311;
+    // 饱和度
+    optional double full_flow_level = 312;
+    // 空放时间
+    optional double empty_time = 313;
+    // 流量（当量）
+    optional double traffic_flow = 314;
+    // 流量（自然数）
+    optional double traffic_number = 315;
+    // 浪费时间
+    optional double waste_time = 316;
+    // 绿灯时间
+    optional double green_time = 317;
+    // 排队消散时间
+    optional double queue_disappear_time = 318;
+    // 检测器占有率，基于虚拟检测器的方案会有这个指标
+    optional double occupancy_rate = 319;
+    // 大车数
+    optional double traffic_big_number = 320;
+    // 排队车辆数（自然数）
+    optional double queue_count = 321;
+    // 红灯启亮时刻的排队车辆数（当量）
+    optional double car_count_when_red = 322;
+    // 排队车辆数（当量）
+    optional double queue_trans_count = 323;
+    // 红灯启亮时刻的排队车辆数（自然数）
+    optional double car_trans_count_when_red = 324;
+    // 待转区车辆数（当量）
+    optional double waiting_zone_traffic_flow = 325;
+    // 待转区车辆数（自然数）
+    optional double waiting_zone_traffic_number = 326;
+    // 平均排队长度，用于前台展示，15分钟级和一小时级的指标
+    optional double queue_length_avg = 327;
+    // 排队长度的85分位，用于前台展示，15分钟级和一小时级指标
+    optional double queue_length_quantile = 328;
+    // 在一定范围内追踪到的车辆数
+    optional double tracking_cars_num = 329;
+    // 停车次数
+    optional double stop_count = 330;
+    // 绿灯启亮时刻的类排队车辆数（当量）
+    optional double car_count_when_green = 331;
+    // 绿灯启亮时刻的类排队车辆数（自然数）
+    optional double car_trans_count_when_green = 332;
+    // 溢流系数
+    optional double over_flow_forecast = 333; // -1或0表示未发生溢流预警，1表示发生溢流预警
+    // 路口上游车道时间占有率
+    optional double occupancy_rate_of_up_stream_lane = 334;
+    // 路口上游车道平均通行速度
+    optional double avg_velocity_of_up_stream_lane = 335;
+    // 最远距离地磁发生红灯启亮排队：0表示无，1表示靠近停止线的，2表示最远停止线的
+    optional double dici_queue_index = 336;
+    // 最远距离地磁发生红灯启亮排队长度，0，150，200 三个数值
+    optional double dici_queue_length = 337;
+    // 区域拥堵指标，15分钟级别，SpaceType为SPACE_ZONE
+    optional double zone_traffic_jam = 338;
+
+    optional double shoot_trajectory_num = 339;
+    optional double shoot_trajectory_stop_num = 340;
+    // 延迟
+    optional double delay_200_300 = 341;
+    optional double delay_300_500 = 342;
+    optional double delay_500_800 = 343;
+  optional double over_flow_occur = 344; // -1或0表示未发生溢流，1表示发生溢流
+  optional double over_flow_time = 345; // 溢流时间
+
+  // 5s级的类排队，按30s周期输出
+  optional string car_count_thirty_second = 346;
+  // 5s级的类排队，按30s周期输出
+  optional string car_trans_count_thirty_second = 347;
+  // 视频检测溢流等级
+  optional int32 over_flow_level = 348;
+
+  optional double full_class_flow_level = 349; // 类饱和度值
+
+  optional string remark = 350; // 通用remark字段
+
+  optional double cycle_length = 351; //周期长度
+
+  optional double over_flow_grid_lock = 352; // -1或0表示未发生溢流死锁，1表示发生溢流死锁
+
+  optional string head_time_diff_time = 353; // 车头时距对应每个车辆穿过停止线的时间戳
+
+  // 5s级的类排队，按5s周期输出
+  optional double car_count = 360;
+  // 5s级的类排队，按5s周期输出
+  optional double car_trans_count = 361;
+  // 过车信息，按5min周期输出
+  optional PassVehicleInfo pass_vehicle = 362;
+  
+  // 车头时距的详细信息，展示没两个车之间的车头时距
+  optional string head_time_diff_detail = 1009;
+  // 饱和车头时距的详细信息
+  optional string full_head_time_diff_detail = 1010;
+  // 波形图详细信息
+  optional string wave_detail = 1011;
+  // 追踪到的车辆详细信息
+  optional string tracking_cars_detail = 1012;
+  // 排队车辆详细信息
+    optional string queue_count_detail = 1013;
+    // 饱和度的详细信息
+    optional string full_flow_level_detail = 1014;
+    // 溢流详细
+    optional string over_flow_detail = 1015;
+    // 红启车辆详细信息
+    optional string car_count_when_red_detail = 1016;
+    // 行人過街
+    optional int32 ped_num = 1017;
+    // 非机动车過街
+    optional int32 bicycle_num = 1018;
+    // 车道占有率
+    optional double lane_occupation_ratio = 1019;
+    // 变宽车道占有率
+    optional double widen_lane_occupation_ratio = 1020;
+
+
+    // 置信度
+    optional double confidence_level = 1101;
+    // 错误码
+    optional int32 index_error_code = 1102;
+
+    //   STOP_COUNT 停车次数原来就有以下无
+    optional double congest_index = 2001; //  拥堵指数
+    optional double congest_length = 2002; //  拥堵,拥堵里程
+    optional double congest_length4 = 2003; // 严重拥堵,拥堵里程
+    optional double congest_length3 = 2004; // 拥堵,拥堵里程
+    optional double congest_length2 = 2005; // 缓行,拥堵里程
+    optional double congest_length234 = 2006; // 进口道连续拥堵长度,全部拥堵长度
+    optional double congest_length34 = 2007; // 进口道连续拥堵长度,严重拥堵长度
+    optional double uncongest_length = 2008; // 起始线未拥堵长度
+    optional double avg_time = 2009; // 车均行程时间
+    optional double avg_speed = 2010; // 平均速度
+    optional double changtong_speed = 2011; // 畅通速度
+    optional double dt200 = 2012; // 车均延误200 s
+    optional double dt300 = 2013; // 车均延误300 s
+  optional double dt500 = 2014; // 车均延误500 s
+  optional double dt800 = 2015; // 车均延误800 s
+  optional double dtAll = 2016; // 总车均延误 s
+  optional double stop_distance = 2018; // 停车距离
+  optional double max_stop_distance = 2019; // 最大停车距离 m
+  optional double min_stop_distance = 2020; // 最小停车距离 m
+  optional double quantile_stop_distance = 2021; // 取0.85停车距离 m
+  optional double avg_dt_all = 2022; // avg_dt_all车均延误
+  optional double avg_stop_count = 2023; // 干线平均停车率
+  optional double traj_count = 2024; // 计算指标用到的轨迹数目
+  optional string diagnose_index = 3000;
+  optional Diagnose diagnose = 3001;
+}
+
+
+message Diagnose{
+  repeated int32 diagnose_index = 1;
+  repeated double confidence = 2;
+  optional string remark = 3;
+  repeated DiagnoseFeature diagnose_feature = 4;
+  optional string cross = 5;
+  optional string stime = 6;
+  optional string etime = 7;
+  optional string type = 8;
+}
+
+message DiagnoseFeature {
+  optional string flow = 1; // 流向文本
+  optional double fflc = 2; // 类饱和度值
+  optional double ffl = 3; // 饱和度
+  optional double ccrbCt = 6;  // 红启排队车辆数>=8辆 流向或车道个数
+  optional double ccrlCt = 7; // 红启排队车辆数>1辆 流向或车道个数
+  optional double fflcblCt = 8; // 连续
+  optional double allCt = 9; // 所有参与计算个数
+  optional double clbCt = 10; // 轨迹连续拥堵长度>200m
+  optional double clnCt = 11; // 轨迹连续拥堵长度<200m && >100m
+  optional double cllCt = 12; // 轨迹连续拥堵长度<100m
+  optional double ullCt = 13; // 出口连续未拥堵长度
+}
+
+// 多个traffic_info打包成TrafficInfos
+message TrafficInfos {
+  repeated TrafficInfo traffic_info = 1;
+}

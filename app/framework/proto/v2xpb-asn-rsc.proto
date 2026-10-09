@@ -1,0 +1,76 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-position.proto";
+import "app/framework/proto/v2xpb-asn-common.proto";
+import "app/framework/proto/v2xpb-asn-common-ext.proto";
+import "app/framework/proto/v2xpb-asn-rsi.proto";
+import "app/framework/proto/v2xpb-asn-map.proto";
+import "app/framework/proto/v2xpb-asn-vir.proto";
+
+package v2xpb.asn;
+
+message Rsc{
+    required 	int64  msgCnt = 1;
+    required  string	 id=2; //Hex_String
+	 /* DSecond */ //1分钟内的毫秒级时刻分辨率为1毫秒，有效范围时0~59999.60000及以上表示未知或无效数值
+    required  int64	 secMark=3;
+    /* Position3D */ //三维的坐标位置，包括经纬度，高程
+    required Position	 refPos=4;
+    repeated VehicleCoordination coordinates=5;
+    repeated LaneCoordination laneCoordinates=6;
+}
+
+message LaneCoordination{
+  required RsiReferenceLink	 targetLane=1; //RSU控制的路段
+	optional RsiReferencePath	relatedPath=2;
+	optional DDateTime	tBegin=3;
+	optional DDateTime	tEnd=4;
+	optional int64	recommendedSpeed=5	;
+	optional DriveBehavior	recommendedBehavior=6;
+	optional CoordinationInfo	info=7;
+	optional bytes	description=8;
+}
+
+message VehicleCoordination{
+  required string	 vehId=1;
+  required int32 reqID=2;
+  required ReqStatus status=3;
+  optional string reqPriority = 4;
+	optional DriveSuggestion	driveSuggestion=5;
+	optional PathPlanning	pathGuidance=6;
+	optional CoordinationInfo	info=7;
+  optional RespSPInfo signalPriorityInfo=8;
+  optional Reason rejectReason=9;
+  repeated CoorVehInfo coorVehInfoList=10;
+
+}
+
+message RespSPInfo{
+optional RespPriorityType signalPriorityType=1;
+optional int32 signalPriorityTime=2;
+}
+
+enum RespPriorityType{
+  redTruncation=0;
+  greenExtension=1;
+  phaseMaintain=2;
+  phaseInsertion=3;
+}
+
+message DriveSuggestion{
+  required DriveBehavior	suggestion=1;
+	optional int64	lifeTime=2;//有效期
+	optional RsiReferenceLink	relatedLink=3;
+	optional RsiReferencePath	relatedPath=4;
+}
+
+message CoorVehInfo{
+  required  int64	 secMark=1;
+  required Position pos=2;
+  required double speed=3;
+  required double heading=4;
+  required VehicleSize size = 5;
+  required VehicleClassification vehicleClass =6;
+  optional ReqInfo info=7;
+  optional DriveBehavior currentBehavior=8;
+}

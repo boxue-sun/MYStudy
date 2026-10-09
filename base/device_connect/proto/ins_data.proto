@@ -1,0 +1,103 @@
+syntax = "proto2";
+
+package os.v2x.device;
+
+// A general 3D point. Its meaning and units depend on context, and must be
+// explained in comments.
+message Point3D {
+  optional double x = 1 [ default = nan ];
+  optional double y = 2 [ default = nan ];
+  optional double z = 3 [ default = nan ];
+}
+
+// A unit quaternion that represents a spatial rotation. See the link below for
+// details.
+//   https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation
+// The scalar part qw can be omitted. In this case, qw should be calculated by
+//   qw = sqrt(1 - qx * qx - qy * qy - qz * qz).
+message Quaternion {
+  optional double qx = 1 [ default = nan ];
+  optional double qy = 2 [ default = nan ];
+  optional double qz = 3 [ default = nan ];
+  optional double qw = 4 [ default = nan ];
+}
+
+message UtcDate {
+  optional uint32 year = 1;
+  optional uint32 month = 2;
+  optional uint32 day = 3;
+}
+
+message UtcTime {
+  optional uint32 hour = 1;
+  optional uint32 minute = 2;
+  optional double second_s = 3;
+}
+
+message AoGPSFrame {
+  // INS solution type.
+  enum Type {
+    // Do NOT use.
+    // Invalid solution due to insufficient observations, no initial GNSS, ...
+    INVALID = 0;
+    // Use with caution. The covariance matrix may be unavailable or incorrect.
+    // High-variance result due to aligning, insufficient vehicle dynamics, ...
+    CONVERGING = 1;
+    // Safe to use. The INS has fully converged.
+    GOOD = 2;
+  }
+  // Altitude(meters). Positive is above reference (e.g., sea level).
+  optional float altitude = 1;
+  // Vertical speed(meters/second)
+  optional float climb = 2;
+  // Direction deviation angle(degrees)
+  optional float direction = 3;
+  // Horizontal accuracy
+  optional float hacc = 4;
+  // Horizontal dilution of precision
+  optional float hdop = 5;
+  // Latitude(degrees). Positive is north of equator; negative is south.
+  optional float latitude = 6;
+  // Longitude (degrees). Positive is east of prime meridian; negative west.
+  optional float longitude = 7;
+  // East/north/up in meters per second.
+  optional Point3D linearVelocity = 8;
+  //(usec)
+  optional uint64 timestamp_us = 9;
+  optional UtcDate utcData = 10;
+  optional UtcTime utcTime = 11;
+  // Vertical accuracy
+  optional float vacc = 12;
+  // Vertical dilution of precision
+  optional float vdop = 13;
+  // sequence_num
+  optional uint32 sequence_num = 14;
+  // INS solution type.
+  optional Type type = 15;
+}
+
+enum HeadingType {
+  TRUENORTH = 0;     // True North
+  MAGNETICNORTH = 1; // Magnetic north
+}
+
+message AoIMUFrame {
+  // Triaxial acceleration
+  optional Point3D acceleration = 1;
+  // IMU heading angle
+  optional float heading = 2;
+  // IMU heading angle type
+  optional HeadingType headingType = 3;
+  // magnetometer(utesla)
+  optional double magnetometer = 4;
+  // orientation(degrees)
+  optional double orientation = 5;
+  // orientationQuaternion(x,y,z,2)
+  optional Quaternion orientationQuaternion = 6;
+  //(usec)
+  optional double timestamp_us = 7;
+  // around forward/left/up axes in radians per second.
+  optional Point3D angularVelocity = 8;
+  // sequence_num
+  optional uint32 sequence_num = 9;
+}

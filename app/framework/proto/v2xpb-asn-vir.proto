@@ -1,0 +1,198 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-position.proto";
+import "app/framework/proto/v2xpb-asn-common.proto";
+import "app/framework/proto/v2xpb-asn-common-ext.proto";
+import "app/framework/proto/v2xpb-asn-rsi.proto";
+import "app/framework/proto/v2xpb-asn-map.proto";
+
+package v2xpb.asn;
+
+message Vir {
+  required int64	 msgCnt=1;
+  required string	 id=2;
+	required int64	 secMark=3;
+	required Position	 refPos=4;
+	required IarData	 intAndReq=5;
+}
+
+message IarData{
+  optional PathPlanningPoint	currentPos=1;
+	optional PathPlanning	path_Planning=2	;
+  optional TargetRoadResource targetRoadResource=3;
+	repeated DriveBehavior	currentBehavior=4;
+	repeated DriveRequest reqs=5;
+  repeated DriveResponse resps=6;
+}
+
+message PathPlanning{
+  repeated PathPlanningPoint list = 1;
+}
+
+message PathPlanningPoint{
+  optional RsiReferenceLink posInMap = 1;
+	required Position pos  = 2;
+	optional PosConfidenceSet posAccuracy = 3;
+	optional int64 speed  = 4;
+	optional SpeedConfidence	speedCfd = 5;
+	optional int64 heading	= 6;
+	optional HeadingConfidence headingCfd = 7;
+	optional AccelerationSet4Way	 accelSet = 8;
+	optional AccSet4WayConfidence acc4WayConfidence = 9;
+	optional int64 estimatedTime = 10;
+	optional int64 timeConfidence = 11;
+}
+
+message TargetRoadResource{
+  required int32 tRRLength = 1;
+  required Position pos = 2;
+  required RsiReferenceLink laneInfo = 3;
+  optional int64 tRRMovement = 4;
+}
+
+
+enum DriveBehavior {
+    DriveBehavior_goStraightForward	= 0;
+    DriveBehavior_laneChangingToLeft	= 1;
+    DriveBehavior_laneChangingToRight	= 2;
+    DriveBehavior_rampIn	= 3;
+    DriveBehavior_rampOut	= 4;
+    DriveBehavior_intersectionStraightThrough	= 5;
+    DriveBehavior_intersectionTurnLeft	= 6;
+    DriveBehavior_intersectionTurnRight	= 7;
+    DriveBehavior_intersectionUTurn	= 8;
+    DriveBehavior_stop_and_go	= 9;
+    DriveBehavior_stop	= 10;
+    DriveBehavior_slow_down	= 11;
+    DriveBehavior_speed_up	= 12;
+    DriveBehavior_parking	= 13;
+}
+
+
+message DriveRequest {
+  required int32	 reqID=1;
+	required ReqStatus status=2;
+	optional string	reqPriority=3;
+
+  message VehTempIDList{
+    repeated string vehTempID=1;
+  }
+	optional VehTempIDList  targetVehList=4;
+	optional string	targetRSU=5;
+	optional ReqInfo	info=6;
+	optional int64	lifeTime=7;
+}
+
+message DriveResponse {
+  required int64	 respID=1;
+	required ReqStatus	 respStatus=2;
+	optional string	reqPriority=3;
+	optional string  respVeh=4;
+	optional string	respRSU=5;
+	optional CoordinationInfo	respInfo=6;
+	optional int64	lifeTime=7;
+  optional Reason rejectReason=8;
+}
+
+message ReqInfo {
+
+	oneof  ReqInfo_u {
+		Req_LaneChange	 laneChange =1;
+    Req_LaneChange   vehMerge = 2;
+    ReferenceLinkList no_signalIntersectionPassing = 3;
+		Req_ClearTheWay	 clearTheWay=4;
+		Req_SignalPriority	 signalPriority=5;
+		Req_SensorSharing	 sensorSharing=6;
+		Req_ParkingArea	 parking=7;
+	}
+}
+
+message ReferenceLinkList {
+  repeated RsiReferenceLink refLinkList = 1;
+}
+
+enum ReqStatus {
+    ReqStatus_unknown	= 0;
+    ReqStatus_request	= 1;
+    ReqStatus_comfirmed	= 2;
+    ReqStatus_cancel	= 3;
+    ReqStatus_complete	= 4;
+		ReqStatus_execute = 5;
+		ReqStatus_accept = 6;
+		ReqStatus_reject = 7;
+		ReqStatus_revoke = 8;
+};
+
+message Req_LaneChange {
+  required MapNode.ID upstreamNode=1;
+	required MapNode.ID	 downstreamNode=2;
+	required int32	 targetLane=3;
+}
+
+message Req_ClearTheWay {
+  required MapNode.ID	 upstreamNode=1;
+	required MapNode.ID	 downstreamNode=2;
+	required int32	 targetLane=3;
+	optional RsiReferencePath	relatedPath=4;
+	optional DDateTime	tBegin=5;
+	optional DDateTime  tEnd=6;
+}
+
+message Req_SignalPriority {
+  required MapNode.ID	 intersectionId=1;
+	required MovementEx	 requiredMov=2;
+	optional int64	estimatedArrivalTime=3;
+	optional int64	distance2Intersection=4;
+  optional int32	busLoadFactor=5;
+	optional int32	busDelayTime=6;
+}
+
+
+message Req_SensorSharing {
+  repeated 	RsiReferencePath	 detectArea=1;
+}
+
+enum ParkingRequest {
+    ParkingRequest_enter	= 0;
+    ParkingRequest_exit	= 1;
+    ParkingRequest_park	= 2;
+    ParkingRequest_pay	= 3;
+    ParkingRequest_unloadPassenger	= 4;
+    ParkingRequest_pickupPassenger	= 5;
+    ParkingRequest_unloadCargo	= 6;
+    ParkingRequest_loadCargo	= 7;
+    ParkingRequest_reserved1	= 8;
+    ParkingRequest_reverved2	= 9;
+    ParkingRequest_reserved3	= 10;
+    ParkingRequest_reverved4	= 11;
+};
+
+enum ParkingType {
+    ParkingType_unknown	= 0;
+    ParkingType_ordinary	= 1;
+    ParkingType_disabled	= 2;
+    ParkingType_mini	= 3;
+    ParkingType_attached	= 4;
+    ParkingType_charging	= 5;
+    ParkingType_stereo	= 6;
+    ParkingType_lady	= 7;
+    ParkingType_extended	= 8;
+    ParkingType_private	= 9;
+};
+
+message Req_ParkingArea {
+  required VehicleClassification	 vehicleClass=1;
+	repeated ParkingRequest	 req=2;
+	optional ParkingType	parkingType=3;
+	optional int64	expectedParkingSlotID=4;
+}
+
+enum Reason{
+  Reason_unknown=0;
+  Reason_planChanged=1;
+  Reason_engaged=2;
+  Reason_malfunction=3;
+  Reason_higherPriority=4;
+  Reason_notsafe=5;
+}
+

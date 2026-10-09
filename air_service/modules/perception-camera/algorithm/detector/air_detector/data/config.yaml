@@ -1,0 +1,33 @@
+%YAML:1.0
+
+ModelName: "ObjectDetecterC3"
+ModelFileName: "model"
+ParamsFileName: "params"
+DeviceID: 0
+InputHeight: 672
+InputWidth: 672
+InputChannel: 3
+InputShape:
+ Level:
+  Name: 0
+  Shape: [1,3,672,672]
+ Level:
+  Name: 1
+  Shape: [1,2]
+MaxBatchSize: 128
+MinSubGraphSize: 5
+EnableTensorRT: true
+Precision: "int8"
+UseStatic: true
+EnableMultiStream: true
+cls_names: ['car', 'truck', 'van', 'bus', 'pedestrian', 'cyclist', 'tricyclelist', 'motorcyclist', 'barrowlist', 'trafficcone', 'unknown_unmovable', 'unknown_movable', 'triangle', 'trafficcone_fixed', 'trafficcone_other']
+DetectThreshold: [0.3, 0.5, 0.3, 0.325, 0.18, 0.35, 0.45, 0.2, 0.5, 0.28, 0.5, 0.5, 0.25, 0.5, 0.7] 
+NmsThreshold: 0.7
+INFO: ""
+DebugLevel: 0
+HeightFilterRadioCYC: 0.058
+WidthFilterRadioCYC: 0.021
+HeightFilterRadio: 0.0149
+WidthFilterRadio: 0.0125
+MinYFilterRadio: 0.05
+MaxGpuMallocSize: 26542080

@@ -1,0 +1,4 @@
+detector_name : "AirObjectDetecter"
+id : ""
+model_dir : "/home/airos/os/modules/lib/airos_perception_camera/data/detector"
+gpu_id : 0

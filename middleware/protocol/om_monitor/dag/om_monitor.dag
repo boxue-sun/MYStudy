@@ -1,0 +1,14 @@
+module_config {
+    module_library: "/home/airos/os/lib/libom_monitor.so"
+    components{
+        class_name: "OmMonitorComponent"
+        config{
+            name: "OmMonitorComponent"
+            readers{
+                channel: "/v2x/monitor"
+            }
+            # out_channel: "/v2x/usecase"
+            # flag_file_path: "/home/airos/protocol/conf/om_camera.flag"
+        }
+    }
+}

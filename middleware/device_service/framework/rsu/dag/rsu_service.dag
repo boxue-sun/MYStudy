@@ -1,0 +1,16 @@
+# proto-file: dag_conf.proto
+# proto-message: DagConfig
+module_config {
+    module_library: "/home/airos/os/lib/librsu_component.so"
+    components{
+        class_name: "RSUComponent"
+        config{
+            name: "RSUComponent"
+            config_file_path: "/home/airos/os/conf/rsu/config.pb.txt"
+            readers{
+                channel: "/airos/device/rsu_in"
+                pending_queue_size: 10
+            }
+        }
+    }
+}

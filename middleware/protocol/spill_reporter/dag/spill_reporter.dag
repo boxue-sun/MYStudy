@@ -1,0 +1,13 @@
+module_config {
+    module_library: "/home/airos/os/lib/libspill_reporter.so"
+    components{
+        class_name: "SpillReporterComponent"
+        config{
+            name: "SpillReporterComponent"
+            readers{
+                channel: "/v2x/usecase"
+                pending_queue_size: 10
+            }
+        }
+    }
+}

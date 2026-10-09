@@ -1,0 +1,109 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-common.proto";
+import "app/framework/proto/v2xpb-asn-common-ext.proto";
+import "app/framework/proto/v2xpb-asn-position.proto";
+import "app/framework/proto/v2xpb-asn-vir.proto";
+
+package v2xpb.asn;
+
+message Pam {
+    required int64 msgCnt = 1;
+    required ParkingLotInfo parkingLotInfo = 2;
+    repeated PAMNode	pamNodes = 3;
+    repeated ParkingGuide parkingAreaGuidance = 4;
+}
+
+message PAMNode {
+  required int64 id = 1;
+	required Position refPos = 2;
+	optional int64 floor = 3;
+	repeated PAMNodeAttributes attributes = 4;
+	repeated PAMDrive inDrives = 5;
+}
+
+message ParkingGuide {
+  required string vehId = 1;
+	repeated int64 drivePathList = 2;
+	optional int64 targetParkingSlot = 3;
+}
+
+
+enum PAMNodeAttributes {
+    PAMNodeAttributes_entrance	= 0;
+    PAMNodeAttributes_exit	= 1;
+    PAMNodeAttributes_toUpstair	= 2;
+    PAMNodeAttributes_toDownstair	= 3;
+    PAMNodeAttributes_etc	= 4;
+    PAMNodeAttributes_mtc	= 5;
+    PAMNodeAttributes_passAfterPayment	= 6;
+    PAMNodeAttributes_blocked	= 7;
+};
+
+
+message PAMDrive {
+  required int64 upstreamPAMNodeId = 1;
+	optional int64 driveID = 2;
+	optional int32 twowaySepration = 3;
+	optional int64 speedLimit = 4;
+	optional int64 heightRestriction = 5;
+	optional int64 driveWidth = 6;
+	optional int64 laneNum = 7;
+	repeated Position points = 8;
+	repeated int64 movements = 9;
+	repeated ParkingSlot parkingSlots = 10;
+}
+
+message ParkingLotInfo {
+  optional int64 id = 1;
+	optional string name = 2;
+	optional int64 number = 3;
+	optional int64 buildingLayerNum	= 4;
+	optional AVPType avpType = 5;
+}
+
+enum AVPType {
+    AVPType_p0	= 0;
+    AVPType_p1	= 1;
+    AVPType_p2	= 2;
+    AVPType_p3	= 3;
+    AVPType_p4	= 4;
+    AVPType_p5	= 5;
+};
+
+message ParkingSlot {
+  required int64 slotID = 1;
+	optional ParkingSlotPosition position = 2;
+	optional string sign = 3;
+	required ParkingType parkingType = 4;
+	required SlotStatus status = 5;
+	required ParkingSpaceTheta parkingSpaceTheta = 6;
+	required ParkingLock parkingLock = 7;
+}
+
+message ParkingSlotPosition {
+  required Position topLeft = 1;
+	required Position topRight = 2;
+	required Position bottomLeft = 3;
+}
+enum SlotStatus {
+    SlotStatus_unknown	= 0;
+    SlotStatus_available	= 1;
+    SlotStatus_occupied	= 2;
+    SlotStatus_reserved	= 3;
+};
+
+enum ParkingSpaceTheta {
+    ParkingSpaceTheta_unknown	= 0;
+    ParkingSpaceTheta_vertical	= 1;
+    ParkingSpaceTheta_side	= 2;
+    ParkingSpaceTheta_oblique	= 3;
+};
+enum ParkingLock {
+    ParkingLock_unknown	= 0;
+    ParkingLock_nolock	= 1;
+    ParkingLock_locked	= 2;
+    ParkingLock_unlocked	= 3;
+};
+
+

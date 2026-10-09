@@ -1,0 +1,39 @@
+#!/bin/bash
+# recorder Launcher
+#     参数格式为：[IP1[:PORT1]] [IP2[:PORT2]] [IP3[:PORT3]] [IP4[:PORT4]]
+#     Channel 将会被设置为："/sensor/ipcamera/h264/" + 用下划线分割的 IP
+#     此脚本执行的时候参数会被忽略。
+#
+
+readonly BASE0=$(readlink -fn "$(dirname $0)/../")
+readonly BINARY=${BASE0}/bin/h264_recorder
+
+# if [[ $(id -u) -eq 0 ]]; then
+#     echo "This script must NOT be run as ROOT!" >&2
+#     exit 1;
+# fi
+
+if [[ "x${__recorder_launcher__}" != "xLaunch" ]]; then
+    export __recorder_launcher__="Launch";
+    nohup ${BASE0}/bin/$(basename $0) &
+    sleep 1;
+    rm nohup.out
+    exit;
+fi
+
+declare -a __params;
+
+__params=("${__params[@]}" '192.168.10.100');
+__params=("${__params[@]}" '192.168.10.101');
+__params=("${__params[@]}" '192.168.10.102');
+__params=("${__params[@]}" '192.168.10.103');
+__params=("${__params[@]}" '192.168.10.104');
+__params=("${__params[@]}" '192.168.10.105');
+__params=("${__params[@]}" '192.168.10.106');
+__params=("${__params[@]}" '192.168.10.107');
+
+__params=("${__params[@]}");
+
+while true; do
+    ${BINARY} "${__params[@]}"
+done

@@ -1,0 +1,182 @@
+syntax = "proto2";
+
+package airos.cloud;
+
+message FilterInfo {
+  // 状态量协方差矩阵的维度
+  required uint32 dimension = 1;
+  // 构建协方差的状态量所在的序号列表
+  repeated uint32 var_n_index = 2;
+  // 卡尔曼滤波的更新步骤得到的状态量协方差矩阵
+  repeated float covs = 3;
+  // 卡尔曼滤波预测步骤得到的状态量协方差矩阵
+  repeated float covs_pred = 4;
+  // 卡尔曼滤波预测步骤得到的状态量1～N
+  repeated float var_pred = 5;
+}
+
+message TrackPointData {
+  // 经度
+  required uint32 longitude = 1;
+  // 纬度
+  required uint32 latitude = 2;
+  // 位置精度等级
+  required uint32 pos_confidence = 3;
+  // 速度
+  required uint32 speed = 4;
+  // 速度精度等级
+  required uint32 speed_confidence = 5;
+  // 航向角
+  required uint32 heading = 6;
+  // 航向精度等级
+  required uint32 head_confidence = 7;
+}
+
+message PerceptionObject {
+  // 唯一编号
+  required bytes uuid = 1;
+  // 对象编号
+  required uint32 obj_id = 2;
+  // 类型
+  required uint32 type = 3;
+  // 状态
+  required uint32 status = 4;
+  // 长度
+  required uint32 len = 5;
+  // 宽度
+  required uint32 width = 6;
+  // 高度
+  required uint32 height = 7;
+  // 经度
+  required uint32 longitude = 8;
+  // 纬度
+  required uint32 latitude = 9;
+  // 东西向距离
+  required uint32 loc_east = 10;
+  // 南北向距离
+  required uint32 loc_north = 11;
+  // 位置精度等级
+  required uint32 pos_confidence = 12;
+  // 高程
+  required uint32 elevation = 13;
+  // 高程精度
+  required uint32 elev_confidence = 14;
+  // 速度
+  required uint32 speed = 15;
+  // 速度精度等级
+  required uint32 speed_confidence = 16;
+  // 东西向速度
+  required uint32 speed_east = 17;
+  // 东西向速度精度等级
+  required uint32 speed_east_confidence = 18;
+  // 南北向速度
+  required uint32 speed_north = 19;
+  // 南北向速度精度等级
+  required uint32 speed_north_confidence = 20;
+  // 航向角
+  required uint32 heading = 21;
+  // 航向精度等级
+  required uint32 head_confidence = 22;
+  // 目标纵向加速度
+  required uint32 accel_vert = 23;
+  // 目标纵向加速度精度等级
+  required uint32 accel_vert_confidence = 24;
+  // 目标跟踪时长
+  required uint32 tracked_times = 25;
+  // 历史目标轨迹点列表
+  repeated TrackPointData hist_locs = 26;
+  // 预测轨迹点列表
+  repeated TrackPointData pred_locs = 27;
+  // 目标所在车道编号
+  required uint32 lane_id = 28;
+  // 滤波信息的类型
+  required uint32 filter_info_type = 29;
+  // 滤波信息
+  optional FilterInfo filter_info = 30;
+  // 车牌号
+  required string plate_no = 31;
+  // 车牌类型
+  required uint32 plate_type = 32;
+  // 车牌颜色
+  required uint32 plate_color = 33;
+  // 车身颜色
+  required uint32 obj_color = 34;
+}
+
+message PerceptionObjectReport {
+  // 渠道来源
+  required uint32 channel_id = 1;
+  // RCU编号
+  required bytes rcu_id = 2;
+  // 设备类型
+  required uint32 device_type = 3;
+  // 感知设备编号
+  required bytes device_id = 4;
+  // 输出时间戳
+  required uint32 timestamp_of_dev_out = 5;
+  // 计算应用时间戳
+  required uint32 timestamp_of_det_in = 6;
+  // 输出结果时间戳
+  required uint32 timestamp_of_det_out = 7;
+  // 坐标系类型
+  required uint32 gnss_type = 8;
+  // 感知对象列表
+  repeated PerceptionObject objective = 9;
+}
+
+message EventReport {
+  // 渠道来源
+  required uint32 channel_id = 1;
+  // RCU编号
+  required bytes rcu_id = 2;
+  // 事件类别
+  optional uint32 event_type = 3;
+  // 事件发生的置信度
+  optional uint32 confidence = 4;
+  // 坐标系类型
+  optional uint32 gnss_type = 5;
+  // 经度
+  optional int32 longitude = 6;
+  // 纬度
+  optional int32 latitude = 7;
+  // 时间戳
+  optional uint64 timestamp = 8;
+  // 事件唯一编号
+  optional string event_id = 9;
+  // 扩展字段内容
+  optional string exts = 10;
+  // 事件关联目标对象uuid列表
+  repeated bytes target_ids = 11;
+}
+
+message DeviceStatus {
+  // 内部编号
+  required uint32 id = 1;
+  // 备编号
+  required bytes device_id = 2;
+  // 设备工作状态
+  optional uint32 device_status = 3;
+}
+
+message DeviceStatusReport {
+  // 渠道来源
+  required uint32 channel_id = 1;
+  // RCU编号
+  required bytes rcu_id = 2;
+  // 状态代码
+  optional uint32 status = 3;
+  // 摄像头状态列表
+  repeated DeviceStatus cam_status = 4;
+  // 雷达状态列表
+  repeated DeviceStatus radar_status = 5;
+  // 激光雷达状态列表
+  repeated DeviceStatus lidar_status = 6;
+}
+
+message CloudFrame {
+  oneof payload {
+    PerceptionObjectReport perception_object_report = 1;
+    EventReport event_report = 2;
+    DeviceStatusReport device_status_report = 3;
+  }
+}

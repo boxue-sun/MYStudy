@@ -1,0 +1,100 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-position.proto";
+
+package v2xpb.asn;
+
+enum SpeedConfidence {
+	    SpeedConfidence_unavailable	= 0;
+	    SpeedConfidence_prec100ms	= 1;
+	    SpeedConfidence_prec10ms	= 2;
+	    SpeedConfidence_prec5ms	= 3;
+	    SpeedConfidence_prec1ms	= 4;
+	    SpeedConfidence_prec0_1ms	= 5;
+	    SpeedConfidence_prec0_05ms	= 6;
+	    SpeedConfidence_prec0_01ms	= 7;
+}
+
+
+enum HeadingConfidence{
+	    HeadingConfidence_unavailable	= 0;
+	    HeadingConfidence_prec10deg	= 1;
+	    HeadingConfidence_prec05deg	= 2;
+	    HeadingConfidence_prec01deg	= 3;
+	    HeadingConfidence_prec0_d1deg	= 4;
+	    HeadingConfidence_prec0_d05deg	= 5;
+	    HeadingConfidence_prec0_d01deg	= 6;
+	    HeadingConfidence_prec0_d0125deg	= 7;
+}
+
+message AccSet4WayConfidence {
+    required AccConfidence	 lonAccConfidence = 1;
+	required AccConfidence	 latAccConfidence = 2;
+	required AccConfidence	 vertAccConfidence = 3;
+	required AngularVConfidence	 yawRateCon = 4;
+}//ssm
+
+enum AccConfidence {
+        AccConfidence_unavailable	= 0;
+        AccConfidence_prec100deg	= 1;
+        AccConfidence_prec10deg	= 2;
+        AccConfidence_prec5deg	= 3;
+        AccConfidence_prec1deg	= 4;
+        AccConfidence_prec0_1deg	= 5;
+        AccConfidence_prec0_05deg	= 6;
+        AccConfidence_prec0_01deg	= 7;
+
+}
+
+enum AngularVConfidence {
+        AngularVConfidence_unavailable	= 0;
+        AngularVConfidence_prec100deg	= 1;
+        AngularVConfidence_prec10deg	= 2;
+        AngularVConfidence_prec5deg	= 3;
+        AngularVConfidence_prec1deg	= 4;
+        AngularVConfidence_prec0_1deg	= 5;
+        AngularVConfidence_prec0_05deg	= 6;
+        AngularVConfidence_prec0_01deg	= 7;
+
+}
+
+message DDateTime {
+   optional int64 year = 1;
+   optional int64 month = 2;
+   optional int64 day = 3;
+   optional int64 hour = 4;
+   optional int64 minute = 5;
+   optional int64 second = 6;
+   optional int64 offset = 7;
+}
+
+enum EquipmentType{
+    unknown	= 0;
+    rsu	= 1;
+    obu	= 2;
+    vru	= 3;
+}//ssm
+
+message DetectedRegion{
+	repeated  Polygon list = 1;
+}//ssm
+
+message Polygon{
+  repeated  Position list = 1;
+}//ssm
+
+enum CoordinationInfo {
+    CoordinationInfo_cooperativeLaneChanging	= 0;
+    CoordinationInfo_cooperativeVehMerging	= 1;
+    CoordinationInfo_laneChangingAtIntersection	= 2;
+    CoordinationInfo_no_signalIntersectionPassing	= 3;
+    CoordinationInfo_dynamicLaneManagement	= 4;
+    CoordinationInfo_laneReservation	= 5;
+    CoordinationInfo_laneRestriction	= 6;
+    CoordinationInfo_signalPriority	= 7;
+};
+
+
+
+
+

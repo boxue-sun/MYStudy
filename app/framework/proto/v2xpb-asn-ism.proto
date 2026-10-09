@@ -1,0 +1,41 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-position.proto";
+import "app/framework/proto/v2xpb-asn-rsi.proto";
+import "app/framework/proto/v2xpb-asn-map.proto";
+import "app/framework/proto/v2xpb-asn-vir.proto";
+
+package v2xpb.asn;
+
+
+message Ism{
+  required int64	 msgCnt=1;
+  required string	 id=2;
+	required int64	 secMark=3;
+	required Position	 refPos=4;
+	required PathPlanningPoint	 currentPos=5;
+  optional PathPlanning	path_Planning=6	;
+  optional TargetRoadResource targetRoadResource=7;
+  repeated DriveBehavior currentBehavior=8;
+  required DriveIntention intShare=9;
+
+}
+message DriveIntention{
+  optional IntentionSource source=1;
+  repeated RoadInfo  targetRd=2;
+}
+
+message RoadInfo{
+  required MapNode.ID	 upstreamNode=1;
+	required MapNode.ID	 downstreamNode=2;
+	repeated ReferenceLane	 referenceLanes=3;
+}
+
+enum IntentionSource{
+  	IntentionSource_unknown=0;
+		IntentionSource_light=1;
+		IntentionSource_navi=2;
+		IntentionSource_prediction=3;
+		IntentionSource_manual=4;
+		IntentionSource_integrated=5;
+}

@@ -1,0 +1,12 @@
+build --linkopt="-L/usr/local/lib"
+build --linkopt="-pthread"
+build --linkopt="-ldl"
+build --linkopt="-lrt"
+build --linkopt="-luuid"
+build --linkopt="-lz"
+
+build:dbg --copt -g
+build:dbg --strip=never
+
+build:cuda --@rules_cuda//cuda:enable=True
+build --config=cuda

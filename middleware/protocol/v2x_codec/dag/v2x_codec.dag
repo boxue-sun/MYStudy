@@ -1,0 +1,16 @@
+# Define all coms in DAG streaming.
+module_config {
+    module_library : "/home/airos/os/lib/libv2x_codec.so"
+    components {
+        class_name : "V2xCodecComponent"
+        config {
+            name : "V2xCodecComponent"
+            readers {
+                channel: "/airos/message/generated"
+                pending_queue_size: 10
+            }
+            # out_channel: /airos/device/rsu_in
+            flag_file_path: "/home/airos/os/conf/v2x_codec.flag"
+        }
+    }
+}

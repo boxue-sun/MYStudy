@@ -1,0 +1,7 @@
+phase_id_list:
+    - 
+      mec_phase_id: 1
+      standard_phase_id: 1
+    - 
+      mec_phase_id: 2
+      standard_phase_id: 2

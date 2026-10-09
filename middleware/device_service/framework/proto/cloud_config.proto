@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+package os.v2x.device.cloud;
+
+message Config {
+  optional MqttConfig mqtt_config = 1;
+  optional HttpConfig http_config = 2;
+}
+
+message MqttConfig {
+  optional string device = 1;
+  optional string config_file = 2;
+}
+
+message HttpConfig {
+  optional string device = 1;
+  optional string config_file = 2;
+}

@@ -1,0 +1,11 @@
+frequency : 13.0
+
+gpu_id : 0
+
+camera_name: "camera3"
+
+alg_path : "modules/lib/airos_perception_camera"
+
+alg_name : "AirosCameraPerception"
+
+conf_path : "modules/conf/airos_perception_camera"

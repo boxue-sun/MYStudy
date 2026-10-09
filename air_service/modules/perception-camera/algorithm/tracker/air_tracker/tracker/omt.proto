@@ -1,0 +1,84 @@
+package airos.perception.algorithm.omt;
+
+message KalmanParam {
+    optional float init_variance = 1;
+    optional float process_variance = 2;
+    optional float measure_variance = 3;
+}
+message TargetParam {
+    optional float velocity_threshold = 1 [default = 2.0];
+    optional int32 velocity_output_delay = 2 [default = 2];
+    optional KalmanParam world_center = 3;
+    optional KalmanParam image_center = 4;
+    optional float image_wh_update_rate = 5;
+    optional int32 world_lhw_history = 6 [default = 15];
+    optional float height_diff_ratio = 7 [default = 0.1];
+
+    // params for checking static obstacles 
+    optional int32 world_state_history = 8 [default = 30];
+    optional int32 min_cached_world_state_history_size = 9 [default = 5];
+    optional int32 min_cached_velocity_size = 10 [default = 10];
+    optional int32 min_cached_position_size = 11 [default = 25];
+    optional int32 calc_avg_position_window_size = 12 [default = 7];
+
+    optional float static_speed_threshold = 13 [default = 0.5];
+    optional float static_speed_threshold_ped = 14 [default = 0.3];
+    optional float min_moving_avg_speed = 15 [default = 1.0];
+    optional float min_moving_avg_speed_ped = 16 [default = 0.5];
+
+    optional float abnormal_velocity_heading_angle_threshold = 19 [default = 0.7854]; // M_PI / 4
+
+    optional int32 world_mean_velocity_duration = 21 [default = 10];
+
+    optional int32 tracked_life = 22 [default = 3];
+    optional float type_filter_var = 23 [default = 0.3];
+    optional float large_velocity_ratio = 24 [default = 2.5];
+    optional float too_large_velocity_ratio = 25 [default = 1.5];
+
+    optional int32 mean_filter_window = 26 [default = 10];
+    optional float direction_filter_ratio = 27 [default = 0.7];
+    optional float displacement_theta_var = 28 [default = 0.25];
+    optional float velocity_theta_var = 29 [default = 0.5];
+    optional int32 reserve_age = 30 [default = 3];
+    optional int32 average_velocity_interval = 31 [default = 10];
+    optional float stable_moving_speed = 32 [default = 2.0];
+    optional float top_lef_stable_thresh = 33 [default = 2.0];
+    optional float br_const_measure_noise = 34 [default = 900.0];
+    optional float vel_max_distance = 35 [default = 1000];
+    optional float vel_max = 36 [default = 50];
+    optional int32 objec_list_thresh_ = 37 [default = 2];
+    optional int32 velocity_history_thresh_ = 38 [default = 3];
+}
+
+message WeightParam {
+    optional float appearance = 1 [default = 0];
+    optional float motion = 2 [default = 0];
+    optional float shape = 3 [default = 0];
+    optional float tracklet = 4 [default = 0];
+    optional float overlap = 5 [default = 0];
+    optional float mdiou = 6 [default =0.85];
+    optional float mdcos = 7 [default =0.251];
+    optional float wapp = 8 [default = 0.65];
+    optional float wmot = 9 [default = 0.3];
+    optional float wthd = 10 [default = 0.05];
+    optional float withd = 11 [default = 0.1];
+    optional float wmiou = 12 [default = 0.9]; 
+}
+message AccessParam {
+    optional string camera_name = 1 [default = "default"];
+    optional float img_border = 2 [default = 20];
+    optional float min_height = 3 [default = 10];
+    optional float init_height = 4 [default = 20];
+}
+message OmtParam {
+    optional int32 img_capability = 1 [default = 7];//
+    optional string conf_map_file = 2;//
+    optional WeightParam weight = 3;//
+    repeated AccessParam access = 4;//
+
+    optional float target_thresh = 5 [default = 0.65];//
+    optional TargetParam target_param = 6;//
+    optional float target_combine_iou_threshold = 7 [default = 0.5]; //
+    optional float image_displacement = 8 [default = 50];
+    optional string type_change_cost = 9;
+}

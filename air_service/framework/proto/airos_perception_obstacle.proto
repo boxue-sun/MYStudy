@@ -1,0 +1,254 @@
+syntax = "proto2";
+package airos.perception;
+
+import "air_service/framework/proto/airos_header.proto";
+import "air_service/framework/proto/airos_perception_common.proto";
+
+enum PerceptionErrorCode {
+    ERROR_NONE = 0;         // no error
+    ERROR_TF = 1;           // return result error
+    ERROR_PROCESS = 2;      // process error 
+    ERROR_UNKNOWN = 3;      // unknow error
+}
+
+message Point {
+    optional double x = 1;  // in meters.
+    optional double y = 2;  // in meters.
+    optional double z = 3;  // height in meters.
+    optional int32 zone = 4; // UTM zone 
+}
+
+enum SubType {
+    UNKNOWN = 0;
+    UNKNOWN_MOVABLE = 1;
+    UNKNOWN_UNMOVABLE = 2;
+    CAR = 3;
+    VAN = 4;
+    TRUCK = 5;
+    BUS = 6;
+    CYCLIST = 7;
+    MOTORCYCLIST = 8;
+    TRICYCLIST = 9;
+    PEDESTRIAN = 10;
+    TRAFFICCONE = 11;
+    SAFETY_TRIANGLE = 12;
+    BARRIER_DELINEATOR = 13;
+    BARRIER_WATER = 14;
+    MAX_OBJECT_TYPE = 15;
+}
+
+enum OcclusionState {
+    OCC_UNKNOWN = 0;            
+    OCC_NONE_OCCLUDED = 1;          // 无拥堵
+    OCC_PARTIAL_OCCLUDED = 2;       // 部分拥堵
+    OCC_COMPLETE_OCCLUDED = 3;      // 完全拥堵
+}
+
+enum TruncationState {
+    TRUNC_UNKNOWN = 0;
+    TRUNC_TRUE = 1;                 // 有截断
+    TRUNC_FALSE = 2;                // 无阶段
+}
+
+message SensorMeasurement {
+    optional string sensor_id = 1;
+    optional int32 id = 2;
+
+    optional Point position = 3;
+    optional double theta = 4;
+    optional double length = 5;
+    optional double width = 6;
+    optional double height = 7;
+
+    optional Point velocity = 8;
+
+    enum Type {
+        UNKNOWN = 0;
+        UNKNOWN_MOVABLE = 1;
+        UNKNOWN_UNMOVABLE = 2;
+        PEDESTRIAN = 3;  // Pedestrian, usually determined by moving behaviour.
+        BICYCLE = 4;  // bike, motor bike
+        VEHICLE = 5;  // Passenger car or truck.
+    };
+    optional Type type = 9;
+    optional SubType sub_type = 10;
+    optional double timestamp = 11;
+    optional BBox2D box = 12; // only for camera measurements
+    optional bool velocity_converged = 13;
+    optional OcclusionState occ_state_2d = 14 [default = OCC_UNKNOWN];
+    // existance confidence, range [0, 1], default 1.
+    optional float confidence = 15 [default = 1];
+    // whether obj is a parse obj
+    optional bool is_parse_obj = 16 [default = false]; 
+}
+enum MecSourceType
+{
+    MEC_UNKNOWN          =   0;
+    MEC_RSU              =   1;
+    MEC_V2X              =   2;
+    MEC_VIDEO            =   3;
+    MEC_RADAR            =   4;
+    MEC_LOOP             =   5;
+    MEC_LIDAR            =   6;
+    MEC_INTEGRATED       =   7;
+    MEC_MEC              =   8;
+    MEC_BUS_BOARD        =   9;
+    MEC_ATMOSPHERE       =  10;
+}
+enum MecPtcType
+{
+    MEC_PTC_UNKNOWN     = 0;
+    MEC_PTC_MOTOR       = 1;
+    MEC_PTC_NON_MOTOR   = 2;
+    MEC_PTC_PEDESTRIAN  = 3;
+    MEC_PTC_RSU         = 4;
+}
+enum MecVehicleType
+{
+    VEHICLE_TYPE_UNKONWN = 0;
+    VEHICLE_TYPE_AMBULANCE = 1;
+    VEHICLE_TYPE_FIRE_TRUCK = 2;
+    VEHICLE_TYPE_POLICE_CAR = 3;
+    VEHICLE_TYPE_SEDAN = 4;
+    VEHICLE_TYPE_VAN = 5;
+    VEHICLE_TYPE_TRUCK = 6;
+    VEHICLE_TYPE_BUS = 7;
+}
+
+enum MecNonVehicleType
+{
+    NON_VEHICLE_TYPE_UNKONWN = 0;
+    NON_VEHICLE_TYPE_BICYCLE = 1;
+    NON_VEHICLE_TYPE_MOTORCYCLE = 2;
+    NON_VEHICLE_TYPE_TRICYCLE = 3;
+}
+enum MecPlateColorType
+{
+    PLATE_COLOR_TYPE_OTHER = 0;
+    PLATE_COLOR_TYPE_WHITE = 1;
+    PLATE_COLOR_TYPE_BLUE = 2;
+    PLATE_COLOR_TYPE_YELLOW = 3;
+    PLATE_COLOR_TYPE_BLACK = 4;
+    PLATE_COLOR_TYPE_GREEN = 5;
+}
+enum MecObjColorType
+{
+    OBJ_COLOR_TYPE_OTHER = 0;       // 其他
+    OBJ_COLOR_TYPE_WHITE = 1;       // 白色
+    OBJ_COLOR_TYPE_BLUE = 2;        // 蓝色
+    OBJ_COLOR_TYPE_YELLOW = 3;      // 黄色
+    OBJ_COLOR_TYPE_BLACK = 4;       // 黑色
+    OBJ_COLOR_TYPE_GREEN = 5;       // 绿色
+    OBJ_COLOR_TYPE_RED = 6;         // 红色
+    OBJ_COLOR_TYPE_SILVER = 7;      // 银色
+    OBJ_COLOR_TYPE_GRAY = 8;        // 灰色
+    OBJ_COLOR_TYPE_PINK = 9;        // 粉色
+    OBJ_COLOR_TYPE_GOLD = 10;       // 金色
+    OBJ_COLOR_TYPE_ORANGE = 11;     // 橙色
+    OBJ_COLOR_TYPE_PURPLE = 12;     // 紫色
+};
+//地理坐标系
+message MecGCSPoint {
+    optional double lon = 1; // in meters.
+    optional double lat = 2; // in meters.
+    optional double ele = 3; // height in meters.
+}
+
+message PerceptionObstacle {
+    optional int32 id = 1;  // obstacle ID.
+    optional Point position = 2;  // obstacle position in the world coordinate system.
+    optional double theta = 3;  // heading in the world coordinate system.
+    optional double theta_variance = 4;
+    optional Point velocity = 5;  // obstacle velocity.
+
+    // Size of obstacle bounding box.
+    optional double length = 6 [default = 0];  // obstacle length.
+    optional double width = 7 [default = 0];  // obstacle width.
+    optional double height = 8 [default = 0];  // obstacle height.
+
+    repeated Point polygon_point = 9;  // obstacle corner points.
+    optional double tracking_time = 10;  // duration of an obstacle since detection in s.
+
+    enum Type {
+        UNKNOWN = 0;
+        UNKNOWN_MOVABLE = 1;
+        UNKNOWN_UNMOVABLE = 2;
+        PEDESTRIAN = 3;  // Pedestrian, usually determined by moving behaviour.
+        BICYCLE = 4;  // bike, motor bike
+        VEHICLE = 5;  // Passenger car or truck.
+    };
+    optional Type type = 11;  // obstacle type
+
+    optional double timestamp = 12;  // GPS time in seconds.
+
+    // Just for offline debuging, onboard will not fill this field.
+    // Format like : [x0, y0, z0, x1, y1, z1...]
+    repeated double point_cloud = 13 [packed = true];
+
+    // a stable obstacle point in the world coordinate system
+    // position defined above is the obstacle boundingbox ground center
+    optional Point anchor_point = 14;
+
+    // position covariance which is a row-majored 3x3 matrix
+    repeated double position_covariance = 15 [packed = true];
+
+    optional BBox2D bbox2d = 16;                  // 2D 检测框
+    repeated Point  cube_pts8 = 17;               // 8点 3D框
+    optional SubType sub_type = 18;               // 障碍物子类型
+    repeated SensorMeasurement measurements = 19; // sensor measurements
+
+    optional Point acceleration = 20;  // obstacle acceleration.
+    // acceleration covariance which is a row-majored 3x3 matrix
+
+    optional OcclusionState occ_state = 21 [default = OCC_UNKNOWN];
+    optional TruncationState trunc_state = 22 [default = TRUNC_UNKNOWN];
+
+    optional bool velocity_converged = 23 [default = true];
+
+    message TypeProb {
+        optional Type type = 1;
+        optional float prob = 2;
+    }
+
+    message SubTypeProb {
+        optional SubType sub_type = 1;
+        optional float prob = 2;
+    }
+    
+    repeated TypeProb type_probs = 24;
+    repeated SubTypeProb sub_type_probs = 25;
+    optional int32 sub_type_id = 26; // obstacle type id
+    optional double sub_type_id_confidence = 27;
+    ///////////////////////////////////////////////////
+    // add zhangenwei 2024-3-15
+    optional double ptc_speed = 28; //传感器坐标系内车辆速度，单位km/h
+    optional double ptc_heading = 29; //交通参与者航向角，范围为0-360度，正北为0度，顺时针旋转
+    optional MecGCSPoint position_gcs = 30; // obstacle position in the Geographic Coordinate System.
+    optional MecSourceType  source_type = 31;  //SourceType
+    optional MecPtcType     ptc_type = 32;  //ptctype
+    optional string         plate_num = 33;
+    optional MecPlateColorType plate_color  = 34;
+    optional MecObjColorType   obj_color  = 35;
+    optional MecVehicleType    vehicle_type  = 36;
+    optional MecNonVehicleType non_vehicle_type  = 37;
+    optional int32 tracking = 38;
+    optional string id_str = 39;
+    optional int32 lane_no = 40;
+
+    //add hezhiyong
+    optional int32 ptc_acc = 41;
+    optional int32 ptc_confidence = 42;
+    optional string lane_id = 43; 
+}
+
+enum ShadowType {
+    SHADOW_DYNAMIC = 0;
+    SHADOW_STATIC = 1;
+}
+
+message PerceptionObstacles {
+    repeated PerceptionObstacle perception_obstacle = 1;  // An array of obstacles
+    optional airos.header.Header header = 2;         // Header
+    optional PerceptionErrorCode error_code = 3 [default = ERROR_NONE]; //Error code
+    repeated PerceptionObstacle unobserved_obstacle = 4;
+}

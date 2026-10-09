@@ -1,0 +1,13 @@
+
+/home/airos/log/*[!".gz"] {
+    size 150M
+    rotate 5
+    compress
+    copytruncate
+    missingok
+    notifempty
+    dateext
+    dateformat -%Y%m%d%H%M%S
+
+}
+

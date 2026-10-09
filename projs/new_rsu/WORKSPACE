@@ -1,0 +1,11 @@
+workspace(name = "new_rsu")
+
+new_local_repository(
+    name = "airos_sdk",
+    build_file = "/opt/airos/sdk/BUILD",
+    path = "/opt/airos/sdk",
+)
+
+load("@airos_sdk//third_party:third_party.bzl", "init_third_party")
+
+init_third_party()

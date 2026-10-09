@@ -1,0 +1,140 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-common.proto";
+import "app/framework/proto/v2xpb-asn-position.proto";
+package v2xpb.asn;
+
+message Bsm {
+  optional int32 msg_cnt = 1 [ default = -1 ];
+  optional bytes id = 2;
+  optional bytes plate_no = 3;
+  optional int32 sec_mark = 4;
+  optional int32 time_confidence = 5;
+  optional Position pos = 6;
+  optional PosAccuracy pos_accuracy = 7;
+  optional PosConfidenceSet pos_confidence = 8;
+  optional int32 transmission = 9;
+  optional double speed = 10;
+  optional double heading = 11;
+  optional double angle = 12;
+  optional MotionConfidenceSet motion_cfd = 13;
+  optional AccelerationSet4Way accel_set = 14;
+  optional BrakeSystemStatus brakes = 15;
+  optional VehicleSize size = 16;
+  optional VehicleClassification vehicle_class = 17;
+  optional VehicleSafetyExtensions safety_ext = 18;
+  optional VehicleEmergencyExtensions emergency_ext = 19;
+}
+
+/////
+message PosAccuracy {
+  optional int32 semi_major = 1;
+  optional int32 semi_minor = 2;
+  optional int32 orientation = 3;
+}
+
+/////
+message BrakeSystemStatus {
+  optional int32 brake_padel = 1;
+  repeated BrakeAppliedStatus wheel_brakes = 2;
+  optional int32 traction = 3;
+  optional int32 abs = 5;
+  optional int32 scs = 6;
+  optional int32 brake_boost = 7;
+  optional int32 aux_brakes = 8;
+}
+enum BrakeAppliedStatus {
+  BRAKE_APPLIED_UNAVAILABLE = 0;
+  BRAKE_APPLIED_LEFTFRONT = 1;
+  BRAKE_APPLIED_LEFTREAR = 2;
+  BRAKE_APPLIED_RIGHTRFONT = 3;
+  BRAKE_APPLIED_RIGHTREAR = 4;
+}
+
+/////
+message VehicleSafetyExtensions {
+  repeated EventFlag events = 1;
+  optional PathHistory path_history = 2;
+  optional PathPrediction path_prediction = 3;
+  repeated LightFlag lights = 4;
+}
+enum EventFlag {
+  EVENT_HAZARD_LIGHTS = 0;
+  EVENT_STOP_LINEVIOLATIO = 1;
+  EVENT_ABS_ACTIVATED = 2;
+  EVENT_TRACTION_CONTROL_LOSS = 3;
+  EVENT_STABILITY_CONTROL_ACTIVATED = 4;
+  EVENT_HAZARDOUS_MATERIALS = 5;
+  EVENT_RESERVEDL = 6;
+  EVENT_HARDBRAKING = 7;
+  EVENT_LIGHTS_CHANGED = 8;
+  EVENT_WIPERS_CHAGED = 9;
+  EVENT_FLAT_TIRE = 10;
+  EVENT_DISABLED_VEHICLE = 11;
+  EVENT_AIR_BAG_DEPLOYMENT = 12;
+}
+enum LightFlag {
+  LIGHT_LOW_BEAM_HEAD = 0;
+  LIGHT_HIGHT_BEAM_HEAD = 1;
+  LIGHT_LEFT_TURN = 2;
+  LIGHT_RIGHT_TURN = 3;
+  LIGHT_HAZARD = 4;
+  LIGHT_AUTOM_ATIC_LIGHT_CONTROL = 5;
+  LIGHT_DAYTIME_RUNNING = 6;
+  LIGHT_FOG = 7;
+  LIGHT_PARKING = 8;
+}
+message PathPrediction {
+  optional int32 radius_ofCurve = 1;
+  optional int32 confidence = 2;
+}
+
+message PathHistory {
+  optional FullPositionVector initial_position = 1;
+  repeated GnssStatus curr_gnss_status = 2;
+  repeated PathHistoryPoint crumb_data = 3;
+}
+message FullPositionVector {
+  message DDateTime {
+    optional int32 year = 1;
+    optional int32 month = 2;
+    optional int32 day = 3;
+    optional int32 hour = 5;
+    optional int32 minute = 6;
+    optional int32 second = 7;
+    optional int32 offset = 8;
+  }
+
+  optional DDateTime utc_time = 1;
+  optional Position pos = 2;
+  optional int32 heading = 3;
+  optional int32 transmission = 4;
+  optional int32 speed = 5;
+  optional PosConfidenceSet pos_accuracy = 6;
+  optional int32 time_confidence = 7;
+  optional MotionConfidenceSet motion_cfd = 8;
+}
+enum GnssStatus {
+  GNSS_UNAVAILABLE = 0;
+  GNSS_HEALTHY = 1;
+  GNSS_MONITORED = 2;
+  GNSS_BASE_STATION_TYPE = 3;
+  GNSS_APDOP_OF_UNDER = 4;
+  GNSS_INVIEW_OF_UNDER = 5;
+  GNSS_LOCAL_CORRECTIONS_PRESENT = 6;
+  GNSS_NETWORK_CORRECTIONS_PRESENT = 7;
+}
+message PathHistoryPoint {
+  optional Position llv_offset = 1;
+  optional int32 time_offset = 2;
+  optional int32 speed = 3;
+  optional PosConfidenceSet pos_accuracy = 4;
+  optional int32 heading = 5;
+}
+
+/////
+message VehicleEmergencyExtensions {
+  optional int32 response_type = 1;
+  optional int32 siren_use = 2;
+  optional int32 lights_use = 3;
+}

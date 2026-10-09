@@ -1,0 +1,52 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+/.metadata/
+/.svn/
+/.vscode/
+.cache
+.idea
+/output
+/bazel-bin
+/bazel-out
+/bazel-airos
+/bazel-testlogs
+/protocol
+/param
+/os
+/log
+
+
+# --- Large docker images excluded: exceed GitHub 100MB per-file limit ---
+/docker/builder_container/airos-v3.1-v1.5.0-deqing-release-202411071015.tar.gz
+/docker/builder_container/airos-v3.1-v1.4.7-release-202409241706.tar.gz

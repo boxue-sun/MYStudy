@@ -1,0 +1,14 @@
+module_config {
+    module_library: "/home/airos/os/lib/libccindex.so"
+    components{
+        class_name: "CcindexComponent"
+        config{
+            name: "CcindexComponent"
+            readers{
+                channel: "/v2x/cloud/message"
+            }
+            # out_channel: "/v2x/usecase"
+            # flag_file_path: "/home/airos/protocol/conf/om_camera.flag"
+        }
+    }
+}

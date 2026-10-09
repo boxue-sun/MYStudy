@@ -1,0 +1,12 @@
+# Define all coms in DAG streaming.
+module_config {
+    module_library : "/home/airos/os/lib/libmulti_sensor_fusion_component_viz.so"
+    components {
+        class_name : "MsfComponent"
+        config {
+            name : "MsfComponent"
+            config_file_path: "/home/airos/os/conf/perception_fusion_config.pt"
+        }
+    }
+}
+

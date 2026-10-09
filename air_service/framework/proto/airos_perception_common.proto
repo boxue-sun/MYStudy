@@ -1,0 +1,20 @@
+syntax = "proto2";
+package airos.perception;
+
+message BBox2D {
+    optional double xmin = 1;  // in pixels.
+    optional double ymin = 2;  // in pixels.
+    optional double xmax = 3;  // in pixels.
+    optional double ymax = 4;  // in pixels.
+}
+// message BBox3D {
+//   optional float h = 1 [default = 0];
+//   optional float w = 2 [default = 0];
+//   optional float l = 3 [default = 0];
+//   optional float x = 4 [default = 0];
+//   optional float y = 5 [default = 0];
+//   optional float z = 6 [default = 0];
+//   optional float alpha = 7 [default = 0];
+//   optional float theta = 8 [default = 0];
+//   optional float phi = 9 [default = 0];
+// }

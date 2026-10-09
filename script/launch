@@ -1,0 +1,491 @@
+#!/usr/bin/env bash
+set -e
+
+# log_file=/home/airos/log/airos_launch.log."$(date +%Y%m%d-%H%M%S)"
+return_info() {
+  local DATE_N=$(date "+%Y-%m-%d %H:%M:%S")
+  [[ $# -eq 0 ]] && return
+  echo -e "\033[1;32m [INFO]--- ${DATE_N} $* \033[0m"
+}
+
+function check_run() {
+  local command_line="$1"
+  if [[ -n ${command_line} ]]; then
+    launch_cmd="${command_line} > /dev/null 2>&1 &"
+    eval ${launch_cmd}
+    return_info "${launch_cmd} , run successfully! "
+  fi
+}
+
+function check_run_front() {
+    local command_line="$1"
+    if [[ -n ${command_line} ]]; then
+      launch_cmd="${command_line}"
+      eval ${launch_cmd}
+    fi
+}
+function start_camera_viz() {
+    mainboard -d dag/perception_camera_123_viz.dag
+}
+
+function start_fusion_viz() {
+    mainboard -d dag/msf_component_viz.dag
+}
+
+function start_perception_pipeline() {
+    check_run "mainboard -d dag/perception_camera_123.dag"
+    check_run "mainboard -d dag/msf_component.dag"
+}
+
+function start_perception_lidar() {
+    check_run "mainboard -d dag/perception_lidar_12.dag"
+}
+
+function start_traffic_light_pipeline() {
+    local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+    if [[ ${enable_front_flag} == "true" ]]; then
+      start_kill_dag_pipeline
+      check_run_front "mainboard -d dag/traffic_light_service.dag"
+    else
+      check_run "mainboard -d dag/traffic_light_service.dag"
+      check_run "mainboard -d dag/v2x_codec.dag"
+      check_run "mainboard -d dag/rsu_service.dag"
+      check_run "./bin/airos_app_framework conf/airos_v2x_app.pb"
+    fi
+}
+
+function start_mec_pipeline() {
+      local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+      if [[ ${enable_front_flag} == "true" ]]; then
+        start_kill_dag_pipeline
+        check_run_front "mainboard -d dag/mec_service.dag"
+      else
+        check_run "mainboard -d dag/mec_service.dag"
+        check_run "mainboard -d dag/v2x_codec.dag"
+        check_run "mainboard -d dag/rsu_service.dag"
+        check_run "./bin/airos_app_framework conf/airos_v2x_app.pb"
+      fi
+}
+function start_rsap_pipeline() {
+    local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+    if [[ ${enable_front_flag} == "true" ]]; then
+        start_kill_dag_pipeline
+        check_run_front "mainboard -d dag/rsap.dag"
+    else
+      check_run "mainboard -d dag/mec_service.dag"
+      check_run "mainboard -d dag/rsap.dag"
+    fi
+
+}
+
+function start_om_mec_ptp_pipeline() {
+    local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+    if [[ ${enable_front_flag} == "true" ]]; then
+        start_kill_dag_pipeline
+        check_run_front "python3 /home/airos/protocol/mec/PTPpartlog.py /home/airos/common_config/work_param_config.flag"
+    else
+        check_run "python3 /home/airos/protocol/mec/PTPpartlog.py /home/airos/common_config/work_param_config.flag"
+    fi
+}
+
+function start_om_monitor_pipeline() {
+    local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+    if [[ ${enable_front_flag} == "true" ]]; then
+        start_kill_dag_pipeline
+        check_run_front "mainboard -d dag/om_monitor.dag"
+    else
+        check_run "mainboard -d dag/om_monitor.dag"
+    fi
+
+}
+function start_dianyun_recorder_pipeline() {
+    local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+    if [[ ${enable_front_flag} == "true" ]]; then
+        start_kill_dag_pipeline
+        check_run_front "python3 /home/airos/protocol/radar_point_cloud/DianYunRecorder.py /home/airos/common_config/work_param_config.flag"
+    else
+        check_run "python3 /home/airos/protocol/radar_point_cloud/DianYunRecorder.py /home/airos/common_config/work_param_config.flag"
+    fi
+
+}
+
+function start_om_device_status_pipeline() {
+    local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+    if [[ ${enable_front_flag} == "true" ]]; then
+      start_kill_dag_pipeline
+      check_run_front "mainboard -d dag/om_device_status.dag"
+    else
+      check_run "mainboard -d dag/om_device_status.dag"
+    fi
+}
+
+function start_rsu_service_pipeline() {
+    local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+    if [[ ${enable_front_flag} == "true" ]]; then
+      start_kill_dag_pipeline
+      check_run_front "mainboard -d dag/rsu_service.dag"
+    else
+      check_run "mainboard -d dag/rsu_service.dag"
+    fi
+}
+
+
+function start_om_pipeline() {
+    local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+    if [[ ${enable_front_flag} == "true" ]]; then
+      start_kill_dag_pipeline 
+      check_run "python3 /home/airos/protocol/mec/PTPpartlog.py /home/airos/common_config/work_param_config.flag"
+      check_run "mainboard -d dag/om_device_status.dag"
+      check_run_front "mainboard -d dag/om.dag"
+    else
+      check_run "python3 /home/airos/protocol/mec/PTPpartlog.py /home/airos/common_config/work_param_config.flag"
+      check_run "mainboard -d dag/om_device_status.dag"
+      check_run "mainboard -d dag/om.dag"
+    fi
+}
+
+function start_ccindex_pipeline() {
+    local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+    if [[ ${enable_front_flag} == "true" ]]; then
+      start_kill_dag_pipeline
+      check_run_front "mainboard -d dag/ccindex.dag"
+    else
+      check_run "mainboard -d dag/ccindex.dag"
+    fi
+}
+
+function start_app_pipeline() {
+    local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+    if [[ ${enable_front_flag} == "true" ]]; then
+      echo "start ./bin/airos_app_framework conf/airos_v2x_app.pb"
+      start_kill_dag_pipeline
+      check_run_front "./bin/airos_app_framework conf/airos_v2x_app.pb"
+    else
+      check_run "./bin/airos_app_framework conf/airos_v2x_app.pb"
+    fi
+}
+
+function start_scenario_pipeline() {
+    local enable_front_flag="${1:-default_value1}"  # 第一个参数，默认为 default_value1
+    if [[ ${enable_front_flag} == "true" ]]; then
+      echo "start ./bin/airos_app_framework conf/airos_v2x_scenario.pb"
+      start_kill_dag_pipeline
+      check_run_front "./bin/airos_app_framework conf/airos_v2x_scenario.pb"
+    else
+      check_run "./bin/airos_app_framework conf/airos_v2x_scenario.pb"
+    fi
+}
+
+
+function start_kill_dag_pipeline() {
+#  start_ps
+#  local target_pid=$(pgrep -f ${GLOBAL_KILL_DAG_NAME})
+#   if [ -n "$target_pid" ]; then
+#      kill -9 $target_pid
+#   fi
+  start_ps
+  # 获取目标进程 PID
+  local target_pid=$(pgrep -f ${GLOBAL_KILL_DAG_NAME})
+
+  # 判断是否存在目标进程
+  if [ -z "$target_pid" ]; then
+    echo "No process found for ${GLOBAL_KILL_DAG_NAME}. Nothing to kill."
+    return 0
+  fi
+
+  # 如果目标进程存在，执行终止操作
+  echo "Killing process with PID: $target_pid"
+  kill -9 $target_pid
+}
+
+function  start_module_front_pipeline()
+{
+    local enable_front_flag="true"
+    case "$START_FRONT_MODULE" in
+        tl)
+            GLOBAL_KILL_DAG_NAME="traffic_light"
+            start_traffic_light_pipeline "${enable_front_flag}"
+            ;;
+        mi)
+            GLOBAL_KILL_DAG_NAME="mec"
+            start_mec_pipeline "${enable_front_flag}"
+            ;;
+        rp)
+            GLOBAL_KILL_DAG_NAME="rsap"
+            start_rsap_pipeline "${enable_front_flag}"
+            ;;
+        od)
+            GLOBAL_KILL_DAG_NAME="om_device_status"
+            start_om_device_status_pipeline "${enable_front_flag}"
+            ;;
+        cc)
+            GLOBAL_KILL_DAG_NAME="ccindex"
+            start_ccindex_pipeline "${enable_front_flag}"
+            ;;
+        om)
+            GLOBAL_KILL_DAG_NAME="om.dag"
+            start_om_pipeline "${enable_front_flag}"
+            ;;
+        mo)
+            GLOBAL_KILL_DAG_NAME="monitor"
+            start_om_monitor_pipeline "${enable_front_flag}"
+            ;;
+        va)
+            GLOBAL_KILL_DAG_NAME="conf/airos_v2x_app.pb"
+            start_app_pipeline "${enable_front_flag}"
+            ;;
+        vs)
+            GLOBAL_KILL_DAG_NAME="conf/airos_v2x_app.pb"
+            start_scenario_pipeline "${enable_front_flag}"
+            ;;
+        rsu)
+            GLOBAL_KILL_DAG_NAME="rsu_service"
+            start_rsu_service_pipeline "${enable_front_flag}"
+            ;;
+        rcp)
+            GLOBAL_KILL_DAG_NAME="DianYunRecorder"
+            start_dianyun_recorder_pipeline "${enable_front_flag}"
+            ;;
+
+        *)
+            echo "Unknown module: ${START_FRONT_MODULE}"
+            print_usage
+            ;;
+    esac
+}
+
+function start_mosquitto(){
+  kill -9 `ps -ef|grep mos|grep -v grep|awk '{print $2}'`
+  mosquitto -d
+}
+return_info() {
+  local DATE_N=$(date "+%Y-%m-%d %H:%M:%S")
+  [[ $# -eq 0 ]] && return
+  echo -e "\033[1;32m [INFO]--- ${DATE_N} $* \033[0m"
+}
+
+function check_run() {
+  local command_line="$1"
+  if [[ -n ${command_line} ]]; then
+    launch_cmd="${command_line} > /dev/null 2>&1 &"
+    eval ${launch_cmd}
+    return_info "${launch_cmd} , run successfully! "
+  fi
+}
+
+function is_running() {
+    local process_name="$1"
+    if pgrep -f "$process_name" > /dev/null; then
+        return 0  # 进程正在运行
+    else
+        return 1  # 进程未运行
+    fi
+}
+function start_all() {
+    check_run "mainboard -d dag/mec_service.dag"
+    check_run "mainboard -d dag/traffic_light_service.dag"
+    check_run "mainboard -d dag/v2x_codec.dag"
+    check_run "mainboard -d dag/rsu_service.dag"
+    check_run "mainboard -d dag/rsap.dag"
+    # check_run "mainboard -d dag/perception_camera_123.dag"
+    # check_run "mainboard -d dag/msf_component.dag"
+    check_run "./bin/airos_app_framework conf/airos_v2x_app.pb"
+    check_run "./bin/airos_app_framework conf/airos_v2x_scenario.pb"
+    check_run "mainboard -d dag/om_device_status.dag"
+    check_run "/home/airos/script/airos_keep_alive.sh"
+    check_run "mainboard -d dag/ccindex.dag"
+    check_run "mainboard -d dag/om.dag"
+    check_run "mainboard -d dag/om_monitor.dag"
+    check_run "python3 /home/airos/protocol/om/PTPpartlog.py /home/airos/common_config/work_param_config.flag"
+    check_run "python3 /home/airos/protocol/om/PTPmonitor.py"
+    check_run "mainboard -d dag/spill_reporter.dag"
+    echo '--------------'
+    ps -ef | grep main
+    echo '--------------'
+    ps -ef | grep DianYunRecorder
+    echo '--------------'
+    ps -ef | grep PTPpartlog
+    echo '--------------'
+    ps -ef | grep PTPmonitor
+    echo '--------------'
+    ps -ef | grep airos_keep_alive
+    echo '--------------'
+    ps -ef | grep airos_v2x_app
+    echo '--------------'
+    ps -ef | grep airos_v2x_scenario
+    echo '--------------'
+    declare -A processes=(
+        ["ccindex"]="mainboard -d dag/ccindex.dag"
+        ["rsap"]="mainboard -d dag/rsap.dag"
+        ["om_device_status"]="mainboard -d dag/om_device_status.dag"
+        ["om_monitor"]="mainboard -d dag/om_monitor.dag"
+        ["om.dag"]="mainboard -d dag/om.dag"
+        ["PTPpartlog"]="python3 /home/airos/protocol/om/PTPpartlog.py /home/airos/common_config/work_param_config.flag"
+        ["PTPmonitor"]="python3 /home/airos/protocol/om/PTPmonitor.py"
+        ["conf/airos_v2x_app.pb"]="./bin/airos_app_framework conf/airos_v2x_app.pb"
+        ["conf/airos_v2x_scenario.pb"]="./bin/airos_app_framework conf/airos_v2x_scenario.pb"
+      )
+
+    cd /home/airos/os
+    counter=0
+    max_iterations=2
+
+    while [ $counter -lt $max_iterations ]; do
+      for process in "${!processes[@]}"; do
+        if ! is_running "$process"; then
+          return_info "$process is not running. Restarting..."
+          check_run "${processes[$process]}"
+        fi
+      done
+      sleep 1  # Check every 30 seconds
+      counter=$((counter + 1))  # 增加计数器
+    done
+}
+function start_ps() {
+    echo '--------------'
+    ps -ef | grep main
+    echo '--------------'
+    ps -ef | grep DianYunRecorder
+    echo '--------------'
+    ps -ef | grep PTPpartlog
+    echo '--------------'
+    ps -ef | grep PTPmonitor
+    echo '--------------'
+    ps -ef | grep airos_keep_alive
+    echo '--------------'
+    ps -ef | grep ./bin/airos_app_framework
+    ps -ef | grep airos_v2x_app
+    echo '--------------'
+    ps -ef | grep airos_v2x_scenario
+    echo '--------------'
+}
+
+function stop_all() {
+    pkill -f mainboard || true
+    pkill -f airos_app_framework || true
+    pkill -f airos_keep_alive || true
+    pkill -f DianYunRecorder || true
+    pkill -f PTPpartlog || true
+    pkill -f PTPmonitor || true
+    pkill -9 -f airos_app_framework || true
+}
+
+function print_usage() {
+  echo "Usage: airos_launch [OPTIONS]"
+  echo "Description: This is a tool script for launch airos pipeline."
+  echo
+  echo "Options:"
+  echo "  -h                      Display this help message."
+  echo "  camera_viz              Start perception camera viz."
+  echo "  fusion_viz              Start fusion viz."
+  echo "  perception              Start perception pipeline."
+  echo "  traffic_light           Start traffic light pipeline."
+  echo "  lidar                   Start lidar perception."
+  echo "  mec                     Start [public]mec pipeline."
+  echo "  rsap                    Start protocol-1 pipeline."
+  echo "  om                      Start protocol-5 [om]OM pipeline."
+  echo "  om_device_status        Start [pulibc]device status into seqlite3 pipeline."
+  echo "  radar_cloud_point       Start radar cloud point pipeline."
+  echo "  ccindex                 Start ddindex pipeline."
+  echo "  kill                    Start kill dag pipeline."
+  echo "  ps                      Check the status of pipelines."
+  echo "  all                     Start airos all pipeline."
+  echo "  stop                    Stop all pipeline."
+  echo "  sf                      Start pipeline front."
+  echo "      tl                  Start [traffic light] pipeline front."
+  echo "      mi                  Start [mec] pipeline front."
+  echo "      rp                  Start [rsap] pipeline front."
+  echo "      od                  Start [om_device_status]    pipeline front."
+  echo "      mp                  Start [om_mec_ptp]   pipeline front."
+  echo "      mo                  Start [om_monitor]   pipeline front."
+  echo "      cc                  Start [ccindex]   pipeline front."
+  echo "      om                  Start [om]   pipeline front."
+  echo "      rcp                  Start [radar_cloud_point]   pipeline front."
+  echo "      va                  Start ./bin/airos_app_framework conf/airos_v2x_app.pb  pipeline front."
+  echo "      vs                  Start ./bin/airos_app_framework conf/airos_v2x_scenario.pb  pipeline front."
+  echo
+}
+function release_package()
+{
+   bash /home/airos/build_airos.sh release
+}
+function tar_package()
+{
+   bash /home/airos/build_airos.sh pack
+}
+function main() {
+    if [ "$#" -eq 0 ]; then
+        print_usage
+        exit 0;
+    fi
+    case "$1" in
+        "camera_viz" | "fusion_viz" | "perception" | "traffic_light" | "lidar" | "mec" | "rsap" | \
+        "om_device_status" | "all" | "stop" | "release"|"ccindex" | "om" | "PTPpartlog" )
+            stop_all
+#            rm -rf /home/airos/log
+            ;;
+    esac
+    source /home/airos/os/setup.bash
+    cd /home/airos/os
+
+    local cmd="$1"
+    GLOBAL_KILL_DAG_NAME="$2"
+    START_FRONT_MODULE="$2"
+    shift
+    case "${cmd}" in
+        camera_viz)
+            start_camera_viz
+            ;;
+        fusion_viz)
+            start_fusion_viz
+            ;;
+        perception)
+            start_perception_pipeline
+            ;;
+        traffic_light)
+            start_traffic_light_pipeline
+            ;;
+        lidar)
+            start_perception_lidar
+            ;;
+        mec)
+            start_mec_pipeline
+            ;;
+        rsap)
+            start_rsap_pipeline
+            ;;
+        om_device_status)
+              start_om_device_status_pipeline
+              ;;
+        ccindex)
+              start_ccindex_pipeline
+              ;;
+        om)
+              start_om_pipeline
+              ;;
+        sf)
+          #前台启动
+              start_module_front_pipeline;
+              ;;
+        kill)
+              start_kill_dag_pipeline
+              ;;
+        ps)
+              start_ps
+              ;;
+        all)
+            start_all
+            ;;
+        mos)
+            start_mosquitto
+            ;;
+        stop)
+            echo "all stop!"
+            ;;
+        *)
+            print_usage
+            ;;
+    esac
+}
+
+main "$@"

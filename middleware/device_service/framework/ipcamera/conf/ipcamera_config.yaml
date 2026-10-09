@@ -1,0 +1,18 @@
+# IP Camera 配置文件
+# 多路RTSP拉流地址配置
+rtsp_urls:
+  - "rtsp://root:root@172.20.65.193:8554/stream1"
+  - "rtsp://root:root@172.20.65.193:8554/stream2"
+  - "rtsp://root:root@172.20.65.193:8554/stream3"
+  - "rtsp://root:root@172.20.65.193:8554/stream4"
+# 输出话题配置（与rtsp_urls一一对应）
+output_topics:
+  - "/sensor/ipcamera/h264/172_20_65_193"
+  - "/sensor/ipcamera/h264/172_20_65_194"
+  - "/sensor/ipcamera/h264/172_20_65_195"
+  - "/sensor/ipcamera/h264/172_20_65_196"
+reconnect_interval: 5  # 重连间隔（秒）
+buffer_size: 1024000   # 缓冲区大小
+connection_timeout: 10 # 连接超时时间（秒）
+enable_sei_timestamp: true  # 是否启用SEI时间戳解析
+enable_h264_save: false  # 是否保存H.264文件到磁盘（默认关闭） 

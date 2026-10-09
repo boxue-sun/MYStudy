@@ -1,0 +1,9 @@
+syntax = "proto2";
+package adu.st;
+
+message StHeader {
+    optional double timestamp_sec = 1;
+    optional string module_name = 2;
+    optional uint64 sequence_num = 3;
+    optional string cross_id = 4;
+}

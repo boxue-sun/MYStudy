@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-message-frame.proto";
+import "app/framework/proto/cloud_message_frame.proto";
+
+package airos.app;
+
+message ApplicationData {
+  oneof payload {
+    v2xpb.asn.MessageFrame road_side_frame = 1;
+    airos.cloud.CloudFrame cloud_message_frame = 2;
+  }
+}

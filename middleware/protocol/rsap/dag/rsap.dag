@@ -1,0 +1,15 @@
+module_config {
+    module_library: "/home/airos/os/lib/librsap.so"
+    components{
+        class_name: "RsapComponent"
+        config{
+            name: "RsapComponent"
+            readers{
+                channel: "/v2x/usecase"
+                pending_queue_size: 10
+            }
+            # out_channel: "/v2x/usecase"
+            flag_file_path: "/home/airos/protocol/rsap/conf/rsap_config.flag"
+        }
+    }
+}

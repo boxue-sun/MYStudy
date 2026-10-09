@@ -1,0 +1,27 @@
+syntax = "proto2";
+
+package airos.v2x;
+
+message RscuStatus {
+  required string rscu_sn = 1;
+  required int64 timestamp = 2;
+  repeated DeviceStatus device_status = 3;
+  optional string integration_version = 4;
+}
+
+message DeviceStatus {
+  required DeviceType type = 1;
+  optional string id = 2;
+  optional string ip = 3;
+  optional string sn = 4;
+  optional bool is_online = 5;
+}
+
+enum DeviceType {
+  RSU = 0;             // RSU
+  CAMERA = 1;          // 相机
+  LIDAR = 2;           // 激光雷达
+  CCU = 3;             // 采集卡
+  SIGNAL_MACHINE = 4;  // 信号机
+  RADAR = 5;           // 毫米波雷达
+};

@@ -1,0 +1,14 @@
+syntax = "proto2";
+package airos.usecase.roi;
+
+message Point {
+    optional double x = 1;
+    optional double y = 2;
+}
+message SingleRoiParam {
+    optional int32 camera_id = 1;
+    repeated Point polygon = 2;
+}
+message RoiParams {
+    repeated SingleRoiParam roi_params= 1;
+}

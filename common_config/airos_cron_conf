@@ -1,0 +1,1 @@
+*/5 * * * * /usr/bin/python3 /home/airos/script/airos_log_proc.py

@@ -1,0 +1,179 @@
+syntax = "proto2";
+
+import "app/framework/proto/v2xpb-asn-position.proto";
+import "app/framework/proto/v2xpb-asn-common-ext.proto";
+
+package v2xpb.asn;
+
+message Map {
+  optional int32 message_count = 1 [ default = -1 ];
+  //
+  repeated MapNode nodes = 10;
+}
+
+message MapNode {
+  message ID {
+    optional int32 region = 1 [ default = -1 ];
+    optional int32 id = 2 [ default = -1 ];
+  }
+  optional ID id = 1;
+  optional string name = 3 [ default = "" ];
+  optional Position position = 4;
+  //
+  repeated MapLink links = 10;
+  repeated LinkEx linksEx = 11;
+  optional ProhibitedZone prohibitedzone = 12;
+
+}
+message MapLink {
+  optional int32 id = 1 [ default = -1 ];
+  optional MapNode.ID upstream_node_id = 2;
+  optional string name = 3 [ default = "" ];
+  optional double width = 4;
+  //
+  repeated MapLane lanes = 10;
+  repeated Position positions = 11;
+  repeated RegulatorySpeedLimit speed_limits = 12;
+  repeated Movement movements = 13;
+}
+
+message MapLane {
+  enum AllowedManeuver {
+    STRAIGHT = 0;
+    LEFT = 1;
+    RIGHT = 2;
+    U_TURN = 3;
+    LEFT_ON_RED = 4;
+    RIGHT_ON_RED = 5;
+    LANE_CHANGE = 6;
+    NO_STOPPING = 7;
+    YIELD_ALWAYS_REQUIRED = 8;
+    GO_WITH_HALT = 9;
+    CAUTION = 10;
+    RESERVED = 11;
+  };
+  optional int32 id = 1 [ default = -1 ];
+  repeated AllowedManeuver maneuvers = 2;
+  optional string name = 3 [ default = "" ];
+  optional double width = 4;
+
+  repeated MapConnection connections = 10;
+  repeated Position positions = 11;
+  optional LaneAttributes lane_attributes = 12;
+  repeated RegulatorySpeedLimit speed_limits = 13;
+}
+
+message MapConnection {
+  optional MapNode.ID remote_node_id = 1;
+  optional int32 phase_id = 2 [ default = -1 ];
+  optional int32 lane_id = 3 [ default = -1 ];
+  repeated MapLane.AllowedManeuver maneuvers = 4;
+}
+
+message RegulatorySpeedLimit {
+  optional int32 speed_limit_type = 1;
+  optional double speed = 2;
+}
+message LaneAttributes {
+  optional string share_with = 1;
+  optional int32 present = 2;
+  optional string value = 3;
+}
+message Movement {
+  optional int32 region = 1;
+  optional int32 id = 2;
+  optional int32 phase_id = 3;
+}
+
+
+message LinkEx{
+  optional string name = 1;
+  required MapNode.ID upstreamNodeId = 2;
+  optional RegulatorySpeedLimit speed_limits =3;
+  optional double width = 4;
+  repeated Position refLine = 5;
+  repeated MovementEx movements_ex = 6;
+  repeated Section sections = 7;
+
+
+}
+
+
+message MovementEx {
+  required 	MapNode.ID	 remoteIntersection=1;
+	optional int64	phaseId=2;
+	optional Maneuver	turn_direction=3;
+}
+
+enum Maneuver {
+  ManeuverStraight	= 0;
+  ManeuverLeftTurn	= 1;
+  ManeuverRightTurn	= 2;
+  ManeuverUTurn	= 3;
+}
+
+message Section{
+  required int32 secId = 1;
+  repeated LaneEX lanes = 2;
+}
+
+message LaneEX {
+	required  int32 laneRefID = 1;
+	optional  int32 laneWidth = 2;
+	optional  LaneAttributes laneAttributes=3;
+	optional  MapLane.AllowedManeuver maneuvers=4;
+	repeated  ConnectionEx connectsTo_ex=5;
+	repeated  RegulatorySpeedLimit speedLimits=6;
+	repeated  STPoint  st_points =7;
+  optional LaneLineType laneLineType=8;
+
+	}
+message LaneLineType{
+  required Dotted_SolidMarkingLineType leftLaneLine = 1;
+  required Dotted_SolidMarkingLineType rightLaneLine = 2;
+}
+
+enum Dotted_SolidMarkingLineType {
+  whiteDottedLine = 0;
+  whiteSolidLine = 1;
+  yellowDottedLine = 2;
+  yellowSolidLine = 3;
+  whiteDotted_solidLine = 4;
+  whiteSotted_dottedLine = 5;
+  yellowDotted_solidLine = 6;
+  yellowSotted_dottedLine=7;
+}
+
+  message ConnectionEx{
+      required 	MapNode.ID	 remoteIntersection=1;
+      optional SignalWaitingLane swl=2;
+      repeated ConnectingLaneEx connectingLane = 3;
+      optional int64	phaseId=4;
+      optional Maneuver	turn_direction=5;
+  }
+
+  message SignalWaitingLane{
+	  required  int32 laneWidth = 1;
+    repeated Position points = 2;
+    repeated int64	allowedPhaseIds = 3;
+  }
+
+  message ConnectingLaneEx{
+    required int32 target_section = 1;
+    required  int32 target_lane = 2;
+    optional  int32 connectingLaneWidth = 3;
+    repeated Position  connectingLanePoints =4;
+    optional bool isolatedConnectingLane=5;
+  }
+
+  message STPoint{
+    required int64 s_axis = 1;
+    required int64 t_axis = 2;
+
+  }
+
+  message ProhibitedZone{
+    optional Polygon centralCircleProhibitedZone = 1;
+    repeated Polygon non_motorVehicleProhibitedZones = 2;
+    repeated Polygon gridLineMarkingProhibitedZones = 3;
+  }

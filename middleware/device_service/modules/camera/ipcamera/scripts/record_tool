@@ -1,0 +1,94 @@
+#!/bin/bash
+
+# 用法：
+#    record_tool h264 /xlog/log/my_dir 落盘 “h264码流通道” 到指定目录
+#    record_tool res  /xlog/log/my_dir 落盘 “结果集通道” 到指定目录
+#    record_tool all  /xlog/log/my_dir 落盘 “所有通道” 到指定目录
+#    record_tool stop 退出落盘进程
+
+help_str="usage: 'record_tool h264[res, all] /xlog/log/my_dir' or 'record_tool stop' to kill proc"
+
+out_dir_=/xlog/log/record_tool_out
+flag_=res
+bin_=/home/caros/perception/bin/channel_recorder
+
+
+if [ $# -eq 1 ]; then
+    if [[ $1 == "stop" ]]; then
+        ps -ef | grep "channel_recorder" | grep -v "grep" | awk '{print $2}' | xargs -I {} kill -9 {}
+        sleep 1
+        ps -ef | grep "channel_recorder" | grep -v "grep" | awk '{print $2}' | xargs -I {} kill -9 {}
+        sleep 1
+        echo "channel_recorder stoped"
+        exit 0
+    else 
+        echo "ERROR: $1 != stop"
+        echo $help_str
+        exit 1
+    fi
+fi
+
+
+cd /home/caros
+source  env.bash >/dev/null
+
+cd /home/caros/perception
+cyber_setenv >/dev/null
+source module_env.bash >/dev/null
+
+if [ $# -eq 2 ]; then
+    flag_=$1
+    out_dir_=$2
+else
+    echo "ERROR: args num != 2 or arg != stop"
+    echo $help_str
+    exit 1
+fi
+
+if [[ $1 != "h264" ]] && [[ $1 != "res" ]] && [[ $1 != "all" ]]; then
+    echo "ERROR: $1 not in [h264, res, all]"
+    echo $help_str
+    exit 1
+fi
+
+if [ ! -d $out_dir_ ]; then
+    mkdir -p $out_dir_
+    if [ $? -ne 0 ]; then
+        echo "ERROR: mkdir -p ${out_dir_} failed"
+        echo $help_str
+        exit 1
+    fi 
+fi
+
+echo "saving directory is" $out_dir_
+cd $out_dir_
+
+if [[ $1 == "res" ]]; then
+    nohup $bin_ record -c /v2x/obstacles /v2x/perception/obstacles /sensor/traffic/light/info &
+    sleep 2
+    echo "begin record res.."
+fi
+
+if [[ $1 == "all" ]]; then
+    nohup $bin_ record -a &
+    sleep 2
+    echo "begin record all.."
+fi
+
+args_=""
+if [[ $1 == "h264" ]]; then
+    while read line
+    do 
+        has_ip=$(echo "$line" | grep "ip")
+        has_comment=$(echo "$line" | grep "#")
+        if [[ $has_ip != "" ]] && [[ $has_comment == "" ]];then
+            cur_ip=$(echo "$line" | awk '{print $NF}')
+            cur_ip="/sensor/ipcamera/h264/${cur_ip//./_}"
+            args_="$args_ $cur_ip"
+        fi
+    done < /home/caros/cybertron/ip.yaml
+
+    nohup $bin_ record -c $args_  &
+    sleep 2
+    echo "begin record h264..."
+fi

@@ -1,0 +1,8 @@
+syntax = "proto2";
+package airos.perception.camera;
+
+message RoiFilterParam {
+    optional string roi_filter_name = 1;
+    optional string mask_file_path = 2;          // 透传字段，id标识接口
+    optional double overlap_rate = 3;       // 模型路径
+}

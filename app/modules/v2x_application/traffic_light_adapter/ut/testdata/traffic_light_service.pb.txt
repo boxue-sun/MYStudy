@@ -1,0 +1,73 @@
+city_code: "shanghai"
+region_id: 111
+cross_id: 22
+traffic_light {
+  phase {
+    light_id: 1
+    light_type: LEFT_DIRECTION
+    light_status: RED
+    count_down: 9
+    light_unchanged: false
+    step_info_list {
+      light_status: RED
+      duration: 40
+    }
+    step_info_list {
+      light_status: GREEN
+      duration: 57
+    }
+    step_info_list {
+      light_status: YELLOW
+      duration: 3
+    }
+    right_way_time: 60
+  }
+  phase {
+    light_id: 2
+    light_type: STRAIGHT_DIRECTION
+    light_status: RED
+    count_down: 9
+    light_unchanged: false
+    step_info_list {
+      light_status: RED
+      duration: 20
+    }
+    step_info_list {
+      light_status: GREEN
+      duration: 27
+    }
+    step_info_list {
+      light_status: YELLOW
+      duration: 3
+    }
+    right_way_time: 50
+  }
+  phase {
+    light_id: 3
+    light_type: LEFT_DIRECTION
+    light_status: RED
+    count_down: 9
+    light_unchanged: false
+    step_info_list {
+      light_status: RED
+      duration: 40
+    }
+    step_info_list {
+      light_status: GREEN
+      duration: 57
+    }
+    step_info_list {
+      light_status: YELLOW
+      duration: 3
+    }
+    right_way_time: 60
+  }
+  time_stamp: 1669033782095
+  period: 100
+  data_source: SIGNAL
+  confidence: 100
+  device_info {
+    work_status: DEV_NORMAL
+    control_mode: LOCAL_FIX_CYCLE
+  }
+}

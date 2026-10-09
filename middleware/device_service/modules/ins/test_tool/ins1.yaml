@@ -1,0 +1,3 @@
+device_type: dummy_ins
+ins_name: ins1
+ins_config: /airos-al/ins/ut/ins.cfg

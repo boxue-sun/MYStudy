@@ -1,0 +1,2 @@
+device: "gat_traffic_light"
+config_file: "/home/airos/param/device/traffic_light/gat_device/device.yaml"

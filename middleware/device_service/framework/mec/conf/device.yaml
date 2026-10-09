@@ -1,0 +1,4 @@
+ip: 10.255.11.28
+port: 10024
+local_port: 10051
+protocol: udp

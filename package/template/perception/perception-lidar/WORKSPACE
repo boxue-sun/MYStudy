@@ -1,0 +1,26 @@
+workspace(name = "perception-lidar")
+
+new_local_repository(
+    name = "airos_sdk",
+    build_file = "/opt/airos/sdk/BUILD",
+    path = "/opt/airos/sdk",
+)
+
+load("@airos_sdk//third_party:third_party.bzl", "init_third_party")
+
+init_third_party()
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "rules_cuda",
+    sha256 = "d1ec8d5cbec3514c6ed00eabf168a4b4e0b9dc07797aea98671722bc257dcc23",
+    strip_prefix = "rules_cuda-0c32b04d8af865182a3b6367c1bdd051a699c7de",
+    urls = ["https://github.com/bazel-contrib/rules_cuda/archive/0c32b04d8af865182a3b6367c1bdd051a699c7de.tar.gz"],
+)
+
+load("@rules_cuda//cuda:repositories.bzl", "register_detected_cuda_toolchains", "rules_cuda_dependencies")
+
+rules_cuda_dependencies()
+
+register_detected_cuda_toolchains()

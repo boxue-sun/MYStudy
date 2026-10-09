@@ -1,0 +1,121 @@
+syntax = "proto2";
+
+package adu.stb_map;
+import "middleware/protocol/proto/cross.proto";
+
+message LbLink {
+    optional string id = 1; // lblinkid
+    optional double length = 2; // 长度，单位m
+    optional string geom = 3; // lblink有序坐标
+}
+// 枚举值与信号机一致
+enum CoordinateDirection {
+  UNKNOWN = 0; // 未知默认值
+  EAST_STRAIGHT = 4;
+  NORTH_STRAIGHT = 2;
+  WEST_STRAIGHT = 8;
+  SOUTH_STRAIGHT = 6;
+  EAST_NORTH_STRAIGHT = 12;
+  WEST_NORTH_STRAIGHT = 13;
+  WEST_SOUTH_STRAIGHT = 16;
+  EAST_SOUTH_STRAIGHT = 14;
+  EAST_LEFT = 7;
+  NORTH_LEFT = 5;
+  WEST_LEFT = 3;
+  SOUTH_LEFT = 1;
+  EAST_NORTH_LEFT = 15;
+  WEST_NORTH_LEFT = 10;
+  WEST_SOUTH_LEFT = 11;
+  EAST_SOUTH_LEFT = 9;
+  EAST_RIGHT = 19;
+  NORTH_RIGHT = 17;
+  WEST_RIGHT = 23;
+  SOUTH_RIGHT = 21;
+  EAST_NORTH_RIGHT = 18;
+  WEST_NORTH_RIGHT = 24;
+  WEST_SOUTH_RIGHT = 22;
+  EAST_SOUTH_RIGHT = 20;
+}
+
+message CrossCoordinate {
+    optional string cross_id = 1;
+    optional CoordinateDirection coordinate_direction = 2;
+}
+
+enum DirType {
+    MULTI_DIR = 1; // 道路、自定义道路(多向干线属于该种，也存在多向自定义道路仅用于前中台展示)
+    SINGLE_DIR = 2; // 单向子道路、或单向干线
+}
+
+// 仅用于信控表示用于区分正、反，如该干线为多向(一般为多个单方向的父)则为MULTI
+enum CustomDirection {
+    UNKNOWN_DIR = 0; // 道路、单向子道路都为该类型
+    FORWARD_DIR = 1;
+    BACKWARD_DIR = 2;
+}
+
+enum LineType {
+    LINE_YANPAN = 1; // 非信控区域内的路线类型，如道路、自定义道路都为这种类型
+    LINE_POLICY = 2; // 信控区域内的，如干线、子干线为该类型
+}
+
+enum RoadSegType {
+    ROADSEG_NORMAL = 0; // 非信控类型
+    ROADSEG_POLICY = 1; // 信控类型,特指对目标的路口用于信控
+}
+
+// 父RoadLine仅有 id,name,line_type,dir_type字段
+message RoadLine {
+  optional string id = 1; // 恒定为已线上状态ID，保持不变； 1，自始至终对应台账ID未变化则等于台账ID 2，如对应台账ID有变化，则为最开始上线ID
+  optional string name = 2; // 语义化名称
+  optional string flow_name = 3; // 带方向的语义化名称
+  optional double length = 4; // 长度，单位米
+  optional LineType line_type = 5;
+  optional DirType dir_type = 6; // 线自身是多条线还是单个,用于区分单个子方向或对应的父
+  optional string direction_str = 8; // 方向语义化,如自东向南
+  repeated RoadLine child_line = 9; // 如果是multi类型，表示道路或多向干线，会有子，如果为SINGLE表示无子仅有单个自己
+  optional string parent_id = 10; // 仅单向干线\单向子道路有父id
+  // 包含路口属性
+  optional string geom = 11; // wkt格式线 LineString (xxx
+  optional string center_point = 111; // wkt格式线 Point (115.567311 38.862894)
+  optional uint32 road_type = 12; // 辖区管辖的道路类型，1-高速 2-环城及快速路 3-主干 4-次干 5-支干 101-省高速 102-国道 103-省道
+  optional string road_name = 13; // 归属道路名称
+    optional CustomDirection custom_direction = 14; // 单向子道路通过人工标注确认该方向
+    optional string reverse_id = 15; // 单向子道路通过人工标注确认对应子道路逆id
+  optional string network_name = 155; // 人工标注自定义字段，原为研判平台4个标签，现在可以支持自定义可默认做5个，为标签对应名字
+  optional uint32 network_level = 156; // 人工标注自定义字段，原为研判平台4个标签，现在可以支持自定义可默认做5个，为标签对应int值
+
+  // 以下子干线为特有且经过人工check精准的，若是子道路默认采用百度地图字段值
+  repeated string cross_ids = 16; // 线的路口列表
+  optional string s_cross_id = 17; // 线的起始路口
+  optional string e_cross_id = 18; // 线的结束路口
+  optional string vital_cross_id = 19; // 线的关键路口列表
+  repeated string roadSeg_id = 20; // 包含的路段id列表
+  repeated CrossCoordinate cross_coordinate = 21; // 仅单向干线和子道路有信控协调相位内容，其他为空
+  optional string id_bmap = 22; // 台账ID，保持实时更新
+   repeated double roadsegLength = 23; // 子干线中每个路段的长度
+    repeated double roadsegDisLength = 24; // 子干线中每个路段距离下一个路段的长度
+}
+
+message RoadSeg {
+  optional string id = 1; // 恒定为已线上状态ID，保持不变； 1，自始至终对应台账ID未变化则等于台账ID 2，如对应台账ID有变化，则为最开始上线ID
+  optional string name = 2; // 语义化名称
+  optional string flow_name = 3; // 带方向的语义化名称
+  optional string road_name = 4; // 归属道路名
+  optional double length = 5; // 长度，单位米
+  optional RoadSegType road_seg_type = 6; // 线的类型,SEGMENT_POLICY表示信控路段
+  optional DirectionType direction_type = 7; // 自A到B的方向取A,建议使用direction_str
+  optional string direction_str = 8; // 方向语义化,如自东向南
+  // 包含路口属性
+  optional string s_cross_id = 9; // 线的起始路口 MULTI类型没有
+  optional string e_cross_id = 10; // 线的结束路口  MULTI类型没有
+  optional string branch_start_id = 11; // 路段的起点路口对应出口道branchID
+  optional string branch_end_id = 12; // 路段的终点路口进口道对应branchID
+  repeated LbLink lb_link = 13; // 包含lblink属性
+  optional string geom = 14; // wkt格式线
+  optional int32 road_seg_gistype = 15; // 1-高速,2-环路及快速路,3-主干,4-次干,5-支干; 101-省高,102-国道,103-省道
+  optional double cross_length = 16; // 两两路口中心点距离
+
+
+  optional string id_bmap = 22; // 台账ID，保持实时更新
+}

@@ -1,0 +1,38 @@
+
+module_config {
+    module_library : "/home/airos/os/lib/libcamera_detection_component_viz.so"
+    components {
+        class_name : "CameraPerceptionComponent"
+        config {
+            name : "CameraPerceptionComponent1"
+            config_file_path: "/home/airos/os/conf/camera1/camera1.pt"
+        }
+    }
+
+    components {
+        class_name : "CameraPerceptionComponent"
+        config {
+            name : "CameraPerceptionComponent2"
+            config_file_path: "/home/airos/os/conf/camera2/camera2.pt"
+        }
+    }
+
+    components {
+        class_name : "CameraPerceptionComponent"
+        config {
+            name : "CameraPerceptionComponent3"
+            config_file_path: "/home/airos/os/conf/camera3/camera3.pt"
+        }
+    } 
+
+    components {
+        class_name : "CameraVisualizationComponent"
+        config {
+            name : "CameraPerceptionComponentViz"
+            config_file_path: "/home/airos/os/conf/camera1/camera1.pt"
+            readers {
+                channel: "v2x/perception/viz"
+            }
+        }
+    }
+}
